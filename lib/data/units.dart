@@ -1,6 +1,7 @@
 import '../models/lesson.dart';
 
 final List<Lesson> sampleLessons = [
+  // Unit 1: Vocal Foundations
   Lesson(
     id: 'breath-basics',
     level: 1,
@@ -34,11 +35,65 @@ final List<Lesson> sampleLessons = [
     position: 3,
     title: 'The Kookaburra Laugh',
     type: 'song',
-    description: 'Your first full song with Kooka! ',
+    description: 'Your first full song with Kooka!',
     content: 'Kookaburra sits in the old gum tree... tips and rhythm.',
     imageUrl: 'kooka-singing',
     unlocked: false,
     prerequisite: 'voice-discovery',
+  ),
+  Lesson(
+    id: 'posture-power',
+    level: 2,
+    unit: 1,
+    position: 4,
+    title: 'Stand Tall Like a Gum Tree',
+    type: 'practice',
+    description: 'Perfect posture for powerful singing',
+    content: 'Stand tall like the eucalyptus tree where Kooka perches.',
+    imageUrl: 'kooka-posture',
+    unlocked: false,
+    prerequisite: 'kooka-laugh',
+  ),
+  
+  // Unit 2: Rhythm & Timing
+  Lesson(
+    id: 'rhythm-basics',
+    level: 2,
+    unit: 2,
+    position: 1,
+    title: 'Kooka\'s Rhythm Tree',
+    type: 'practice',
+    description: 'Feel the beat with Kooka',
+    content: 'Tap along with Kooka\'s tail feathers to find the rhythm.',
+    imageUrl: 'kooka-rhythm',
+    unlocked: false,
+    prerequisite: 'posture-power',
+  ),
+  Lesson(
+    id: 'echo-game',
+    level: 2,
+    unit: 2,
+    position: 2,
+    title: 'Echo in the Bush',
+    type: 'sound',
+    description: 'Echo Kooka\'s calls',
+    content: 'Listen to Kooka and echo back the sounds you hear.',
+    imageUrl: 'kooka-echo',
+    unlocked: false,
+    prerequisite: 'rhythm-basics',
+  ),
+  Lesson(
+    id: 'morning-song',
+    level: 3,
+    unit: 2,
+    position: 3,
+    title: 'Morning in Australia',
+    type: 'song',
+    description: 'Sing about the Australian morning',
+    content: 'The sun rises over the bush, and all the birds wake up!',
+    imageUrl: 'kooka-morning',
+    unlocked: false,
+    prerequisite: 'echo-game',
   ),
 ];
 
@@ -76,6 +131,7 @@ class UnitInfo {
 List<UnitInfo> getAllUnits() {
   final units = [
     (1, 'Vocal Foundations', 'Building blocks of singing'),
+    (2, 'Rhythm & Timing', 'Feel the beat and keep time'),
   ];
   return units
       .map((u) => UnitInfo(u.$1, u.$2, u.$3, getLessonsByUnit(u.$1)))
