@@ -1,18 +1,118 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../theme/app_theme.dart';
 import '../data/units.dart';
+import '../models/user.dart';
+import '../storage/user_store.dart';
+import '../storage/progress_store.dart';
+import '../widgets/kooka_mascot.dart';
 
-class SkillTreePage extends StatelessWidget {
+class SkillTreePage extends StatefulWidget {
   const SkillTreePage({super.key});
 
   @override
+  State<SkillTreePage> createState() => _SkillTreePageState();
+}
+
+class _SkillTreePageState extends State<SkillTreePage> {
+  final _userStore = UserStore();
+  final _progressStore = ProgressStore();
+  
+  UserProfile? _user;
+  List<String> _completed = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    await _userStore.init();
+    await _progressStore.init();
+    
+    final user = await _userStore.getUser();
+    if (user != null) {
+      final completed = await _progressStore.getCompletedLessonIds(user.id);
+      if (mounted) {
+        setState(() {
+          _user = user;
+          _completed = completed;
+          _isLoading = false;
+        });
+      }
+    } else {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    
     final units = getAllUnits();
-    final completed = <String>[]; // placeholder until storage is added
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Your Journey with Kooka')),
-      body: ListView.separated(
+      appBar: AppBar(
+        title: const Text('Your Journey with Kooka'),
+        backgroundColor: AppTheme.background,
+        elevation: 0,
+        actions: [
+          if (_user != null)
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: Row(
+                children: [
+                  Icon(Icons.star, color: AppTheme.warning),
+                  const SizedBox(width: 4),
+                  Text(
+                    '${_user!.totalPoints}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
+      body: Column(
+        children: [
+          // Kooka mascot header
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Column(
+              children: [
+                KookaMascot(
+                  state: KookaState.waving,
+                  size: 80,
+                  showBubble: true,
+                  bubbleText: _user != null ? "Keep it up, ${_user!.name}!" : "Let's sing!",
+                ),
+                if (_user != null) ...[                  const SizedBox(height: 8),
+                  Text(
+                    'Streak: ${_user!.streak} days',
+                    style: TextStyle(
+                      color: AppTheme.textLight,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.separated(
         padding: const EdgeInsets.all(16),
         itemBuilder: (context, index) {
           final unit = units[index];
@@ -46,14 +146,14 @@ class SkillTreePage extends StatelessWidget {
                     spacing: 12,
                     runSpacing: 12,
                     children: unit.lessons.map((lesson) {
-                      final unlocked = isLessonUnlocked(lesson.id, completed);
-                      final done = completed.contains(lesson.id);
+                      final unlocked = isLessonUnlocked(lesson.id, _completed);
+                      final done = _completed.contains(lesson.id);
                       return Opacity(
                         opacity: unlocked ? 1 : 0.5,
                         child: GestureDetector(
                           onTap: unlocked
                               ? () {
-                                  // TODO: navigate to lesson page
+                                  context.push('/lesson/${lesson.id}');
                                 }
                               : null,
                           child: Container(
@@ -114,7 +214,11 @@ class SkillTreePage extends StatelessWidget {
           );
         },
         separatorBuilder: (_, __) => const SizedBox(height: 12),
-        itemCount: units.length,
+                itemCount: units.length,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
