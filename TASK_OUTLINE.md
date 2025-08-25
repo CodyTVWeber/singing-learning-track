@@ -56,14 +56,13 @@ Acceptance criteria:
 Acceptance criteria:
 - All progress persists locally and is restored on launch
 
-## Epic G: Kooka Experience & Polish
-- Lottie/Rive mascot with moods: happy, excited, thinking, singing, cheering
-- Micro-animations for unlocks and completions
-- Accessibility: large tap targets, readable contrast
+## Epic G: Kooka Experience & Polish (Later Iteration)
+- Defer Lottie/Rive animations to future sprints (placeholder static visuals now)
+- Focus now: accessibility (tap targets, contrast), copy, and responsiveness
 
-Acceptance criteria:
-- Kooka appears on onboarding and guides the skill tree
-- Micro-animations fire on unlock and completion
+Acceptance criteria (current):
+- No runtime dependency on animation packages
+- All flows usable without animations
 
 ## Packages (planned)
 - State: `flutter_riverpod`
@@ -73,12 +72,39 @@ Acceptance criteria:
 - Pitch: `flutter_fft` or `pitch_detector_dart`
 - Animations: `lottie` or `rive`
 
-## Milestones & Timeline (indicative)
-- M1 (Week 1): Foundation (theme, models, seed data) + Skill tree display
-- M2 (Week 2): Onboarding + persistence + gating logic
-- M3 (Week 3): Lesson flow + completion + points/streaks
-- M4 (Week 4): Audio MVP (record/play + simple pitch feedback)
-- M5 (Week 5): Kooka animations + UX polish + accessibility
+## Milestones & Timeline (shippable increments)
+- M1 (Ship 0.1.0): Foundation + Skill tree read-only (no audio) – shippable
+- M2 (Ship 0.2.0): Onboarding + persistence + gating – shippable
+- M3 (Ship 0.3.0): Lesson flow + completion + points/streaks – shippable
+- M4 (Ship 0.4.0): Audio MVP (record/play + basic pitch cue) – shippable
+- M5 (Ship 0.5.0+): Accessibility polish, copy, later add animations
+
+## Parallel Workstreams (can run concurrently)
+- WS1: Data & Models
+  - Owner: Platform-agnostic dev
+  - Contract: `Lesson`, `UserProfile`, `LessonProgress` shapes are stable
+
+- WS2: Skill Tree UI
+  - Owner: Flutter UI dev
+  - Contract: consumes `getAllUnits()` and `isLessonUnlocked()` only
+
+- WS3: Onboarding & Persistence
+  - Owner: State/storage dev
+  - Contract: exposes `getUser()`, `saveUser()`, `getProgress()`, `saveProgress()`
+
+- WS4: Lesson Flow
+  - Owner: UX/logic dev
+  - Contract: given a `Lesson`, can run view/practice/complete and emit `LessonProgress`
+
+- WS5: Audio MVP
+  - Owner: Audio dev
+  - Contract: provides `record()`, `stop()`, `play()`, `analyzePitch()` abstractions
+
+- WS6: QA & Release
+  - Owner: QA/Release engineer
+  - Contract: semantic versioning, build pipelines, release notes
+
+Each workstream adheres to contracts; designs are stable to avoid conflicts.
 
 ## Acceptance Demo Path
 1) Fresh install → Onboarding → Skill tree shows Unit 1
