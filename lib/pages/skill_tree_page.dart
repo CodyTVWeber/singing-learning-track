@@ -117,7 +117,9 @@ class _SkillTreePageState extends State<SkillTreePage> {
         itemBuilder: (context, index) {
           final unit = units[index];
           final unitCompleted = unit.lessons.isNotEmpty &&
-              unit.lessons.every((l) => completed.contains(l.id));
+              unit.lessons.every((l) => _completed.contains(l.id));
+          final completedInUnit = unit.lessons.where((l) => _completed.contains(l.id)).length;
+          final totalInUnit = unit.lessons.length;
 
           return Card(
             color: AppTheme.surface,
@@ -133,14 +135,42 @@ class _SkillTreePageState extends State<SkillTreePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Unit ${unit.unit}: ${unit.title}',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.text,
-                      )),
-                  const SizedBox(height: 4),
-                  Text(unit.description, style: const TextStyle(color: AppTheme.textLight)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Unit ${unit.unit}: ${unit.title}',
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppTheme.text,
+                                )),
+                            const SizedBox(height: 4),
+                            Text(unit.description, style: const TextStyle(color: AppTheme.textLight)),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: unitCompleted 
+                              ? AppTheme.success.withOpacity(0.2)
+                              : AppTheme.secondary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          '$completedInUnit/$totalInUnit',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: unitCompleted ? AppTheme.success : AppTheme.secondary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 12),
                   Wrap(
                     spacing: 12,
