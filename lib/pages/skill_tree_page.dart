@@ -69,7 +69,7 @@ class _SkillTreePageState extends State<SkillTreePage> {
         actions: [
           if (_user != null)
             Padding(
-              padding: const EdgeInsets.only(right: 16),
+              padding: const EdgeInsets.only(right: 8),
               child: Row(
                 children: [
                   Icon(Icons.star, color: AppTheme.warning),
@@ -84,6 +84,14 @@ class _SkillTreePageState extends State<SkillTreePage> {
                 ],
               ),
             ),
+          IconButton(
+            icon: const Icon(Icons.insights),
+            onPressed: () => context.push('/progress'),
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () => context.push('/settings'),
+          ),
         ],
       ),
       body: Column(

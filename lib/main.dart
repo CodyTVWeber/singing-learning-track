@@ -5,6 +5,9 @@ import 'theme/app_theme.dart';
 import 'pages/skill_tree_page.dart';
 import 'pages/onboarding_page.dart';
 import 'pages/lesson_page.dart';
+import 'pages/splash_page.dart';
+import 'pages/settings_page.dart';
+import 'pages/progress_page.dart';
 import 'data/units.dart';
 import 'storage/user_store.dart';
 import 'storage/progress_store.dart';
@@ -67,6 +70,14 @@ class _KookaSingAppState extends State<KookaSingApp> {
             }
             return LessonPage(lesson: lesson);
           },
+        ),
+        GoRoute(
+          path: '/settings',
+          builder: (context, state) => const SettingsPage(),
+        ),
+        GoRoute(
+          path: '/progress',
+          builder: (context, state) => const ProgressPage(),
         ),
       ],
     );
