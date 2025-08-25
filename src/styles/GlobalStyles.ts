@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { theme } from './theme';
 
 export const GlobalStyles = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -10,19 +11,26 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: ${theme.fonts.primary};
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #F7F7F7;
-    color: #2C3E50;
+    background-color: ${theme.colors.background};
+    color: ${theme.colors.text};
     font-size: 16px;
     line-height: 1.6;
+    overflow-x: hidden;
+    touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
   }
 
   #root {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
+    padding-top: 80px;
+    padding-bottom: 80px;
   }
 
   button {
@@ -42,14 +50,39 @@ export const GlobalStyles = createGlobalStyle`
     font-family: inherit;
     font-size: inherit;
     outline: none;
-    border: 1px solid #E0E0E0;
-    border-radius: 8px;
-    padding: 12px;
-    transition: border-color 0.3s ease;
+    border: 2px solid ${theme.colors.featherLight};
+    border-radius: ${theme.borderRadius.medium};
+    padding: ${theme.spacing.md};
+    transition: all 0.3s ease;
+    background: ${theme.colors.surface};
+    width: 100%;
     
     &:focus {
-      border-color: #4ECDC4;
+      border-color: ${theme.colors.secondary};
+      box-shadow: 0 0 0 3px ${theme.colors.skyLight};
     }
+  }
+  
+  /* Mobile-specific styles */
+  @media (max-width: 768px) {
+    body {
+      font-size: 14px;
+    }
+    
+    #root {
+      padding-top: 70px;
+      padding-bottom: 70px;
+    }
+  }
+  
+  /* Prevent pull-to-refresh on mobile */
+  body {
+    overscroll-behavior-y: contain;
+  }
+  
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
   }
 
   /* Animations */
