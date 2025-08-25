@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'theme/app_theme.dart';
-import 'pages/skill_tree_page.dart';
+import 'pages/splash_page.dart';
 
 void main() {
   runApp(const KookaSingApp());
@@ -14,7 +14,7 @@ class KookaSingApp extends StatelessWidget {
     return MaterialApp(
       title: 'Kooka Sing',
       theme: AppTheme.themeData(),
-      home: const SkillTreePage(),
+      home: const SplashPage(),
       debugShowCheckedModeBanner: false,
     );
   }
