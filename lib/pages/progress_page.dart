@@ -81,210 +81,212 @@ class _ProgressPageState extends State<ProgressPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
-          children: [
-            // Kooka celebration
-            if (progressPercentage >= 0.5)
-              const Center(
-                child: KookaMascot(
-                  state: KookaState.celebrating,
-                  size: 100,
-                  showBubble: true,
-                  bubbleText: "You're doing great!",
-                ),
-              ),
-            
-            const SizedBox(height: 24),
-            
-            // Overall Progress Card
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    AppTheme.primary.withOpacity(0.1),
-                    AppTheme.secondary.withOpacity(0.1),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: AppTheme.primary.withOpacity(0.3),
-                  width: 2,
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Overall Progress',
-                    style: Theme.of(context).textTheme.headlineMedium,
+          child: Column(
+            children: [
+              // Kooka celebration
+              if (progressPercentage >= 0.5)
+                const Center(
+                  child: KookaMascot(
+                    state: KookaState.celebrating,
+                    size: 100,
+                    showBubble: true,
+                    bubbleText: "You're doing great!",
                   ),
-                  const SizedBox(height: 20),
-                  ProgressBar(
-                    value: progressPercentage,
-                    height: 20,
-                    showPercentage: true,
-                    progressColor: AppTheme.leafGreen,
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _StatCard(
-                        icon: Icons.check_circle,
-                        label: 'Completed',
-                        value: '$completedCount',
-                        color: AppTheme.success,
-                      ),
-                      _StatCard(
-                        icon: Icons.school,
-                        label: 'Total Lessons',
-                        value: '$totalLessons',
-                        color: AppTheme.secondary,
-                      ),
-                      _StatCard(
-                        icon: Icons.star,
-                        label: 'Points',
-                        value: '${_user?.totalPoints ?? 0}',
-                        color: AppTheme.warning,
-                      ),
+                ),
+              
+              const SizedBox(height: 24),
+              
+              // Overall Progress Card
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppTheme.primary.withOpacity(0.1),
+                      AppTheme.secondary.withOpacity(0.1),
                     ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                ],
-              ),
-            ),
-            
-            const SizedBox(height: 24),
-            
-            // Weekly Activity
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: AppTheme.surface,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: AppTheme.skyLight,
-                  width: 2,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: AppTheme.primary.withOpacity(0.3),
+                    width: 2,
+                  ),
                 ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.calendar_today, color: AppTheme.kookaBlue),
-                      const SizedBox(width: 8),
-                      Text(
-                        'This Week',
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _WeekStat(
-                          label: 'Lessons Completed',
-                          value: '$weeklyProgress',
-                          icon: Icons.done_all,
-                          color: AppTheme.leafGreen,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Overall Progress',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    const SizedBox(height: 20),
+                    ProgressBar(
+                      value: progressPercentage,
+                      height: 20,
+                      showPercentage: true,
+                      progressColor: AppTheme.leafGreen,
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _StatCard(
+                          icon: Icons.check_circle,
+                          label: 'Completed',
+                          value: '$completedCount',
+                          color: AppTheme.success,
                         ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: _WeekStat(
-                          label: 'Current Streak',
-                          value: '${_user?.streak ?? 0} days',
-                          icon: Icons.local_fire_department,
+                        _StatCard(
+                          icon: Icons.school,
+                          label: 'Total Lessons',
+                          value: '$totalLessons',
+                          color: AppTheme.secondary,
+                        ),
+                        _StatCard(
+                          icon: Icons.star,
+                          label: 'Points',
+                          value: '${_user?.totalPoints ?? 0}',
                           color: AppTheme.warning,
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            
-            const SizedBox(height: 24),
-            
-            // Recent Achievements
-            if (_progress.isNotEmpty) ...[
-              Text(
-                'Recent Achievements',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 16),
-              ..._progress
-                  .where((p) => p.completed)
-                  .toList()
-                  .reversed
-                  .take(5)
-                  .map((progress) {
-                final lesson = getLessonById(progress.lessonId);
-                if (lesson == null) return const SizedBox.shrink();
-                
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: AppTheme.featherLight.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: AppTheme.earthTone.withOpacity(0.3),
+                      ],
                     ),
+                  ],
+                ),
+              ),
+              
+              const SizedBox(height: 24),
+              
+              // Weekly Activity
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: AppTheme.surface,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: AppTheme.skyLight,
+                    width: 2,
                   ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: AppTheme.success.withOpacity(0.2),
-                          shape: BoxShape.circle,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.calendar_today, color: AppTheme.kookaBlue),
+                        const SizedBox(width: 8),
+                        Text(
+                          'This Week',
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
-                        child: Icon(
-                          Icons.check,
-                          color: AppTheme.success,
-                          size: 24,
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _WeekStat(
+                            label: 'Lessons Completed',
+                            value: '$weeklyProgress',
+                            icon: Icons.done_all,
+                            color: AppTheme.leafGreen,
+                          ),
                         ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: _WeekStat(
+                            label: 'Current Streak',
+                            value: '${_user?.streak ?? 0} days',
+                            icon: Icons.local_fire_department,
+                            color: AppTheme.warning,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              
+              const SizedBox(height: 24),
+              
+              // Recent Achievements
+              if (_progress.isNotEmpty) ...[
+                Text(
+                  'Recent Achievements',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 16),
+                ..._progress
+                    .where((p) => p.completed)
+                    .toList()
+                    .reversed
+                    .take(5)
+                    .map((progress) {
+                  final lesson = getLessonById(progress.lessonId);
+                  if (lesson == null) return const SizedBox.shrink();
+                  
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: AppTheme.featherLight.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: AppTheme.earthTone.withOpacity(0.3),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              lesson.title,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: AppTheme.success.withOpacity(0.2),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.check,
+                            color: AppTheme.success,
+                            size: 24,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                lesson.title,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                ),
                               ),
-                            ),
-                            Text(
-                              _formatDate(progress.completedDate),
-                              style: TextStyle(
-                                color: AppTheme.textLight,
-                                fontSize: 14,
+                              Text(
+                                _formatDate(progress.completedDate),
+                                style: TextStyle(
+                                  color: AppTheme.textLight,
+                                  fontSize: 14,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      Text(
-                        '+${progress.score} pts',
-                        style: TextStyle(
-                          color: AppTheme.success,
-                          fontWeight: FontWeight.bold,
+                        Text(
+                          '+${progress.score} pts',
+                          style: TextStyle(
+                            color: AppTheme.success,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ]
             ],
-          ],
+          ),
         ),
       ),
     );

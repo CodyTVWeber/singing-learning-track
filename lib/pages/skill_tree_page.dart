@@ -121,139 +121,138 @@ class _SkillTreePageState extends State<SkillTreePage> {
           ),
           Expanded(
             child: ListView.separated(
-        padding: const EdgeInsets.all(16),
-        itemBuilder: (context, index) {
-          final unit = units[index];
-          final unitCompleted = unit.lessons.isNotEmpty &&
-              unit.lessons.every((l) => _completed.contains(l.id));
-          final completedInUnit = unit.lessons.where((l) => _completed.contains(l.id)).length;
-          final totalInUnit = unit.lessons.length;
+              padding: const EdgeInsets.all(16),
+              itemBuilder: (context, index) {
+                final unit = units[index];
+                final unitCompleted = unit.lessons.isNotEmpty &&
+                    unit.lessons.every((l) => _completed.contains(l.id));
+                final completedInUnit = unit.lessons.where((l) => _completed.contains(l.id)).length;
+                final totalInUnit = unit.lessons.length;
 
-          return Card(
-            color: AppTheme.surface,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-              side: BorderSide(
-                color: unitCompleted ? AppTheme.success : AppTheme.secondary,
-                width: 2,
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                return Card(
+                  color: AppTheme.surface,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    side: BorderSide(
+                      color: unitCompleted ? AppTheme.success : AppTheme.secondary,
+                      width: 2,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Unit ${unit.unit}: ${unit.title}',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppTheme.text,
-                                )),
-                            const SizedBox(height: 4),
-                            Text(unit.description, style: const TextStyle(color: AppTheme.textLight)),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Unit ${unit.unit}: ${unit.title}',
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppTheme.text,
+                                      )),
+                                  const SizedBox(height: 4),
+                                  Text(unit.description, style: const TextStyle(color: AppTheme.textLight)),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: unitCompleted 
+                                    ? AppTheme.success.withOpacity(0.2)
+                                    : AppTheme.secondary.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                '$completedInUnit/$totalInUnit',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: unitCompleted ? AppTheme.success : AppTheme.secondary,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: unitCompleted 
-                              ? AppTheme.success.withOpacity(0.2)
-                              : AppTheme.secondary.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          '$completedInUnit/$totalInUnit',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: unitCompleted ? AppTheme.success : AppTheme.secondary,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Wrap(
-                    spacing: 12,
-                    runSpacing: 12,
-                    children: unit.lessons.map((lesson) {
-                      final unlocked = isLessonUnlocked(lesson.id, _completed);
-                      final done = _completed.contains(lesson.id);
-                      return Opacity(
-                        opacity: unlocked ? 1 : 0.5,
-                        child: GestureDetector(
-                          onTap: unlocked
-                              ? () {
-                                  context.push('/lesson/${lesson.id}');
-                                }
-                              : null,
-                          child: Container(
-                            width: 160,
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: done
-                                  ? AppTheme.success
-                                  : (unlocked ? AppTheme.surface : AppTheme.featherLight),
-                              border: Border.all(
-                                color: done
-                                    ? AppTheme.success
-                                    : (unlocked ? AppTheme.secondary : AppTheme.earthTone),
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(lesson.title,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: AppTheme.text,
-                                    )),
-                                const SizedBox(height: 6),
-                                Text('Level ${lesson.level}', style: const TextStyle(color: AppTheme.textLight)),
-                                const SizedBox(height: 8),
-                                Text(
-                                  lesson.description,
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(color: AppTheme.textLight),
-                                ),
-                                const SizedBox(height: 8),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Text(
-                                    done ? 'Completed' : (unlocked ? 'Start' : 'Locked'),
-                                    style: TextStyle(
+                        const SizedBox(height: 12),
+                        Wrap(
+                          spacing: 12,
+                          runSpacing: 12,
+                          children: unit.lessons.map((lesson) {
+                            final unlocked = isLessonUnlocked(lesson.id, _completed);
+                            final done = _completed.contains(lesson.id);
+                            return Opacity(
+                              opacity: unlocked ? 1 : 0.5,
+                              child: GestureDetector(
+                                onTap: unlocked
+                                    ? () {
+                                        context.push('/lesson/${lesson.id}');
+                                      }
+                                    : null,
+                                child: Container(
+                                  width: 160,
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: done
+                                        ? AppTheme.success
+                                        : (unlocked ? AppTheme.surface : AppTheme.featherLight),
+                                    border: Border.all(
                                       color: done
-                                          ? Colors.white
+                                          ? AppTheme.success
                                           : (unlocked ? AppTheme.secondary : AppTheme.earthTone),
-                                      fontWeight: FontWeight.bold,
+                                      width: 2,
                                     ),
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
-                                )
-                              ],
-                            ),
-                          ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(lesson.title,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            color: AppTheme.text,
+                                          )),
+                                      const SizedBox(height: 6),
+                                      Text('Level ${lesson.level}', style: const TextStyle(color: AppTheme.textLight)),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        lesson.description,
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(color: AppTheme.textLight),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: Text(
+                                          done ? 'Completed' : (unlocked ? 'Start' : 'Locked'),
+                                          style: TextStyle(
+                                            color: done
+                                                ? Colors.white
+                                                : (unlocked ? AppTheme.secondary : AppTheme.earthTone),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
                         ),
-                      );
-                    }).toList(),
-                  )
-                ],
-              ),
-            ),
-          );
-        },
-        separatorBuilder: (_, __) => const SizedBox(height: 12),
-                itemCount: units.length,
-              ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              separatorBuilder: (_, __) => const SizedBox(height: 12),
+              itemCount: units.length,
             ),
           ),
         ],
