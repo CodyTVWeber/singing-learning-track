@@ -4,18 +4,23 @@ import 'package:kooka_sing/pages/onboarding_page.dart';
 import 'package:kooka_sing/pages/skill_tree_page.dart';
 import 'package:kooka_sing/storage/user_store.dart';
 import 'package:kooka_sing/storage/progress_store.dart';
+import '../test_helpers/test_setup.dart';
 
 void main() {
   group('Onboarding User Flow', () {
     setUpAll(() async {
-      TestWidgetsFlutterBinding.ensureInitialized();
+      await setupTestHive();
       await UserStore.init();
       await ProgressStore.init();
     });
 
+    tearDownAll(() async {
+      await teardownTestHive();
+    });
+
     setUp(() async {
       // Clear any existing user data before each test
-      await UserStore.clearUser();
+      await UserStore.clearAll();
     });
 
     testWidgets('Shows welcome message and Kooka mascot', (WidgetTester tester) async {
@@ -27,7 +32,7 @@ void main() {
 
       // Check for welcome elements
       expect(find.text('Welcome to Kooka Sing!'), findsOneWidget);
-      expect(find.text("Let's get to know you"), findsOneWidget);
+      expect(find.text('Let\'s get to know you so we can personalize your singing journey!'), findsOneWidget);
       expect(find.byType(Image), findsWidgets); // Kooka mascot images
     });
 

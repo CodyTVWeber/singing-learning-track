@@ -5,15 +5,20 @@ import 'package:kooka_sing/storage/user_store.dart';
 import 'package:kooka_sing/storage/progress_store.dart';
 import 'package:kooka_sing/data/units.dart';
 import '../test_helpers/test_data.dart';
+import '../test_helpers/test_setup.dart';
 
 void main() {
   group('Skill Tree Navigation Flow', () {
     late String userId;
 
     setUpAll(() async {
-      TestWidgetsFlutterBinding.ensureInitialized();
+      await setupTestHive();
       await UserStore.init();
       await ProgressStore.init();
+    });
+
+    tearDownAll(() async {
+      await teardownTestHive();
     });
 
     setUp(() async {
@@ -24,7 +29,7 @@ void main() {
     });
 
     tearDown(() async {
-      await UserStore.clearUser();
+      await UserStore.clearAll();
     });
 
     testWidgets('Displays user profile information', (WidgetTester tester) async {

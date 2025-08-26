@@ -180,8 +180,8 @@ setUp(() async {
 });
 
 tearDown(() async {
-  await UserStore.clearUser();
-  await ProgressStore.clearProgress();
+  await UserStore.clearAll();
+  await ProgressStore.clearAll();
 });
 ```
 

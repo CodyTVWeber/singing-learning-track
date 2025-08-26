@@ -19,7 +19,7 @@ class MockUserStore {
     _mockUser = user;
   }
 
-  static Future<void> clearUser() async {
+  static Future<void> clearAll() async {
     if (!_initialized) throw Exception('MockUserStore not initialized');
     _mockUser = null;
   }

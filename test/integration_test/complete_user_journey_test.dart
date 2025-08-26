@@ -7,18 +7,24 @@ import 'package:kooka_sing/pages/skill_tree_page.dart';
 import 'package:kooka_sing/storage/user_store.dart';
 import 'package:kooka_sing/storage/progress_store.dart';
 import 'package:kooka_sing/models/progress.dart';
+import 'package:kooka_sing/models/user.dart';
+import '../test_helpers/test_setup.dart';
 
 void main() {
   group('Complete User Journey Integration Test', () {
     setUpAll(() async {
-      TestWidgetsFlutterBinding.ensureInitialized();
+      await setupTestHive();
+    });
+
+    tearDownAll(() async {
+      await teardownTestHive();
     });
 
     setUp(() async {
       // Clean slate for each test
       await UserStore.init();
       await ProgressStore.init();
-      await UserStore.clearUser();
+      await UserStore.clearAll();
     });
 
     testWidgets('New user complete journey: Splash → Onboarding → Skill Tree → Lesson', 
@@ -28,7 +34,7 @@ void main() {
       
       // Verify splash screen appears
       expect(find.byType(SplashPage), findsOneWidget);
-      expect(find.text('Your Journey with Kooka'), findsOneWidget);
+      expect(find.text('Kooka Sing'), findsOneWidget);
       
       // Wait for splash animation and navigation
       await tester.pump(const Duration(seconds: 1));
@@ -105,7 +111,7 @@ void main() {
       await UserStore.init();
       await ProgressStore.init();
       
-      final existingUser = await UserStore.saveUser(UserProfile(
+      await UserStore.saveUser(UserProfile(
         id: 'test-user-123',
         name: 'Returning Student',
         ageGroup: 'kid',

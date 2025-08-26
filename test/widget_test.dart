@@ -16,6 +16,6 @@ void main() {
     await tester.pumpWidget(const KookaSingApp());
 
     // Verify that the app launches
-    expect(find.text('Your Journey with Kooka'), findsOneWidget);
+    expect(find.text('Kooka Sing'), findsOneWidget);
   });
 }

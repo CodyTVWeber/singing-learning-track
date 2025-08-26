@@ -7,11 +7,16 @@ import 'package:kooka_sing/pages/skill_tree_page.dart';
 import 'package:kooka_sing/storage/user_store.dart';
 import 'package:kooka_sing/storage/progress_store.dart';
 import '../test_helpers/test_data.dart';
+import '../test_helpers/test_setup.dart';
 
 void main() {
   group('Splash Screen Navigation Flow', () {
     setUpAll(() async {
-      TestWidgetsFlutterBinding.ensureInitialized();
+      await setupTestHive();
+    });
+
+    tearDownAll(() async {
+      await teardownTestHive();
     });
 
     testWidgets('Shows splash screen on app launch', (WidgetTester tester) async {
@@ -20,7 +25,8 @@ void main() {
 
       // Verify splash screen is displayed
       expect(find.byType(SplashPage), findsOneWidget);
-      expect(find.text('Your Journey with Kooka'), findsOneWidget);
+      expect(find.text('Kooka Sing'), findsOneWidget);
+      expect(find.text('Learn to sing with your Kookaburra friend!'), findsOneWidget);
       
       // Check for Kooka image
       expect(find.byType(Image), findsWidgets);
@@ -30,7 +36,7 @@ void main() {
       // Ensure no existing user
       await UserStore.init();
       await ProgressStore.init();
-      await UserStore.clearUser();
+      await UserStore.clearAll();
 
       // Build the app
       await tester.pumpWidget(const KookaSingApp());
