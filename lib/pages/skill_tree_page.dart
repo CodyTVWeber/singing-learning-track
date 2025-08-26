@@ -1,23 +1,99 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../data/units.dart';
+import '../storage/user_store.dart';
+import '../storage/progress_store.dart';
+import '../models/user.dart';
 
-class SkillTreePage extends StatelessWidget {
+class SkillTreePage extends StatefulWidget {
   const SkillTreePage({super.key});
 
   @override
+  State<SkillTreePage> createState() => _SkillTreePageState();
+}
+
+class _SkillTreePageState extends State<SkillTreePage> {
+  UserProfile? _user;
+  List<String> _completedLessonIds = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      final user = await UserStore.getUser();
+      if (user != null) {
+        final completedIds = await ProgressStore.getCompletedLessonIds(user.id);
+        if (mounted) {
+          setState(() {
+            _user = user;
+            _completedLessonIds = completedIds;
+            _isLoading = false;
+          });
+        }
+      } else {
+        // This shouldn't happen if coming from proper flow, but handle gracefully
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error loading user data: $e'),
+            backgroundColor: AppTheme.error,
+          ),
+        );
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(
+        backgroundColor: AppTheme.background,
+        body: Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primary),
+          ),
+        ),
+      );
+    }
+
     final units = getAllUnits();
-    final completed = <String>[]; // placeholder until storage is added
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Your Journey with Kooka')),
+      appBar: AppBar(
+        title: Text(_user != null ? 'Hi ${_user!.name}!' : 'Your Journey with Kooka'),
+        actions: [
+          if (_user != null)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Chip(
+                label: Text('${_user!.totalPoints} points'),
+                backgroundColor: AppTheme.primary,
+                labelStyle: const TextStyle(color: Colors.white),
+              ),
+            ),
+        ],
+      ),
       body: ListView.separated(
         padding: const EdgeInsets.all(16),
         itemBuilder: (context, index) {
           final unit = units[index];
           final unitCompleted = unit.lessons.isNotEmpty &&
-              unit.lessons.every((l) => completed.contains(l.id));
+              unit.lessons.every((l) => _completedLessonIds.contains(l.id));
 
           return Card(
             color: AppTheme.surface,
@@ -46,8 +122,8 @@ class SkillTreePage extends StatelessWidget {
                     spacing: 12,
                     runSpacing: 12,
                     children: unit.lessons.map((lesson) {
-                      final unlocked = isLessonUnlocked(lesson.id, completed);
-                      final done = completed.contains(lesson.id);
+                      final unlocked = isLessonUnlocked(lesson.id, _completedLessonIds);
+                      final done = _completedLessonIds.contains(lesson.id);
                       return Opacity(
                         opacity: unlocked ? 1 : 0.5,
                         child: GestureDetector(
