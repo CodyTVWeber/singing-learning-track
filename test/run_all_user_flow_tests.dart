@@ -1,9 +1,9 @@
-/// Run all user flow tests for Kooka Sing app
-/// 
-/// This file imports and runs all user flow tests to ensure
-/// the complete user experience works as expected.
-/// 
-/// Run with: flutter test test/run_all_user_flow_tests.dart
+// Run all user flow tests for Kooka Sing app
+// 
+// This file imports and runs all user flow tests to ensure
+// the complete user experience works as expected.
+// 
+// Run with: flutter test test/run_all_user_flow_tests.dart
 
 import 'user_flows/splash_navigation_test.dart' as splash_test;
 import 'user_flows/onboarding_flow_test.dart' as onboarding_test;

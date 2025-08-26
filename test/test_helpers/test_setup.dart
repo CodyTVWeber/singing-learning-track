@@ -1,7 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
-import 'package:path/path.dart' as path;
 import 'dart:io';
 
 /// Setup test environment for Hive

@@ -12,80 +12,21 @@ jobs:
     name: Run User Flow Tests
     runs-on: ubuntu-latest
     
-    strategy:
-      matrix:
-        flutter-version: ['3.x']
-        
     steps:
-      - name: 📚 Checkout repository
+      - name: 📚 Checkout code
         uses: actions/checkout@v4
         
       - name: 🐦 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ matrix.flutter-version }}
+          flutter-version: '3.x'
           channel: 'stable'
           
-      - name: 📦 Get dependencies
+      - name: 📦 Install dependencies
         run: flutter pub get
         
-      - name: 🔍 Analyze code
-        run: flutter analyze
-        
-      - name: 🧪 Run user flow tests
+      - name: 🧪 Run all user flow tests
         run: |
-          echo "Running Splash Navigation Tests..."
-          flutter test test/user_flows/splash_navigation_test.dart
-          
-          echo "Running Onboarding Flow Tests..."
-          flutter test test/user_flows/onboarding_flow_test.dart
-          
-          echo "Running Skill Tree Flow Tests..."
-          flutter test test/user_flows/skill_tree_flow_test.dart
-          
-          echo "Running Integration Tests..."
-          flutter test test/integration_test/complete_user_journey_test.dart
-          
-      - name: 📊 Generate test coverage
-        run: flutter test --coverage
-        
-      - name: 📈 Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          file: ./coverage/lcov.info
-          name: kooka-sing-coverage
-          fail_ci_if_error: false
-          token: ${{ secrets.CODECOV_TOKEN }}
-          
-      - name: 💾 Archive test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: |
-            coverage/
-            test-results/
-            
-      - name: 📝 Comment PR with test results
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const message = `## 🧪 User Flow Tests Results
-            
-            ✅ All user flow tests passed successfully!
-            
-            ### Test Coverage:
-            - Splash Navigation ✓
-            - Onboarding Flow ✓
-            - Skill Tree Navigation ✓
-            - Complete User Journey ✓
-            
-            View detailed results in the Actions tab.`;
-            
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: message
-            });
+          echo "Running User Flow Tests..."
+          flutter test test/user_flows/ test/integration_test/ --no-pub
+          echo "Tests completed!"

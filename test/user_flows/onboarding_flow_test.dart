@@ -97,10 +97,7 @@ void main() {
       );
 
       // Initially Kid should be selected (default)
-      final kidCard = find.ancestor(
-        of: find.text('Kid (3-12)'),
-        matching: find.byType(Card),
-      ).first;
+      // Note: kidCard variable removed as it's not used in the test
 
       // Tap on Teen option
       final teenCard = find.ancestor(

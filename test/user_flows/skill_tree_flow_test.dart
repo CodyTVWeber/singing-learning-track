@@ -97,10 +97,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // First lesson should be unlocked
-      final firstLessonCard = find.ancestor(
-        of: find.text('Breathing with Kooka'),
-        matching: find.byType(Card),
-      ).first;
+      // Note: firstLessonCard variable removed as it's not used in the test
 
       // Check for lock icons on locked lessons
       expect(
