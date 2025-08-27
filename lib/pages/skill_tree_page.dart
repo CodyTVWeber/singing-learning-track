@@ -4,6 +4,7 @@ import '../data/units.dart';
 import '../storage/user_store.dart';
 import '../storage/progress_store.dart';
 import '../models/user.dart';
+import 'practice_page.dart';
 
 class SkillTreePage extends StatefulWidget {
   const SkillTreePage({super.key});
@@ -86,6 +87,15 @@ class _SkillTreePageState extends State<SkillTreePage> {
                 labelStyle: const TextStyle(color: Colors.white),
               ),
             ),
+          IconButton(
+            tooltip: 'Practice (Audio MVP)',
+            icon: const Icon(Icons.mic),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const PracticePage()),
+              );
+            },
+          ),
         ],
       ),
       body: ListView.separated(
@@ -129,7 +139,15 @@ class _SkillTreePageState extends State<SkillTreePage> {
                         child: GestureDetector(
                           onTap: unlocked
                               ? () {
-                                  // TODO: navigate to lesson page
+                                  if (lesson.type == 'practice') {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (_) => const PracticePage()),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('This lesson type is not implemented yet.')),
+                                    );
+                                  }
                                 }
                               : null,
                           child: Container(

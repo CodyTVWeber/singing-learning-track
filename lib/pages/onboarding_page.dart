@@ -90,7 +90,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
           padding: const EdgeInsets.all(24.0),
           child: Form(
             key: _formKey,
-            child: Column(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 40),
@@ -291,7 +293,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   ),
                 ))),
                 
-                const Spacer(),
+                const SizedBox(height: 24),
                 
                 // Continue button
                 ElevatedButton(
@@ -328,6 +330,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             ),
           ),
         ),
+      ),
       ),
     );
   }
