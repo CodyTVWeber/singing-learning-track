@@ -4,6 +4,7 @@ import '../data/units.dart';
 import '../storage/user_store.dart';
 import '../storage/progress_store.dart';
 import '../models/user.dart';
+import 'lesson_page.dart';
 
 class SkillTreePage extends StatefulWidget {
   const SkillTreePage({super.key});
@@ -129,7 +130,11 @@ class _SkillTreePageState extends State<SkillTreePage> {
                         child: GestureDetector(
                           onTap: unlocked
                               ? () {
-                                  // TODO: navigate to lesson page
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => LessonPage(lessonId: lesson.id),
+                                    ),
+                                  );
                                 }
                               : null,
                           child: Container(
@@ -167,15 +172,19 @@ class _SkillTreePageState extends State<SkillTreePage> {
                                 const SizedBox(height: 8),
                                 Align(
                                   alignment: Alignment.bottomRight,
-                                  child: Text(
-                                    done ? 'Completed' : (unlocked ? 'Start' : 'Locked'),
-                                    style: TextStyle(
-                                      color: done
-                                          ? Colors.white
-                                          : (unlocked ? AppTheme.secondary : AppTheme.earthTone),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                                  child: done 
+                                      ? const Icon(
+                                          Icons.check_circle,
+                                          color: Colors.white,
+                                          size: 24,
+                                        )
+                                      : Text(
+                                          unlocked ? 'Start' : 'Locked',
+                                          style: TextStyle(
+                                            color: unlocked ? AppTheme.secondary : AppTheme.earthTone,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                 )
                               ],
                             ),
