@@ -4,6 +4,7 @@ import '../data/units.dart';
 import '../storage/user_store.dart';
 import '../storage/progress_store.dart';
 import '../models/user.dart';
+import 'lesson_page.dart';
 
 class SkillTreePage extends StatefulWidget {
   const SkillTreePage({super.key});
@@ -129,7 +130,12 @@ class _SkillTreePageState extends State<SkillTreePage> {
                         child: GestureDetector(
                           onTap: unlocked
                               ? () {
-                                  // TODO: navigate to lesson page
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LessonPage(lesson: lesson),
+                                    ),
+                                  );
                                 }
                               : null,
                           child: Container(

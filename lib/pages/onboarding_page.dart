@@ -148,10 +148,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       const SizedBox(height: 8),
                       
                       const Text(
-                        'Let\'s get to know you so we can personalize your singing journey!',
+                        'Tell us about YOU! 🎤',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18,
                           color: AppTheme.textLight,
+                          fontWeight: FontWeight.w500,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -162,13 +163,22 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 const SizedBox(height: 40),
                 
                 // Name input
-                const Text(
-                  'What\'s your name?',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.text,
-                  ),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '👋 ',
+                      style: TextStyle(fontSize: 24),
+                    ),
+                    Text(
+                      'Your name?',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.text,
+                      ),
+                    ),
+                  ],
                 ),
                 
                 const SizedBox(height: 12),
@@ -206,13 +216,22 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 const SizedBox(height: 32),
                 
                 // Age group selection
-                const Text(
-                  'Which age group describes you?',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.text,
-                  ),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '🎂 ',
+                      style: TextStyle(fontSize: 24),
+                    ),
+                    Text(
+                      'How old?',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.text,
+                      ),
+                    ),
+                  ],
                 ),
                 
                 const SizedBox(height: 16),
