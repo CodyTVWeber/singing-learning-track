@@ -62,7 +62,7 @@ class _SkillTreePageState extends State<SkillTreePage> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return const Scaffold(
-        backgroundColor: AppTheme.background,
+        backgroundColor: const Color(0xFFFAF7F2),
         body: Center(
           child: CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primary),
