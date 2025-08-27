@@ -11,7 +11,7 @@ void main() {
     setUp(() async {
       // Clear any existing data
       await UserStore.clearUser();
-      await ProgressStore.clearAllProgress();
+      await ProgressStore.clearAll();
     });
 
     testWidgets('Complete lesson flow from skill tree to completion', (WidgetTester tester) async {
@@ -155,7 +155,11 @@ void main() {
       await UserStore.saveUser('test-user', 'Test User', 'kid');
 
       // Mark first lesson as complete
-      await ProgressStore.markLessonComplete('breath-basics');
+      await ProgressStore.completeLesson(
+        userId: 'test-user',
+        lessonId: 'breath-basics',
+        score: 100,
+      );
 
       // Start at skill tree
       await tester.pumpWidget(
@@ -190,8 +194,16 @@ void main() {
     testWidgets('Different lesson types show appropriate controls', (WidgetTester tester) async {
       // Create a test user and unlock all lessons
       await UserStore.saveUser('test-user', 'Test User', 'kid');
-      await ProgressStore.markLessonComplete('breath-basics');
-      await ProgressStore.markLessonComplete('voice-discovery');
+      await ProgressStore.completeLesson(
+        userId: 'test-user',
+        lessonId: 'breath-basics',
+        score: 100,
+      );
+      await ProgressStore.completeLesson(
+        userId: 'test-user',
+        lessonId: 'voice-discovery',
+        score: 100,
+      );
 
       // Start at skill tree
       await tester.pumpWidget(

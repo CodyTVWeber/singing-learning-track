@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/lesson.dart';
 import '../theme/app_theme.dart';
 import '../storage/progress_store.dart';
+import '../storage/user_store.dart';
 import 'skill_tree_page.dart';
 
 class LessonPage extends StatefulWidget {
@@ -70,7 +71,15 @@ class _LessonPageState extends State<LessonPage> with SingleTickerProviderStateM
     });
     
     // Save progress
-    await ProgressStore.markLessonComplete(widget.lesson.id);
+    // Get current user ID from storage
+    final userId = await UserStore.getCurrentUserId();
+    if (userId != null) {
+      await ProgressStore.completeLesson(
+        userId: userId,
+        lessonId: widget.lesson.id,
+        score: 100, // Full score for completion
+      );
+    }
     
     // Show celebration
     if (mounted) {
@@ -151,7 +160,7 @@ class _LessonPageState extends State<LessonPage> with SingleTickerProviderStateM
             width: 200,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppTheme.accent.withOpacity(0.3),
+              color: AppTheme.secondary.withOpacity(0.3),
             ),
             child: Transform.scale(
               scale: scale,
@@ -230,7 +239,7 @@ class _LessonPageState extends State<LessonPage> with SingleTickerProviderStateM
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             decoration: BoxDecoration(
-              color: AppTheme.accent.withOpacity(0.2),
+              color: AppTheme.secondary.withOpacity(0.2),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
@@ -257,7 +266,7 @@ class _LessonPageState extends State<LessonPage> with SingleTickerProviderStateM
             height: _currentStep == 2 ? 150 : 100,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppTheme.accent.withOpacity(0.3),
+              color: AppTheme.secondary.withOpacity(0.3),
             ),
           ),
           const Text(
@@ -340,7 +349,7 @@ class _LessonPageState extends State<LessonPage> with SingleTickerProviderStateM
 
   Widget _buildInteractiveButton(String label, IconData icon, VoidCallback onTap) {
     return Material(
-      color: AppTheme.accent,
+      color: AppTheme.secondary,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,
