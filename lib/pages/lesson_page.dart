@@ -71,11 +71,11 @@ class _LessonPageState extends State<LessonPage> with SingleTickerProviderStateM
     });
     
     // Save progress
-    // Get current user ID from storage
-    final userId = await UserStore.getCurrentUserId();
-    if (userId != null) {
+    // Get current user from storage
+    final user = await UserStore.getUser();
+    if (user != null) {
       await ProgressStore.completeLesson(
-        userId: userId,
+        userId: user.id,
         lessonId: widget.lesson.id,
         score: 100, // Full score for completion
       );
