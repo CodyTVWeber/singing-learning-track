@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kooka_sing/audio/recorder.dart';
 import 'package:kooka_sing/audio/player.dart';
 import 'package:kooka_sing/audio/pitch.dart';
+import 'package:kooka_sing/widgets/tuner_widget.dart';
 
 class PracticePage extends StatefulWidget {
   const PracticePage({super.key});
@@ -17,6 +18,7 @@ class _PracticePageState extends State<PracticePage> {
 
   String? _recordedPath;
   PitchHint? _lastHint;
+  double _targetHz = 220.0;
 
   @override
   void initState() {
@@ -37,6 +39,8 @@ class _PracticePageState extends State<PracticePage> {
   Future<void> _onRecordPressed() async {
     await _recorder.startRecording();
     setState(() {});
+    // Start streaming pitch feedback
+    _pitch.startStreaming(targetHz: _targetHz);
   }
 
   Future<void> _onStopPressed() async {
@@ -44,7 +48,9 @@ class _PracticePageState extends State<PracticePage> {
     setState(() {
       _recordedPath = path;
     });
-    // Produce a basic pitch hint after recording
+    // Stop streaming
+    _pitch.stopStreaming();
+    // Emit one last hint for immediate feedback after stopping
     await _pitch.analyzeOnce();
   }
 
@@ -63,6 +69,22 @@ class _PracticePageState extends State<PracticePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text(
+              'Sing with Kooka!',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Try to match Kooka\'s note. The line shows your sound over moments. If it\'s above the guide, go a little lower; if it\'s below, go a little higher.',
+              style: TextStyle(color: Colors.grey[700]),
+            ),
+            const SizedBox(height: 16),
+            TunerWidget(
+              pitchStream: _pitch.pitchHints,
+              targetHz: _targetHz,
+              key: const Key('tuner'),
+            ),
+            const SizedBox(height: 12),
             if (_lastHint != null)
               Text(
                 'Pitch: ${_lastHint!.frequencyHz.toStringAsFixed(1)} Hz (${_lastHint!.hint})',
@@ -85,6 +107,15 @@ class _PracticePageState extends State<PracticePage> {
                   ElevatedButton(
                     onPressed: _onPlayPressed,
                     child: const Text('Play'),
+                  ),
+                  const SizedBox(width: 12),
+                  OutlinedButton(
+                    onPressed: () {
+                      setState(() {
+                        _recordedPath = null;
+                      });
+                    },
+                    child: const Text('Try Again'),
                   ),
                 ],
               ),
