@@ -84,7 +84,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.background,
+      backgroundColor: const Color(0xFFFAF7F2),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -106,7 +106,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           borderRadius: BorderRadius.circular(60),
                           boxShadow: [
                             BoxShadow(
-                              color: AppTheme.primary.withOpacity(0.2),
+                              color: AppTheme.primary.withValues(alpha: 0.2),
                               blurRadius: 15,
                               spreadRadius: 3,
                             ),
@@ -221,7 +221,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   padding: const EdgeInsets.only(bottom: 12),
                   child: Card(
                     color: _selectedAgeGroup == group['value'] 
-                        ? AppTheme.primary.withOpacity(0.1)
+                        ? AppTheme.primary.withValues(alpha: 0.1)
                         : AppTheme.surface,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -271,7 +271,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: _selectedAgeGroup == group['value']
-                                          ? AppTheme.primary.withOpacity(0.8)
+                                          ? AppTheme.primary.withValues(alpha: 0.8)
                                           : AppTheme.textLight,
                                     ),
                                   ),
