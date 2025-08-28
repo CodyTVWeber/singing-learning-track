@@ -9,6 +9,8 @@ class TunerWidget extends StatefulWidget {
   final int maxPoints;
   final int lowMidi;   // inclusive range
   final int highMidi;  // inclusive range
+  final bool autoZoom; // zoom around current note
+  final int zoomSpanSemitones; // +/- range when autoZoom is true
 
   const TunerWidget({
     super.key,
@@ -16,6 +18,8 @@ class TunerWidget extends StatefulWidget {
     this.maxPoints = 60,
     this.lowMidi = 48,   // C3 default low
     this.highMidi = 72,  // C5 default high
+    this.autoZoom = true,
+    this.zoomSpanSemitones = 4,
   });
 
   @override
@@ -26,6 +30,7 @@ class _TunerWidgetState extends State<TunerWidget> {
   final List<PitchHint> _points = <PitchHint>[];
   double _guideHz = 220.0;
   String _guideNote = 'A3';
+  double? _lastHz;
 
   @override
   void initState() {
@@ -39,12 +44,40 @@ class _TunerWidgetState extends State<TunerWidget> {
         final nearest = NoteUtils.nearestNoteForFrequency(p.frequencyHz);
         _guideHz = nearest.freq;
         _guideNote = nearest.note;
+        _lastHz = p.frequencyHz;
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    // Determine effective display range (auto-zoom around current note)
+    int effLowMidi = widget.lowMidi;
+    int effHighMidi = widget.highMidi;
+    if (widget.autoZoom && _lastHz != null && _lastHz! > 0) {
+      final centerMidi = NoteUtils.frequencyToMidi(_guideHz).round();
+      final span = widget.zoomSpanSemitones;
+      effLowMidi = (centerMidi - span).clamp(widget.lowMidi, widget.highMidi - 1);
+      effHighMidi = (centerMidi + span).clamp(effLowMidi + 1, widget.highMidi);
+    }
+
+    // Determine friendly pitch status relative to guide
+    String statusText = 'Listening…';
+    Color statusColor = AppTheme.textLight;
+    if (_lastHz != null && _lastHz! > 0) {
+      final cents = NoteUtils.frequencyToCents(_lastHz!, _guideHz);
+      if (cents.abs() <= 10) {
+        statusText = 'Just right for $_guideNote';
+        statusColor = AppTheme.success;
+      } else if (cents < 0) {
+        statusText = 'A little higher to reach $_guideNote';
+        statusColor = AppTheme.secondary;
+      } else {
+        statusText = 'A little lower to reach $_guideNote';
+        statusColor = AppTheme.secondary;
+      }
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -55,15 +88,32 @@ class _TunerWidgetState extends State<TunerWidget> {
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
             const SizedBox(width: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: AppTheme.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                'You\'re around $_guideNote (~${_guideHz.toStringAsFixed(0)} Hz)',
-                style: const TextStyle(color: AppTheme.primary),
+            Expanded(
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 4,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primary.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      'You\'re around $_guideNote (~${_guideHz.toStringAsFixed(0)} Hz)',
+                      style: const TextStyle(color: AppTheme.primary),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: statusColor.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: statusColor, width: 1),
+                    ),
+                    child: Text(statusText, style: TextStyle(color: statusColor)),
+                  ),
+                ],
               ),
             ),
           ],
@@ -77,8 +127,8 @@ class _TunerWidgetState extends State<TunerWidget> {
                   painter: _TunerPainter(
                     points: _points,
                     guideHz: _guideHz,
-                    lowMidi: widget.lowMidi,
-                    highMidi: widget.highMidi,
+                    lowMidi: effLowMidi,
+                    highMidi: effHighMidi,
                   ),
                   size: const Size(double.infinity, double.infinity),
                 ),
