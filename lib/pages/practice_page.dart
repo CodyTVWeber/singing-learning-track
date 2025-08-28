@@ -103,7 +103,12 @@ class _PracticePageState extends State<PracticePage> {
               ],
             ),
             const SizedBox(height: 16),
-            TunerWidget(pitchStream: _pitch.pitchHints, key: const Key('tuner')),
+            Expanded(
+              child: TunerWidget(
+                pitchStream: _pitch.pitchHints,
+                key: const Key('tuner'),
+              ),
+            ),
             const SizedBox(height: 12),
             if (_lastHint != null)
               Text(

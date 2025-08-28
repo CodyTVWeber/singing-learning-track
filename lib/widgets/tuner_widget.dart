@@ -7,11 +7,15 @@ import '../theme/app_theme.dart';
 class TunerWidget extends StatefulWidget {
   final Stream<PitchHint> pitchStream;
   final int maxPoints;
+  final int lowMidi;   // inclusive range
+  final int highMidi;  // inclusive range
 
   const TunerWidget({
     super.key,
     required this.pitchStream,
     this.maxPoints = 60,
+    this.lowMidi = 48,   // C3 default low
+    this.highMidi = 72,  // C5 default high
   });
 
   @override
@@ -65,15 +69,25 @@ class _TunerWidgetState extends State<TunerWidget> {
           ],
         ),
         const SizedBox(height: 8),
-        SizedBox(
-          height: 160,
-          child: CustomPaint(
-            painter: _TunerPainter(_points, _guideHz),
-            size: const Size(double.infinity, double.infinity),
+        Expanded(
+          child: Column(
+            children: [
+              Expanded(
+                child: CustomPaint(
+                  painter: _TunerPainter(
+                    points: _points,
+                    guideHz: _guideHz,
+                    lowMidi: widget.lowMidi,
+                    highMidi: widget.highMidi,
+                  ),
+                  size: const Size(double.infinity, double.infinity),
+                ),
+              ),
+              const SizedBox(height: 6),
+              const Text('Moments in your sound →', style: TextStyle(color: AppTheme.textLight)),
+            ],
           ),
         ),
-        const SizedBox(height: 6),
-        const Text('Moments in your sound →', style: TextStyle(color: AppTheme.textLight)),
       ],
     );
   }
@@ -81,9 +95,16 @@ class _TunerWidgetState extends State<TunerWidget> {
 
 class _TunerPainter extends CustomPainter {
   final List<PitchHint> points;
-  final double targetHz;
+  final double guideHz;
+  final int lowMidi;
+  final int highMidi;
 
-  _TunerPainter(this.points, this.targetHz);
+  _TunerPainter({
+    required this.points,
+    required this.guideHz,
+    required this.lowMidi,
+    required this.highMidi,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -106,8 +127,8 @@ class _TunerPainter extends CustomPainter {
 
     if (points.isEmpty) return;
 
-    final minHz = 80.0;
-    final maxHz = 500.0;
+    final minHz = NoteUtils.midiToFrequency(lowMidi);
+    final maxHz = NoteUtils.midiToFrequency(highMidi);
     final plot = Paint()
       ..color = AppTheme.secondary
       ..style = PaintingStyle.stroke
@@ -121,12 +142,44 @@ class _TunerPainter extends CustomPainter {
       ..strokeCap = StrokeCap.square;
 
     // Target horizontal line
-    final targetY = _mapHzToY(targetHz, minHz, maxHz, size.height, padding: 10);
+    final targetY = _mapHzToY(guideHz, minHz, maxHz, size.height, padding: 10);
     canvas.drawLine(
       Offset(10, targetY),
       Offset(size.width - 10, targetY),
       targetPaint,
     );
+
+    // Draw equally spaced note lines (chromatic steps) with note labels
+    final labelStyle = TextStyle(color: AppTheme.textLight.withValues(alpha: 0.8), fontSize: 10);
+    for (int midi = lowMidi; midi <= highMidi; midi++) {
+      final hz = NoteUtils.midiToFrequency(midi);
+      final y = _mapHzToY(hz, minHz, maxHz, size.height, padding: 10);
+      final isOctave = midi % 12 == 0; // C notes
+      final gridPaint = Paint()
+        ..color = (isOctave ? AppTheme.featherLight : AppTheme.featherLight.withValues(alpha: 0.6))
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = isOctave ? 1.5 : 1.0;
+      canvas.drawLine(Offset(10, y), Offset(size.width - 10, y), gridPaint);
+
+      // Label the grid with note names on the left for octaves and every few steps
+      if (isOctave || midi % 2 == 0) {
+        final tp = TextPainter(
+          text: TextSpan(text: NoteUtils.midiToNoteName(midi), style: labelStyle),
+          textDirection: TextDirection.ltr,
+        )..layout();
+        tp.paint(canvas, Offset(12, y - tp.height - 1));
+      }
+    }
+
+    // Current-note marker (last point) for clarity on the grand scale
+    if (points.isNotEmpty) {
+      final last = points.last;
+      final y = _mapHzToY(last.frequencyHz, minHz, maxHz, size.height, padding: 10);
+      final markerPaint = Paint()
+        ..color = AppTheme.secondary
+        ..style = PaintingStyle.fill;
+      canvas.drawCircle(Offset(size.width - 16, y), 5, markerPaint);
+    }
 
     // Wave path of pitch points
     final dx = (size.width - 20) / (points.length - 1).clamp(1, 1000);
@@ -151,7 +204,10 @@ class _TunerPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _TunerPainter oldDelegate) {
-    return oldDelegate.points != points || oldDelegate.targetHz != targetHz;
+    return oldDelegate.points != points ||
+        oldDelegate.guideHz != guideHz ||
+        oldDelegate.lowMidi != lowMidi ||
+        oldDelegate.highMidi != highMidi;
   }
 }
 

@@ -24,6 +24,11 @@ class NoteUtils {
     return (note: name, midi: midi, freq: snappedFreq);
   }
 
+  static double frequencyToMidi(double frequency) {
+    if (frequency <= 0) return 0;
+    return 69 + 12 * (math.log(frequency / 440.0) / math.log(2));
+  }
+
   static String midiToNoteName(int midi) {
     if (midi < 0) return '—';
     const names = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
