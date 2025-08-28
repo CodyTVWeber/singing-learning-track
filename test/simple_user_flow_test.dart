@@ -53,10 +53,13 @@ void main() {
     test('Get lessons by unit', () {
       final unit1Lessons = getLessonsByUnit(1);
       
-      expect(unit1Lessons.length, 3);
+      expect(unit1Lessons.length, 6);
       expect(unit1Lessons[0].id, 'breath-basics');
       expect(unit1Lessons[1].id, 'voice-discovery');
       expect(unit1Lessons[2].id, 'kooka-laugh');
+      expect(unit1Lessons[3].id, 'rhythm-clap');
+      expect(unit1Lessons[4].id, 'animal-sounds');
+      expect(unit1Lessons[5].id, 'echo-game');
     });
 
     test('User progression flow', () {
@@ -111,7 +114,7 @@ void main() {
       final lesson = getLessonById('breath-basics');
       
       expect(lesson, isNotNull);
-      expect(lesson!.title, 'Breathing with Kooka');
+      expect(lesson!.title, '🎈 Belly Breathing');
       expect(lesson.type, 'practice');
       expect(lesson.unit, 1);
       expect(lesson.unlocked, true);
@@ -122,7 +125,7 @@ void main() {
       final completedLessons = ['breath-basics', 'voice-discovery'];
       final progressPercentage = (completedLessons.length / totalLessons * 100).round();
       
-      expect(progressPercentage, 67); // 2 out of 3 lessons
+      expect(progressPercentage, 33); // 2 out of 6 lessons
     });
   });
 }
