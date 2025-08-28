@@ -16,6 +16,22 @@ class NoteUtils {
     return 1200.0 * (math.log(frequency / target) / math.log(2));
   }
 
+  static ({String note, int midi, double freq}) nearestNoteForFrequency(double frequency) {
+    if (frequency <= 0) return (note: '—', midi: -1, freq: 0);
+    final midi = (69 + 12 * (math.log(frequency / 440.0) / math.log(2))).round();
+    final snappedFreq = midiToFrequency(midi);
+    final name = midiToNoteName(midi);
+    return (note: name, midi: midi, freq: snappedFreq);
+  }
+
+  static String midiToNoteName(int midi) {
+    if (midi < 0) return '—';
+    const names = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+    final name = names[midi % 12];
+    final octave = (midi ~/ 12) - 1;
+    return '$name$octave';
+  }
+
   static int _noteNameToMidi(String note) {
     // Accept forms like C4, C#4, Db4, A4, etc.
     final regex = RegExp(r'^([A-Ga-g])([#b]?)(-?\d+)$');

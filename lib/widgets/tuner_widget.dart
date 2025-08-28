@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import '../audio/pitch.dart';
+import '../audio/note_utils.dart';
 import '../theme/app_theme.dart';
 
 /// Friendly tuner showing "Pitch (how high/low)" over "Moments in your sound".
 class TunerWidget extends StatefulWidget {
   final Stream<PitchHint> pitchStream;
-  final double targetHz;
   final int maxPoints;
 
   const TunerWidget({
     super.key,
     required this.pitchStream,
-    required this.targetHz,
     this.maxPoints = 60,
   });
 
@@ -21,6 +20,8 @@ class TunerWidget extends StatefulWidget {
 
 class _TunerWidgetState extends State<TunerWidget> {
   final List<PitchHint> _points = <PitchHint>[];
+  double _guideHz = 220.0;
+  String _guideNote = 'A3';
 
   @override
   void initState() {
@@ -31,6 +32,9 @@ class _TunerWidgetState extends State<TunerWidget> {
         if (_points.length > widget.maxPoints) {
           _points.removeAt(0);
         }
+        final nearest = NoteUtils.nearestNoteForFrequency(p.frequencyHz);
+        _guideHz = nearest.freq;
+        _guideNote = nearest.note;
       });
     });
   }
@@ -54,7 +58,7 @@ class _TunerWidgetState extends State<TunerWidget> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                'Aim for ~${widget.targetHz.toStringAsFixed(0)} Hz',
+                'You\'re around $_guideNote (~${_guideHz.toStringAsFixed(0)} Hz)',
                 style: const TextStyle(color: AppTheme.primary),
               ),
             ),
@@ -64,7 +68,7 @@ class _TunerWidgetState extends State<TunerWidget> {
         SizedBox(
           height: 160,
           child: CustomPaint(
-            painter: _TunerPainter(_points, widget.targetHz),
+            painter: _TunerPainter(_points, _guideHz),
             size: const Size(double.infinity, double.infinity),
           ),
         ),

@@ -20,7 +20,6 @@ class _PracticePageState extends State<PracticePage> {
   String? _recordedPath;
   PitchHint? _lastHint;
   double _targetHz = 220.0;
-  String _targetNote = 'A3';
   bool _isListening = false;
   static const List<String> _noteChoices = <String>[
     'C3','C#3','D3','D#3','E3','F3','F#3','G3','G#3','A3','A#3','B3',
@@ -90,27 +89,6 @@ class _PracticePageState extends State<PracticePage> {
             const SizedBox(height: 12),
             Row(
               children: [
-                Expanded(
-                  child: DropdownButtonFormField<String>(
-                    value: _targetNote,
-                    decoration: const InputDecoration(labelText: 'Target note'),
-                    items: _noteChoices
-                        .map((n) => DropdownMenuItem<String>(value: n, child: Text(n)))
-                        .toList(),
-                    onChanged: (val) {
-                      if (val == null) return;
-                      final hz = NoteUtils.noteToFrequency(val);
-                      setState(() {
-                        _targetNote = val;
-                        _targetHz = hz;
-                      });
-                      if (_isListening) {
-                        _pitch.startStreaming(targetHz: _targetHz);
-                      }
-                    },
-                  ),
-                ),
-                const SizedBox(width: 12),
                 Switch(
                   value: _isListening,
                   onChanged: (on) async {
@@ -125,11 +103,7 @@ class _PracticePageState extends State<PracticePage> {
               ],
             ),
             const SizedBox(height: 16),
-            TunerWidget(
-              pitchStream: _pitch.pitchHints,
-              targetHz: _targetHz,
-              key: const Key('tuner'),
-            ),
+            TunerWidget(pitchStream: _pitch.pitchHints, key: const Key('tuner')),
             const SizedBox(height: 12),
             if (_lastHint != null)
               Text(
