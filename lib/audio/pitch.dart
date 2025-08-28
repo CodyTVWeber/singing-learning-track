@@ -30,12 +30,15 @@ class PitchAnalyzer {
     }
     _timer?.cancel();
     final random = math.Random(42);
+    // Start a gentle random walk that does NOT auto-converge to the target
+    // so the UI doesn't claim correctness without actual input.
+    // Initialize near, but not at, the target.
+    _currentHz = (_targetHz + (random.nextDouble() - 0.5) * 80).clamp(50.0, 1000.0);
     _timer = Timer.periodic(interval, (_) {
-      final delta = _targetHz - _currentHz;
-      // Move partway toward target with a bit of jitter
-      _currentHz += delta * 0.15 + (random.nextDouble() - 0.5) * 8.0;
+      _currentHz += (random.nextDouble() - 0.5) * 10.0;
+      _currentHz = _currentHz.clamp(50.0, 1000.0);
       final hint = _hintFor(_currentHz, _targetHz);
-      _controller.add(PitchHint(_currentHz.clamp(50.0, 1000.0), hint));
+      _controller.add(PitchHint(_currentHz, hint));
     });
   }
 
