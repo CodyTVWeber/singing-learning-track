@@ -3,6 +3,7 @@ import 'package:kooka_sing/audio/recorder.dart';
 import 'package:kooka_sing/audio/player.dart';
 import 'package:kooka_sing/audio/pitch.dart';
 import 'package:kooka_sing/widgets/tuner_widget.dart';
+import 'package:kooka_sing/audio/note_utils.dart';
 
 class PracticePage extends StatefulWidget {
   const PracticePage({super.key});
@@ -19,6 +20,12 @@ class _PracticePageState extends State<PracticePage> {
   String? _recordedPath;
   PitchHint? _lastHint;
   double _targetHz = 220.0;
+  String _targetNote = 'A3';
+  bool _isListening = false;
+  static const List<String> _noteChoices = <String>[
+    'C3','C#3','D3','D#3','E3','F3','F#3','G3','G#3','A3','A#3','B3',
+    'C4','C#4','D4','D#4','E4','F4','F#4','G4','G#4','A4','A#4','B4',
+  ];
 
   @override
   void initState() {
@@ -40,6 +47,7 @@ class _PracticePageState extends State<PracticePage> {
     await _recorder.startRecording();
     setState(() {});
     // Start streaming pitch feedback
+    _isListening = true;
     _pitch.startStreaming(targetHz: _targetHz);
   }
 
@@ -47,6 +55,7 @@ class _PracticePageState extends State<PracticePage> {
     final path = await _recorder.stopRecording();
     setState(() {
       _recordedPath = path;
+      _isListening = false;
     });
     // Stop streaming
     _pitch.stopStreaming();
@@ -77,6 +86,43 @@ class _PracticePageState extends State<PracticePage> {
             Text(
               'Try to match Kooka\'s note. The line shows your sound over moments. If it\'s above the guide, go a little lower; if it\'s below, go a little higher.',
               style: TextStyle(color: Colors.grey[700]),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: DropdownButtonFormField<String>(
+                    value: _targetNote,
+                    decoration: const InputDecoration(labelText: 'Target note'),
+                    items: _noteChoices
+                        .map((n) => DropdownMenuItem<String>(value: n, child: Text(n)))
+                        .toList(),
+                    onChanged: (val) {
+                      if (val == null) return;
+                      final hz = NoteUtils.noteToFrequency(val);
+                      setState(() {
+                        _targetNote = val;
+                        _targetHz = hz;
+                      });
+                      if (_isListening) {
+                        _pitch.startStreaming(targetHz: _targetHz);
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Switch(
+                  value: _isListening,
+                  onChanged: (on) async {
+                    if (on && !_recorder.isRecording) {
+                      await _onRecordPressed();
+                    } else if (!on && _recorder.isRecording) {
+                      await _onStopPressed();
+                    }
+                  },
+                ),
+                const Text('Listening'),
+              ],
             ),
             const SizedBox(height: 16),
             TunerWidget(
