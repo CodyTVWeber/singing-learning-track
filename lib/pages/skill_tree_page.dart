@@ -5,6 +5,7 @@ import '../storage/user_store.dart';
 import '../storage/progress_store.dart';
 import '../models/user.dart';
 import 'practice_page.dart';
+import 'lesson_page.dart';
 
 class SkillTreePage extends StatefulWidget {
   const SkillTreePage({super.key});
@@ -139,15 +140,12 @@ class _SkillTreePageState extends State<SkillTreePage> {
                         child: GestureDetector(
                           onTap: unlocked
                               ? () {
-                                  if (lesson.type == 'practice') {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (_) => const PracticePage()),
-                                    );
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text('This lesson type is not implemented yet.')),
-                                    );
-                                  }
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LessonPage(lesson: lesson),
+                                    ),
+                                  );
                                 }
                               : null,
                           child: Container(
