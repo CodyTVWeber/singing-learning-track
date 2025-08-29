@@ -4,6 +4,7 @@ import '../data/units.dart';
 import '../storage/user_store.dart';
 import '../storage/progress_store.dart';
 import '../models/user.dart';
+import 'practice_page.dart';
 import 'lesson_page.dart';
 
 class SkillTreePage extends StatefulWidget {
@@ -87,6 +88,15 @@ class _SkillTreePageState extends State<SkillTreePage> {
                 labelStyle: const TextStyle(color: Colors.white),
               ),
             ),
+          IconButton(
+            tooltip: 'Practice (Audio MVP)',
+            icon: const Icon(Icons.mic),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const PracticePage()),
+              );
+            },
+          ),
         ],
       ),
       body: ListView.separated(
