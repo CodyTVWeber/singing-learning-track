@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { colors, spacing, borderRadius, fontSize, transitions } from '../theme/theme';
+import { colors, spacing, borderRadius, fontSize, transitions, shadows } from '../theme/theme';
 
 interface SwitchProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;

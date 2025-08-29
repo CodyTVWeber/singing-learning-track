@@ -1,5 +1,5 @@
 import React, { forwardRef, useState } from 'react';
-import { colors, spacing, borderRadius, fontSize, transitions } from '../theme/theme';
+import { colors, spacing, borderRadius, fontSize, transitions, fontWeight } from '../theme/theme';
 
 interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors, borderRadius, fontSize, fontWeight, shadows } from '../theme/theme';
+import { colors, borderRadius, fontSize, fontWeight, shadows, transitions } from '../theme/theme';
 
 interface AvatarProps {
   src?: string;

@@ -56,3 +56,6 @@ export { Button } from './Button';
 export { Card } from './Card';
 export { Container } from './Container';
 export { LoadingSpinner } from './LoadingSpinner';
+
+// Development Components
+export { DevNavigation } from './DevNavigation';
