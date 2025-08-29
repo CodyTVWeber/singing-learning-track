@@ -63,9 +63,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     display: 'flex',
     alignItems: 'center',
     gap: spacing.lg,
-    '@media (max-width: 768px)': {
-      display: 'none',
-    },
   };
 
   const linkStyles = (active?: boolean): React.CSSProperties => ({
@@ -83,10 +80,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   });
 
   const mobileMenuButtonStyles: React.CSSProperties = {
-    display: 'none',
-    '@media (max-width: 768px)': {
-      display: 'flex',
-    },
+    display: 'flex',
     width: '40px',
     height: '40px',
     alignItems: 'center',
@@ -129,7 +123,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {brand && <div style={brandStyles}>{brand}</div>}
         
         {/* Desktop Links */}
-        <div style={desktopLinksStyles}>
+        <div style={desktopLinksStyles} className="navbar-desktop-links">
           {links.map((link, index) => (
             <a
               key={index}
@@ -159,6 +153,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Mobile Menu Button */}
         <button
           style={mobileMenuButtonStyles}
+          className="navbar-mobile-button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle mobile menu"
         >

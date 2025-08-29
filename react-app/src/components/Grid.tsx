@@ -41,19 +41,20 @@ export const Grid: React.FC<GridProps> = ({
 
   // Add responsive column styles if columns is an object
   if (typeof columns === 'object') {
+    const gridId = `responsive-grid-${Math.random().toString(36).substr(2, 9)}`;
     const responsiveStyles = `
       @media (max-width: ${breakpoints.mobile}) {
-        .responsive-grid-${Date.now()} {
+        .${gridId} {
           --grid-columns: repeat(${columns.mobile || 1}, 1fr);
         }
       }
       @media (min-width: ${breakpoints.mobile}) and (max-width: ${breakpoints.tablet}) {
-        .responsive-grid-${Date.now()} {
+        .${gridId} {
           --grid-columns: repeat(${columns.tablet || columns.mobile || 1}, 1fr);
         }
       }
       @media (min-width: ${breakpoints.tablet}) {
-        .responsive-grid-${Date.now()} {
+        .${gridId} {
           --grid-columns: repeat(${columns.desktop || columns.tablet || columns.mobile || 1}, 1fr);
         }
       }
@@ -63,7 +64,7 @@ export const Grid: React.FC<GridProps> = ({
       <>
         <style dangerouslySetInnerHTML={{ __html: responsiveStyles }} />
         <div 
-          className={`responsive-grid-${Date.now()} ${className}`} 
+          className={`${gridId} ${className}`} 
           style={gridStyles}
         >
           {children}
@@ -107,19 +108,20 @@ export const GridItem: React.FC<GridItemProps> = ({
 
   // Add responsive span styles if span is an object
   if (typeof span === 'object') {
+    const itemId = `responsive-grid-item-${Math.random().toString(36).substr(2, 9)}`;
     const responsiveStyles = `
       @media (max-width: ${breakpoints.mobile}) {
-        .responsive-grid-item-${Date.now()} {
+        .${itemId} {
           --grid-span: ${span.mobile || 1};
         }
       }
       @media (min-width: ${breakpoints.mobile}) and (max-width: ${breakpoints.tablet}) {
-        .responsive-grid-item-${Date.now()} {
+        .${itemId} {
           --grid-span: ${span.tablet || span.mobile || 1};
         }
       }
       @media (min-width: ${breakpoints.tablet}) {
-        .responsive-grid-item-${Date.now()} {
+        .${itemId} {
           --grid-span: ${span.desktop || span.tablet || span.mobile || 1};
         }
       }
@@ -129,7 +131,7 @@ export const GridItem: React.FC<GridItemProps> = ({
       <>
         <style dangerouslySetInnerHTML={{ __html: responsiveStyles }} />
         <div 
-          className={`responsive-grid-item-${Date.now()} ${className}`} 
+          className={`${itemId} ${className}`} 
           style={itemStyles}
         >
           {children}

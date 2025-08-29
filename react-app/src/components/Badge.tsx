@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors, spacing, borderRadius, fontSize, fontWeight } from '../theme/theme';
+import { colors, spacing, borderRadius, fontSize, fontWeight, transitions } from '../theme/theme';
 
 interface BadgeProps {
   children: React.ReactNode;

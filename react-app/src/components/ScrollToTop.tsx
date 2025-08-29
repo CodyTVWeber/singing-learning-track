@@ -103,6 +103,7 @@ export const ScrollArea: React.FC<ScrollAreaProps> = ({
   style,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const scrollAreaId = `scroll-area-${Math.random().toString(36).substr(2, 9)}`;
 
   const containerStyles: React.CSSProperties = {
     height: typeof height === 'number' ? `${height}px` : height,
@@ -114,41 +115,41 @@ export const ScrollArea: React.FC<ScrollAreaProps> = ({
   };
 
   const scrollbarStyles = showScrollbar === 'hover' ? `
-    .scroll-area-${Date.now()}::-webkit-scrollbar {
+    .${scrollAreaId}::-webkit-scrollbar {
       width: 8px;
       opacity: ${isHovered ? 1 : 0};
       transition: opacity 0.3s;
     }
     
-    .scroll-area-${Date.now()}::-webkit-scrollbar-track {
+    .${scrollAreaId}::-webkit-scrollbar-track {
       background: ${colors.background};
       border-radius: 4px;
     }
     
-    .scroll-area-${Date.now()}::-webkit-scrollbar-thumb {
+    .${scrollAreaId}::-webkit-scrollbar-thumb {
       background: ${colors.featherLight};
       border-radius: 4px;
     }
     
-    .scroll-area-${Date.now()}::-webkit-scrollbar-thumb:hover {
+    .${scrollAreaId}::-webkit-scrollbar-thumb:hover {
       background: ${colors.textLight};
     }
   ` : showScrollbar === 'always' ? `
-    .scroll-area-${Date.now()}::-webkit-scrollbar {
+    .${scrollAreaId}::-webkit-scrollbar {
       width: 8px;
     }
     
-    .scroll-area-${Date.now()}::-webkit-scrollbar-track {
+    .${scrollAreaId}::-webkit-scrollbar-track {
       background: ${colors.background};
       border-radius: 4px;
     }
     
-    .scroll-area-${Date.now()}::-webkit-scrollbar-thumb {
+    .${scrollAreaId}::-webkit-scrollbar-thumb {
       background: ${colors.featherLight};
       border-radius: 4px;
     }
     
-    .scroll-area-${Date.now()}::-webkit-scrollbar-thumb:hover {
+    .${scrollAreaId}::-webkit-scrollbar-thumb:hover {
       background: ${colors.textLight};
     }
   ` : '';
@@ -157,7 +158,7 @@ export const ScrollArea: React.FC<ScrollAreaProps> = ({
     <>
       {scrollbarStyles && <style>{scrollbarStyles}</style>}
       <div
-        className={`scroll-area-${Date.now()} ${className}`}
+        className={`${scrollAreaId} ${className}`}
         style={containerStyles}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
