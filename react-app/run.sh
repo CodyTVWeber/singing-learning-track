@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "🎤 Starting Kooka Sing React App..."
+echo ""
+echo "To run the development server:"
+echo "  cd react-app"
+echo "  npm run dev"
+echo ""
+echo "Then open http://localhost:5173 in your browser"
+echo ""
+echo "The app is mobile-first and includes:"
+echo "- Splash screen with Kooka mascot"
+echo "- User onboarding (name and age group)"
+echo "- Skill tree with progressive lessons"
+echo "- Interactive lesson flow"
+echo "- Local storage for progress tracking"
+echo ""
