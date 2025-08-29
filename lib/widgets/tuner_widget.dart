@@ -31,6 +31,10 @@ class _TunerWidgetState extends State<TunerWidget> {
   double _guideHz = 220.0;
   String _guideNote = 'A3';
   double? _lastHz;
+  double? _smoothedCents;
+  _PitchStatus? _status;
+  _PitchStatus? _pendingStatus;
+  DateTime? _pendingSince;
 
   @override
   void initState() {
@@ -45,6 +49,42 @@ class _TunerWidgetState extends State<TunerWidget> {
         _guideHz = nearest.freq;
         _guideNote = nearest.note;
         _lastHz = p.frequencyHz;
+
+        // Update smoothed cents offset from guide
+        final cents = NoteUtils.frequencyToCents(_lastHz!, _guideHz);
+        if (_smoothedCents == null) {
+          _smoothedCents = cents;
+        } else {
+          const alpha = 0.25; // higher alpha = more reactive
+          _smoothedCents = alpha * cents + (1 - alpha) * _smoothedCents!;
+        }
+
+        // Determine target status from smoothed value
+        final target = _statusFromSmoothed(_smoothedCents!);
+        final now = DateTime.now();
+        const dwellMs = 900; // minimum time before switching messages
+
+        if (_status == null) {
+          _status = target;
+          _pendingStatus = null;
+          _pendingSince = null;
+        } else if (target == _status) {
+          // Stable; clear any pending transition
+          _pendingStatus = null;
+          _pendingSince = null;
+        } else {
+          // Different from current; require dwell time before switching
+          if (_pendingStatus != target) {
+            _pendingStatus = target;
+            _pendingSince = now;
+          } else {
+            if (_pendingSince != null && now.difference(_pendingSince!).inMilliseconds >= dwellMs) {
+              _status = target;
+              _pendingStatus = null;
+              _pendingSince = null;
+            }
+          }
+        }
       });
     });
   }
@@ -61,21 +101,24 @@ class _TunerWidgetState extends State<TunerWidget> {
       effHighMidi = (centerMidi + span).clamp(effLowMidi + 1, widget.highMidi);
     }
 
-    // Determine friendly pitch status relative to guide
+    // Determine friendly pitch status relative to guide with smoothing + dwell
     String statusText = 'Listening…';
     Color statusColor = AppTheme.textLight;
-    if (_lastHz != null && _lastHz! > 0) {
-      final cents = NoteUtils.frequencyToCents(_lastHz!, _guideHz);
-      if (cents.abs() <= 10) {
+    switch (_status) {
+      case _PitchStatus.just:
         statusText = 'Just right for $_guideNote';
         statusColor = AppTheme.success;
-      } else if (cents < 0) {
+        break;
+      case _PitchStatus.low:
         statusText = 'A little higher to reach $_guideNote';
         statusColor = AppTheme.secondary;
-      } else {
+        break;
+      case _PitchStatus.high:
         statusText = 'A little lower to reach $_guideNote';
         statusColor = AppTheme.secondary;
-      }
+        break;
+      default:
+        break;
     }
 
     return Column(
@@ -258,6 +301,16 @@ class _TunerPainter extends CustomPainter {
         oldDelegate.guideHz != guideHz ||
         oldDelegate.lowMidi != lowMidi ||
         oldDelegate.highMidi != highMidi;
+  }
+}
+
+enum _PitchStatus { low, just, high }
+
+extension on _TunerWidgetState {
+  _PitchStatus _statusFromSmoothed(double cents) {
+    const deadband = 10.0; // within +/- 10 cents is "just right"
+    if (cents.abs() <= deadband) return _PitchStatus.just;
+    return cents < 0 ? _PitchStatus.low : _PitchStatus.high;
   }
 }
 
