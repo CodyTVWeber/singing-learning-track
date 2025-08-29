@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { colors, spacing, shadows, transitions, borderRadius } from '../theme/theme';
+import { colors, spacing, shadows, transitions, borderRadius, fontSize, fontWeight } from '../theme/theme';
 
 interface DrawerProps {
   isOpen: boolean;

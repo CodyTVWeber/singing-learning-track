@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors, spacing, borderRadius, fontSize, transitions, shadows } from '../theme/theme';
+import { colors, spacing, borderRadius, fontSize, fontWeight, transitions, shadows } from '../theme/theme';
 
 interface ListItemProps {
   children: React.ReactNode;

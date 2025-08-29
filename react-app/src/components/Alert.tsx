@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors, spacing, borderRadius, fontSize, shadows, transitions } from '../theme/theme';
+import { colors, spacing, borderRadius, fontSize, fontWeight, shadows, transitions } from '../theme/theme';
 
 interface AlertProps {
   type?: 'info' | 'success' | 'warning' | 'error';
