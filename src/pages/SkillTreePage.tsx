@@ -17,6 +17,12 @@ export const SkillTreePage: React.FC = () => {
   const units = getAllUnits();
   const completedLessonIds = getCompletedLessonIds();
 
+  useEffect(() => {
+    if (!user) {
+      navigate('/onboarding', { replace: true });
+    }
+  }, [user, navigate]);
+
   const getLessonStatus = (lesson: Lesson) => {
     if (completedLessonIds.includes(lesson.id)) {
       return 'completed';
@@ -34,17 +40,17 @@ export const SkillTreePage: React.FC = () => {
     }
   };
 
-  if (!user) {
-    navigate('/onboarding');
-    return null;
-  }
-
   useEffect(() => {
+    if (!user) return;
     analytics.trackEvent('map_loaded', {
       unitsCount: units.length,
       completedLessons: completedLessonIds.length,
     });
-  }, [units.length, completedLessonIds.length]);
+  }, [user, units.length, completedLessonIds.length]);
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <div
