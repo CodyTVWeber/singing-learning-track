@@ -9,6 +9,7 @@ import type { Lesson } from '../models/lesson';
 import { analytics } from '../services/analytics';
 import { Icon } from '../components/Icon';
 import { Chip } from '../components/Chip';
+import { StandaloneBadge } from '../components/Badge';
 
 export const SkillTreePage: React.FC = () => {
   const navigate = useNavigate();
@@ -223,14 +224,22 @@ export const SkillTreePage: React.FC = () => {
                         <div
                           style={{
                             marginTop: spacing.sm,
-                            fontSize: fontSize.sm,
-                            color: colors.earthTone,
                           }}
                         >
-                          {lesson.type === 'practice' && 'Practice'}
-                          {lesson.type === 'sound' && 'Sound'}
-                          {lesson.type === 'song' && 'Song'}
-                          {lesson.type === 'echo' && 'Echo'}
+                          <StandaloneBadge
+                            label={
+                              lesson.type === 'practice' ? 'Practice' :
+                              lesson.type === 'sound' ? 'Sound' :
+                              lesson.type === 'song' ? 'Song' : 'Echo'
+                            }
+                            color={
+                              lesson.type === 'practice' ? 'secondary' :
+                              lesson.type === 'sound' ? 'success' :
+                              lesson.type === 'song' ? 'primary' : 'warning'
+                            }
+                            variant="filled"
+                            size="small"
+                          />
                         </div>
                       </div>
                     </div>
