@@ -230,6 +230,7 @@ export const SkillTreePage: React.FC = () => {
                           {lesson.type === 'practice' && 'Practice'}
                           {lesson.type === 'sound' && 'Sound'}
                           {lesson.type === 'song' && 'Song'}
+                          {lesson.type === 'echo' && 'Echo'}
                         </div>
                       </div>
                     </div>

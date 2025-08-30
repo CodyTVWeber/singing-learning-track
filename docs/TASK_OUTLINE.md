@@ -41,6 +41,20 @@
 - Update manual test script with streak scenarios.
 - Out of scope: full PWA install, localization, pitch detection (tracked in later increments).
 
+## Parallel Track — Curriculum Expansion (Beginner → Early Intermediate)
+- Content: Convert lesson plan sections into Units 1–4 with progressive unlocks.
+- UX: Type badges on lesson cards (Practice, Sound, Song, Echo).
+- Audio: Reuse echo flow for beginner echo lessons; add new prompts.
+- Progression: Strict prerequisite chain across units; points scale by performance where applicable.
+
+Work Items (parallelizable)
+- Unit authoring: Add Unit 2 (Breath & Dynamics) lessons.
+- Unit authoring: Add Unit 3 (Pitch & Articulation) lessons.
+- Unit authoring: Add Unit 4 (Echo & Performance) lessons.
+- Map metadata: Titles/descriptions for Units 1–4.
+- Visual polish: Echo badge on lesson cards.
+- QA: Manual script updates for new units; unlock/complete loops.
+
 ## Increment 0 — Bootstrap the App Shell (1 week)
 Goal: A usable, installable shell that feels like a phone app.
 - Routing, theming, layout primitives, and navigation header/tab bar.
