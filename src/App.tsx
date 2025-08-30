@@ -1,4 +1,5 @@
 
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
 import { SplashPage } from './pages/SplashPage';
@@ -7,9 +8,15 @@ import { SkillTreePage } from './pages/SkillTreePage';
 import { LessonPage } from './pages/LessonPage';
 import { ComponentShowcase } from './pages/ComponentShowcase';
 import { DevNavigation } from './components/DevNavigation';
+import { analytics } from './services/analytics';
 import './theme/globalStyles.css';
 
 function App() {
+  // Track app opened event
+  React.useEffect(() => {
+    analytics.trackAppOpened();
+  }, []);
+
   return (
     <AppProvider>
       <Router>

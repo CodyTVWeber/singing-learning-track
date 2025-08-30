@@ -2,6 +2,7 @@ export const colors = {
   primary: '#8B6952', // Warm brown
   secondary: '#6FA8DC', // Sky blue
   background: '#FAF7F2', // Light cream
+  backgroundLight: '#F5F5F5', // Light gray
   surface: '#FFFFFF', // White
   darkBrown: '#5D4037',
   text: '#3E2723',

@@ -6,6 +6,7 @@ interface ProgressProps {
   max?: number;
   label?: string;
   showValue?: boolean;
+  showLabel?: boolean;
   size?: 'small' | 'medium' | 'large';
   variant?: 'linear' | 'circular';
   color?: string;
@@ -19,6 +20,7 @@ export const Progress: React.FC<ProgressProps> = ({
   max = 100,
   label,
   showValue = false,
+  showLabel = true,
   size = 'medium',
   variant = 'linear',
   color = colors.primary,
@@ -109,7 +111,7 @@ export const Progress: React.FC<ProgressProps> = ({
             </div>
           )}
         </div>
-        {label && <span style={labelStyles}>{label}</span>}
+        {label && showLabel && <span style={labelStyles}>{label}</span>}
       </div>
     );
   }
@@ -166,7 +168,7 @@ export const Progress: React.FC<ProgressProps> = ({
     <div className={className} style={{ ...containerStyles, ...style }}>
       {(label || showValue) && (
         <div style={labelContainerStyles}>
-          {label && <span style={labelStyles}>{label}</span>}
+          {label && showLabel && <span style={labelStyles}>{label}</span>}
           {showValue && <span style={valueStyles}>{Math.round(percentage)}%</span>}
         </div>
       )}

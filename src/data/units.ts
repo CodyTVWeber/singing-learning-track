@@ -2,10 +2,28 @@ import type { Lesson } from '../models/lesson';
 
 export const sampleLessons: Lesson[] = [
   {
-    id: 'breath-basics',
+    id: 'echo-introduction',
     level: 1,
     unit: 1,
     position: 1,
+    title: '🔊 Echo with Kooka',
+    type: 'echo',
+    description: 'Listen and repeat!',
+    content: JSON.stringify({
+      promptText: "Koo-ka-bur-ra!",
+      promptAudio: "/audio/placeholder.mp3", // TODO: Add actual audio file
+      minVolumeThreshold: 30,
+      targetDuration: 3
+    }),
+    imageUrl: 'kooka-singing',
+    unlocked: true,
+    prerequisite: undefined,
+  },
+  {
+    id: 'breath-basics',
+    level: 1,
+    unit: 1,
+    position: 2,
     title: '🎈 Belly Breathing',
     type: 'practice',
     description: 'Blow up your belly!',
@@ -15,8 +33,8 @@ export const sampleLessons: Lesson[] = [
       audio: "breath-guide"
     }),
     imageUrl: 'kooka-breathing',
-    unlocked: true,
-    prerequisite: undefined,
+    unlocked: false,
+    prerequisite: 'echo-introduction',
   },
   {
     id: 'voice-discovery',
