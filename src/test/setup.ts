@@ -55,3 +55,52 @@ Element.prototype.getBoundingClientRect = function () {
   return rect;
 };
 
+// Deterministic randomness for stable snapshots
+// Simple seeded PRNG (Mulberry32)
+const PRNG_SEED = 0x12345678;
+let prngState = PRNG_SEED;
+
+function seededRandom() {
+  // Mulberry32 algorithm
+  prngState |= 0;
+  prngState = (prngState + 0x6D2B79F5) | 0;
+  let t = Math.imul(prngState ^ (prngState >>> 15), 1 | prngState);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+}
+
+function resetSeed() {
+  prngState = PRNG_SEED;
+}
+
+// Save original in case a test needs it
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const originalMathRandom: any = Math.random;
+Math.random = () => seededRandom();
+
+// Ensure deterministic results per test
+// Vitest globals are enabled; beforeEach is available
+// Reset the seed before each test so test order does not affect snapshots
+// @ts-ignore - beforeEach provided by Vitest globals
+beforeEach(() => {
+  resetSeed();
+});
+
+// Provide deterministic crypto.getRandomValues for libraries like uuid
+// Use the same seeded source so it's stable across runs
+// @ts-ignore
+if (typeof globalThis.crypto === 'undefined') {
+  // @ts-ignore
+  globalThis.crypto = {};
+}
+// Preserve any existing crypto properties
+// @ts-ignore
+const originalGetRandomValues = globalThis.crypto.getRandomValues?.bind(globalThis.crypto);
+// @ts-ignore
+globalThis.crypto.getRandomValues = (array: Uint8Array | Uint16Array | Uint32Array) => {
+  for (let i = 0; i < array.length; i++) {
+    array[i] = Math.floor(seededRandom() * 256);
+  }
+  return array;
+};
+
