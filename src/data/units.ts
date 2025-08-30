@@ -11,7 +11,7 @@ export const sampleLessons: Lesson[] = [
     description: 'Listen and repeat!',
     content: JSON.stringify({
       promptText: "Koo-ka-bur-ra!",
-      promptAudio: "/audio/placeholder.mp3", // TODO: Add actual audio file
+      promptAudio: "/audio/echo_prompt.mp3",
       minVolumeThreshold: 30,
       targetDuration: 3
     }),

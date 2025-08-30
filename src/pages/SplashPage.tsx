@@ -3,12 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { colors, fontSize, fontWeight, spacing } from '../theme/theme';
+import { analytics } from '../services/analytics';
 
 export const SplashPage: React.FC = () => {
   const navigate = useNavigate();
   const { user, isLoading } = useApp();
 
   useEffect(() => {
+    // Track app open on initial mount
+    analytics.trackEvent('app_opened');
+
     if (!isLoading) {
       const timer = setTimeout(() => {
         if (user) {
