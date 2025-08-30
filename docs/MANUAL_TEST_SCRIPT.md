@@ -4,6 +4,7 @@
 1. Run the app with `npm run dev`
 2. Open browser developer console to see analytics events
 3. Ensure microphone permissions are enabled in browser
+4. For PWA tests, use Chrome on Desktop or Android
 
 ## Test Flow
 
@@ -86,6 +87,18 @@ Check that the following events were tracked in order:
 5. `lesson_completed` (with score and passed status)
 6. `points_earned` (with points value)
 7. `streak_started` (first completion of a new streak) OR `streak_incremented` (continuation from yesterday)
+
+### 6. PWA Install Flow
+- [ ] After navigating the app for ~1-2s, a small install banner appears
+- [ ] Click "Install" and accept the browser prompt
+- [ ] Verify app installs (App icon appears, app opens standalone)
+- [ ] Check console for `pwa_install_prompt_available` and `pwa_install_accepted`
+
+### 7. Offline Support
+- [ ] With the app loaded, go offline (DevTools > Network > Offline)
+- [ ] Refresh the page
+- [ ] Verify the offline page loads with retry button
+- [ ] Go back online and click Retry; app loads
 
 ## Edge Cases to Test
 

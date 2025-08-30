@@ -16,15 +16,15 @@
 - **Increment 0 — App Shell**
   - [x] Routing, theming, layout primitives, navigation header
   - [x] Full‑screen mobile viewport meta
-  - [ ] PWA install prompt and service worker/offline landing
-  - [ ] Error boundary wired into app shell
-  - [ ] Web‑vitals/TTI telemetry
+  - [x] PWA install prompt and service worker/offline landing
+  - [x] Error boundary wired into app shell
+  - [x] Web‑vitals/TTI telemetry
 - **Increment 1 — First Playable Loop**
   - [x] Core UX: Home → Lesson → Echo → Result
   - [x] Audio: record up to 10s + playback
   - [x] Content: 1 mini‑lesson
   - [x] Progress: award points, mark lesson complete locally
-  - [ ] Show streak = 1 on first completion
+  - [x] Show streak = 1 on first completion
   - [x] Observability: event funnel; manual test script
 - **Increment 2 — Map + Streaks (early)**
   - [x] Map UI with progress states/unlock rules
