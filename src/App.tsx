@@ -8,6 +8,7 @@ import { LessonPage } from './pages/LessonPage';
 import { ComponentShowcase } from './pages/ComponentShowcase';
 import { DevNavigation } from './components/DevNavigation';
 import './theme/globalStyles.css';
+import { InstallPrompt } from './components/InstallPrompt';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
         <DevNavigation />
+        <InstallPrompt />
       </Router>
     </AppProvider>
   );
