@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { colors, spacing, borderRadius, fontSize, transitions, shadows } from '../theme/theme';
 
-interface SwitchProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
+interface SwitchProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'> {
   label?: string;
   labelPosition?: 'left' | 'right';
   size?: 'small' | 'medium' | 'large';

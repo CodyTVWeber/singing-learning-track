@@ -73,17 +73,6 @@ export const TabBar: React.FC<TabBarProps> = ({
     if (variant === 'underline') {
       return {
         ...baseStyles,
-        '&::after': {
-          content: '""',
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: '3px',
-          backgroundColor: colors.primary,
-          transform: isActive ? 'scaleX(1)' : 'scaleX(0)',
-          transition: transitions.fast,
-        },
       };
     }
 

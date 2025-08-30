@@ -300,7 +300,7 @@ export const ComponentShowcase: React.FC = () => {
         <section style={sectionStyles}>
           <h2 style={titleStyles}>Toasts</h2>
           <div style={demoStyles}>
-            <Components.Flex gap="sm" wrap>
+            <Components.Flex gap="sm" wrap="wrap">
               <Components.Button size="small" onClick={() => addToast('info')}>Info Toast</Components.Button>
               <Components.Button size="small" onClick={() => addToast('success')} variant="secondary">Success Toast</Components.Button>
               <Components.Button size="small" onClick={() => addToast('warning')} variant="outline">Warning Toast</Components.Button>
@@ -388,7 +388,7 @@ export const ComponentShowcase: React.FC = () => {
         <section style={sectionStyles}>
           <h2 style={titleStyles}>Badges & Chips</h2>
           <div style={demoStyles}>
-            <Components.Flex gap="md" wrap>
+            <Components.Flex gap="md" wrap="wrap">
               <Components.Badge count={5}>
                 <Components.Icon name="message" />
               </Components.Badge>

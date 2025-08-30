@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { colors, spacing, borderRadius, shadows, transitions } from '../theme/theme';
-import { IconButton } from './Icon';
 
 interface ScrollToTopProps {
   showAfter?: number;

@@ -28,6 +28,7 @@ export const Image: React.FC<ImageProps> = ({
   onError,
   className = '',
   style,
+  children: _children,
   ...props
 }) => {
   const [loading, setLoading] = useState(true);

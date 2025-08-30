@@ -79,31 +79,14 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       return [...prev, newProgress];
     });
 
-    // Update user points and streak
+    // Update user points only
     if (user && newProgress.completed) {
-      // Check if this is the user's first lesson today
-      const today = new Date().toDateString();
-      const todaysLessons = progress.filter(p => 
-        p.completed && 
-        new Date(p.completedDate!).toDateString() === today
-      );
-      
-      // If this is the first lesson today, increment streak
-      const isFirstLessonToday = todaysLessons.length === 0;
+      const safeScore = Number.isFinite(newProgress.score) ? Math.max(0, Math.floor(newProgress.score)) : 0;
       const updatedUser = {
         ...user,
-        totalPoints: user.totalPoints + newProgress.score,
-        streak: isFirstLessonToday ? user.streak + 1 : user.streak,
-      };
+        totalPoints: user.totalPoints + safeScore,
+      } as UserProfile;
       await setUser(updatedUser);
-      
-      // Track streak update if changed
-      if (isFirstLessonToday) {
-        analytics.trackEvent('streak_updated', { 
-          newStreak: updatedUser.streak,
-          userId: user.id 
-        });
-      }
     }
   };
 

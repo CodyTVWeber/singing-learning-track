@@ -4,5 +4,4 @@ export interface UserProfile {
   ageGroup: 'kid' | 'teen' | 'adult';
   currentLevel: number;
   totalPoints: number;
-  streak: number;
 }

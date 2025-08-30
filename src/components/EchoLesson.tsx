@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { colors, fontSize, fontWeight, spacing, borderRadius } from '../theme/theme';
+import { colors, fontSize, fontWeight, spacing } from '../theme/theme';
 import { Button } from './Button';
 import { Card } from './Card';
 import { Container } from './Container';
@@ -23,15 +23,13 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
   promptAudio,
   promptText,
   onComplete,
-  minVolumeThreshold = 30,
-  targetDuration = 3,
 }) => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<LessonStep>('intro');
   const [hasPlayedAudio, setHasPlayedAudio] = useState(false);
   const [recordedAudioUrl, setRecordedAudioUrl] = useState<string | null>(null);
   const [score, setScore] = useState(0);
-  const [volumeData, setVolumeData] = useState<number[]>([]);
+  const [_volumeData, setVolumeData] = useState<number[]>([]);
 
   useEffect(() => {
     // Track lesson start
@@ -51,19 +49,21 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
     analytics.trackEvent('recording_started');
   };
 
-  const handleRecordingComplete = (audioBlob: Blob, audioUrl: string, volumeHistory: number[]) => {
+  const handleRecordingComplete = (_audioBlob: Blob, audioUrl: string, volumeHistory: number[]) => {
     setRecordedAudioUrl(audioUrl);
     setVolumeData(volumeHistory);
     
     // Calculate score based on volume data and duration
-    const avgVolume = volumeHistory.reduce((sum, vol) => sum + vol, 0) / volumeHistory.length;
-    const volumeScore = Math.min(100, Math.max(0, (avgVolume / 70) * 100));
-    const finalScore = Math.floor(volumeScore);
+    const hasSamples = Array.isArray(volumeHistory) && volumeHistory.length > 0;
+    const avgVolume = hasSamples ? volumeHistory.reduce((sum, vol) => sum + vol, 0) / volumeHistory.length : 0;
+    const rawScore = hasSamples ? (avgVolume / 70) * 100 : 0;
+    const clampedScore = Math.min(100, Math.max(0, rawScore));
+    const finalScore = Math.floor(clampedScore);
     
     setScore(finalScore);
     setCurrentStep('review');
     
-    analytics.trackEvent('recording_completed', { averageVolume: avgVolume });
+    analytics.trackEvent('recording_completed', { averageVolume: avgVolume, samples: volumeHistory.length });
   };
 
   const handleTryAgain = () => {
@@ -97,7 +97,7 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
           marginBottom: spacing.lg,
         }}
       >
-        🎤
+        <Icon name="play" size={60} color={colors.primary} />
       </div>
       
       <h2
@@ -136,7 +136,7 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
           marginBottom: spacing.lg,
         }}
       >
-        👂
+        <Icon name="play" size={60} color={colors.primary} />
       </div>
       
       <h2
@@ -226,7 +226,7 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
 
   const renderReviewScreen = () => {
     const passed = score >= 70;
-    const emoji = passed ? '🌟' : '💪';
+    const reviewIcon = passed ? 'star' : 'info';
     
     return (
       <Card style={{ textAlign: 'center' }}>
@@ -236,7 +236,7 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
             marginBottom: spacing.lg,
           }}
         >
-          {emoji}
+          <Icon name={reviewIcon} size={60} color={passed ? colors.success : colors.warning} />
         </div>
         
         <h2
@@ -330,12 +330,11 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
             background: 'none',
             border: 'none',
             color: 'white',
-            fontSize: fontSize.xl,
             cursor: 'pointer',
             padding: spacing.sm,
           }}
         >
-          ←
+          <Icon name="back" color="white" />
         </button>
         <h1
           style={{
@@ -344,7 +343,7 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
             flex: 1,
           }}
         >
-          🔊 Echo with Kooka
+          Echo with Kooka
         </h1>
       </div>
 

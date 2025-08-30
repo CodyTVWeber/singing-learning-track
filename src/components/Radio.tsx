@@ -11,6 +11,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(({
   error,
   className = '',
   style,
+  children: _children,
   ...props
 }, ref) => {
   const containerStyles: React.CSSProperties = {
