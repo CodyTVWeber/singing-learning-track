@@ -12,6 +12,35 @@
 - **Instrumentation**: Each slice includes analytics, basic QA, and performance checks.
 - **Graceful degradation**: Audio features detect capability and fall back cleanly.
 
+## Status Snapshot (Checked = done)
+- **Increment 0 — App Shell**
+  - [x] Routing, theming, layout primitives, navigation header
+  - [x] Full‑screen mobile viewport meta
+  - [ ] PWA install prompt and service worker/offline landing
+  - [ ] Error boundary wired into app shell
+  - [ ] Web‑vitals/TTI telemetry
+- **Increment 1 — First Playable Loop**
+  - [x] Core UX: Home → Lesson → Echo → Result
+  - [x] Audio: record up to 10s + playback
+  - [x] Content: 1 mini‑lesson
+  - [x] Progress: award points, mark lesson complete locally
+  - [ ] Show streak = 1 on first completion
+  - [x] Observability: event funnel; manual test script
+- **Increment 2 — Map + Streaks (early)**
+  - [x] Map UI with progress states/unlock rules
+  - [x] Points balance on header
+  - [ ] Streak carryover and daily reminder toast
+  - [ ] Audio latency improvements; waveform preview; cancel/retake
+  - [ ] Localization scaffold (en base)
+  - [x] Map interaction analytics
+
+## Next Commitment — Finish Increment 1 (Streak v1)
+- Implement minimal daily streaks (local‑first): update on lesson completion per day.
+- Display streak chip in header and show “streak = 1” after first completion.
+- Add analytics events: `streak_started`, `streak_incremented`.
+- Update manual test script with streak scenarios.
+- Out of scope: full PWA install, localization, pitch detection (tracked in later increments).
+
 ## Increment 0 — Bootstrap the App Shell (1 week)
 Goal: A usable, installable shell that feels like a phone app.
 - Routing, theming, layout primitives, and navigation header/tab bar.

@@ -30,6 +30,8 @@ export const OnboardingPage: React.FC = () => {
       ageGroup,
       currentLevel: 1,
       totalPoints: 0,
+      streakCount: 0,
+      lastStreakDate: null,
     };
 
     await setUser(newUser);

@@ -8,6 +8,7 @@ import { colors, fontSize, fontWeight, spacing, borderRadius, shadows } from '..
 import type { Lesson } from '../models/lesson';
 import { analytics } from '../services/analytics';
 import { Icon } from '../components/Icon';
+import { Chip } from '../components/Chip';
 
 export const SkillTreePage: React.FC = () => {
   const navigate = useNavigate();
@@ -93,6 +94,15 @@ export const SkillTreePage: React.FC = () => {
                 alignItems: 'center',
               }}
             >
+              {/* Streak chip */}
+              {typeof user.streakCount === 'number' && user.streakCount > 0 && (
+                <Chip
+                  label={`${user.streakCount} day${user.streakCount === 1 ? '' : 's'} 🔥`}
+                  color="warning"
+                  variant="filled"
+                  size="medium"
+                />
+              )}
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: fontSize.xs, opacity: 0.8 }}>Points</div>
                 <div style={{ fontSize: fontSize.xl, fontWeight: fontWeight.bold }}>
@@ -150,7 +160,7 @@ export const SkillTreePage: React.FC = () => {
                   >
                     {/* Transparent overlay to track clicks */}
                     <div
-                      onClick={(e) => {
+                      onClick={() => {
                         if (status !== 'locked') {
                           analytics.trackEvent('lesson_card_click', {
                             lessonId: lesson.id,
