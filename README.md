@@ -55,3 +55,7 @@ The app is optimized for mobile devices with:
 - React Router for navigation
 - LocalStorage for persistence
 - CSS-in-JS styling
+
+## Credits
+
+- Nursery rhyme audio sourced from BabyMozart (nursery_rhymes). Used for educational, non-commercial purposes with attribution.
