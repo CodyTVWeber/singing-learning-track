@@ -3,11 +3,13 @@ import { colors, spacing, borderRadius, fontSize, fontWeight, shadows } from '..
 import { Button } from './Button';
 import { Progress } from './Progress';
 import { Icon } from './Icon';
+import { detectPitchAutocorrelation, PitchAnalysisResult } from '../services/pitch';
 
 interface AudioRecorderProps {
   maxDuration?: number; // in seconds
   onRecordingComplete?: (audioBlob: Blob, audioUrl: string, volumeData: number[]) => void;
   onVolumeChange?: (volume: number) => void;
+  onPitchChange?: (result: PitchAnalysisResult) => void;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -16,6 +18,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
   maxDuration = 10,
   onRecordingComplete,
   onVolumeChange,
+  onPitchChange,
   className = '',
   style,
 }) => {
@@ -87,6 +90,22 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
     setCurrentVolume(normalizedVolume);
     setVolumeHistory(prev => [...prev, normalizedVolume]);
     onVolumeChange?.(normalizedVolume);
+
+    // Pitch analysis (if requested)
+    if (onPitchChange && audioContextRef.current) {
+      const floatBuffer = new Float32Array(analyser.fftSize);
+      if ((analyser as any).getFloatTimeDomainData) {
+        (analyser as any).getFloatTimeDomainData(floatBuffer);
+      } else {
+        // Fallback: convert bytes to float [-1,1]
+        for (let i = 0; i < dataArray.length; i++) {
+          floatBuffer[i] = (dataArray[i] - 128) / 128;
+        }
+      }
+      const sampleRate = audioContextRef.current.sampleRate;
+      const result = detectPitchAutocorrelation(floatBuffer, sampleRate);
+      onPitchChange(result);
+    }
 
     // Draw waveform (time-domain samples)
     const canvas = waveformCanvasRef.current;

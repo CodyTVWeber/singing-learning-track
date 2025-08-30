@@ -7,6 +7,8 @@ import { Button } from '../components/Button';
 import { Card } from '../components/Card';
 import { Container } from '../components/Container';
 import { EchoLesson } from '../components/EchoLesson';
+import { ReferenceAudio } from '../components/ReferenceAudio';
+import { PitchPractice } from '../components/PitchPractice';
 import { Icon } from '../components/Icon';
 import { colors, fontSize, fontWeight, spacing } from '../theme/theme';
 
@@ -253,6 +255,7 @@ export const LessonPage: React.FC = () => {
                 Step {currentStep + 1} of {regularContent.steps.length}
               </h2>
               
+              {/* Instruction text */}
               <p
                 style={{
                   fontSize: fontSize.xl,
@@ -263,6 +266,20 @@ export const LessonPage: React.FC = () => {
               >
                 {regularContent.steps[currentStep]}
               </p>
+
+              {/* Reference audio or tones, if defined */}
+              {regularContent.audio && (
+                <div style={{ marginBottom: spacing.lg }}>
+                  <ReferenceAudio audioId={regularContent.audio} />
+                </div>
+              )}
+
+              {/* For sound lessons, provide pitch practice to verify notes */}
+              {lesson.type === 'sound' && (
+                <div style={{ marginBottom: spacing.lg }}>
+                  <PitchPractice audioId={regularContent.audio} />
+                </div>
+              )}
 
               <div
                 style={{
