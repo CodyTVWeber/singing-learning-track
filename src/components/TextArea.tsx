@@ -19,6 +19,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(({
   style,
   onFocus,
   onBlur,
+  children: _children,
   ...props
 }, ref) => {
   const [isFocused, setIsFocused] = useState(false);
