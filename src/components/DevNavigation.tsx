@@ -8,7 +8,7 @@ export const DevNavigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   // Only show in development
-  if (process.env.NODE_ENV !== 'development') {
+  if (!import.meta.env.DEV) {
     return null;
   }
 
