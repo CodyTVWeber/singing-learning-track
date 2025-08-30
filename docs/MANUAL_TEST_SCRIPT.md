@@ -85,7 +85,7 @@ Check that the following events were tracked in order:
 4. `recording_completed` (with averageVolume)
 5. `lesson_completed` (with score and passed status)
 6. `points_earned` (with points value)
-7. `streak_updated` (if first lesson of the day)
+7. `streak_started` (first completion of a new streak) OR `streak_incremented` (continuation from yesterday)
 
 ## Edge Cases to Test
 
@@ -114,3 +114,27 @@ Check that the following events were tracked in order:
 - Placeholder audio file is used (/audio/placeholder.mp3)
 - In production, real audio files would be provided
 - Analytics are logged to console in development mode
+
+---
+
+## Daily Streak Scenarios
+
+### A. First Day Streak Start
+- [ ] Ensure you are a fresh user (use onboarding or clear `kooka_sing_user` in LocalStorage)
+- [ ] Complete the first lesson
+- [ ] Verify a streak chip shows "1 day 🔥" in the skill tree header
+- [ ] Verify a `streak_started` analytics event fired with `{ streakCount: 1 }`
+
+### B. Next Day Streak Increment (simulate)
+To simulate the next day without waiting:
+1. Open DevTools > Application > Local Storage > `kooka_sing_user`
+2. Edit the JSON value for `lastStreakDate` to yesterday's date (YYYY-MM-DD)
+3. Refresh the app
+4. Complete any lesson
+5. Verify the streak chip shows "2 days 🔥"
+6. Verify a `streak_incremented` analytics event fired with `{ streakCount: 2 }`
+
+### C. Same-Day Multiple Completions
+- [ ] Complete more than one lesson on the same calendar day
+- [ ] Verify the streak count does not increase again that day
+- [ ] No additional `streak_started`/`streak_incremented` events should fire
