@@ -1,0 +1,60 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Tabs > renders underline variant snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class=""
+    style="width: 100%;"
+  >
+    <div
+      role="tablist"
+      style="display: flex; align-items: center; margin-bottom: 0px; gap: 0; padding: 0px; background-color: transparent; border-radius: 0;"
+    >
+      <button
+        aria-controls="tabpanel-a"
+        aria-selected="true"
+        role="tab"
+        style="flex: 0 0 auto; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 8px 16px; background-color: transparent; cursor: pointer; opacity: 1; transition: 150ms ease-in-out; position: relative; font-size: 16px; font-weight: 600; color: rgb(139, 105, 82); border-bottom: 3px solid rgb(139, 105, 82); margin-bottom: -2px;"
+      >
+        <span>
+          A
+        </span>
+      </button>
+      <button
+        aria-controls="tabpanel-b"
+        aria-selected="false"
+        role="tab"
+        style="flex: 0 0 auto; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 8px 16px; background-color: transparent; cursor: pointer; opacity: 1; transition: 150ms ease-in-out; position: relative; font-size: 16px; font-weight: 400; color: rgb(109, 76, 65); border-bottom: 3px solid transparent; margin-bottom: -2px;"
+      >
+        <span>
+          B
+        </span>
+      </button>
+    </div>
+    <div
+      aria-labelledby="tab-a"
+      id="tabpanel-a"
+      role="tabpanel"
+      style="padding: 24px; animation: fadeIn 0.3s ease-in-out;"
+    >
+      <div>
+        A
+      </div>
+    </div>
+    <style>
+      
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      
+    </style>
+  </div>
+</DocumentFragment>
+`;
