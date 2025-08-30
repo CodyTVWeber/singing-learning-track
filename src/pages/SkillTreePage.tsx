@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { getAllUnits, isLessonUnlocked } from '../data/units';
@@ -6,6 +6,7 @@ import { Card } from '../components/Card';
 import { Container } from '../components/Container';
 import { colors, fontSize, fontWeight, spacing, borderRadius, shadows } from '../theme/theme';
 import type { Lesson } from '../models/lesson';
+import { analytics } from '../services/analytics';
 
 export const SkillTreePage: React.FC = () => {
   const navigate = useNavigate();
@@ -34,6 +35,13 @@ export const SkillTreePage: React.FC = () => {
     navigate('/onboarding');
     return null;
   }
+
+  useEffect(() => {
+    analytics.trackEvent('map_loaded', {
+      unitsCount: units.length,
+      completedLessons: completedLessonIds.length,
+    });
+  }, [units.length, completedLessonIds.length]);
 
   return (
     <div
@@ -145,6 +153,18 @@ export const SkillTreePage: React.FC = () => {
                       overflow: 'hidden',
                     }}
                   >
+                    {/* Transparent overlay to track clicks */}
+                    <div
+                      onClick={(e) => {
+                        if (status !== 'locked') {
+                          analytics.trackEvent('lesson_card_click', {
+                            lessonId: lesson.id,
+                            status,
+                          });
+                        }
+                      }}
+                      style={{ position: 'absolute', inset: 0 }}
+                    />
                     <div
                       style={{
                         display: 'flex',
