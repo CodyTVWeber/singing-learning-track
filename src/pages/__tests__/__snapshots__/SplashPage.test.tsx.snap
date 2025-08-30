@@ -1,0 +1,48 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`SplashPage > renders and matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background-color: rgb(250, 247, 242); padding: 32px;"
+  >
+    <img
+      alt="Kooka the Kookaburra"
+      src="/img/kooka-burra-waiving.png"
+      style="width: 200px; margin-bottom: 32px; animation: float 3s ease-in-out infinite;"
+    />
+    <h1
+      style="font-size: 48px; font-weight: 700; color: white; margin-bottom: 16px; text-align: center;"
+    >
+      Kooka Sing
+    </h1>
+    <p
+      style="font-size: 20px; color: rgb(109, 76, 65); margin-bottom: 32px; text-align: center;"
+    >
+      Learn to sing with Kooka!
+    </p>
+    <div
+      style="display: inline-block; width: 40px; height: 40px;"
+    >
+      <style>
+        
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        
+      </style>
+      <div
+        style="width: 100%; height: 100%; border: 3px solid rgb(215, 204, 200); border-top: 3px solid rgb(139, 105, 82); border-radius: 50%; animation: spin 1s linear infinite;"
+      />
+    </div>
+    <style>
+      
+          @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+          }
+        
+    </style>
+  </div>
+</DocumentFragment>
+`;
