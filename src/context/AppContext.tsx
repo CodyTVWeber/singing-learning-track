@@ -42,7 +42,16 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     try {
       const loadedUser = await getUser();
       if (loadedUser) {
-        setUserState(loadedUser);
+        // Migrate missing streak fields for existing users
+        const migratedUser: UserProfile = {
+          ...loadedUser,
+          streakCount: typeof (loadedUser as any).streakCount === 'number' ? (loadedUser as any).streakCount : 0,
+          lastStreakDate: (loadedUser as any).lastStreakDate ?? null,
+        };
+        if (migratedUser !== loadedUser) {
+          await saveUserToStorage(migratedUser);
+        }
+        setUserState(migratedUser);
         const userProgress = await getProgress(loadedUser.id);
         setProgress(userProgress);
       }
@@ -79,13 +88,55 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       return [...prev, newProgress];
     });
 
-    // Update user points only
+    // Update user points and streaks when a lesson is completed
     if (user && newProgress.completed) {
       const safeScore = Number.isFinite(newProgress.score) ? Math.max(0, Math.floor(newProgress.score)) : 0;
-      const updatedUser = {
+
+      // Compute local YYYY-MM-DD for today and yesterday
+      const now = new Date();
+      const toLocalDateString = (date: Date) => {
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, '0');
+        const d = String(date.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+      };
+      const todayDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const todayStr = toLocalDateString(todayDateOnly);
+      const yesterdayDateOnly = new Date(todayDateOnly);
+      yesterdayDateOnly.setDate(todayDateOnly.getDate() - 1);
+      const yesterdayStr = toLocalDateString(yesterdayDateOnly);
+
+      let nextStreak = user.streakCount ?? 0;
+      let nextLastDate = user.lastStreakDate ?? null;
+      let emittedEvent: 'streak_started' | 'streak_incremented' | null = null;
+
+      if (user.lastStreakDate === todayStr) {
+        // Already counted today: no change to streak
+        nextStreak = user.streakCount ?? 0;
+        nextLastDate = todayStr;
+      } else if (user.lastStreakDate === yesterdayStr) {
+        // Continue streak
+        nextStreak = (user.streakCount ?? 0) + 1;
+        nextLastDate = todayStr;
+        emittedEvent = 'streak_incremented';
+      } else {
+        // Start (or restart) streak
+        nextStreak = 1;
+        nextLastDate = todayStr;
+        emittedEvent = 'streak_started';
+      }
+
+      const updatedUser: UserProfile = {
         ...user,
         totalPoints: user.totalPoints + safeScore,
-      } as UserProfile;
+        streakCount: nextStreak,
+        lastStreakDate: nextLastDate,
+      };
+
+      if (emittedEvent) {
+        analytics.trackEvent(emittedEvent, { streakCount: nextStreak });
+      }
+
       await setUser(updatedUser);
     }
   };
