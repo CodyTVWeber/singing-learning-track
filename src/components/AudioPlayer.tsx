@@ -11,6 +11,7 @@ interface AudioPlayerProps {
   autoPlay?: boolean;
   loop?: boolean;
   variant?: 'simple' | 'full';
+  onPlay?: () => void;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -23,6 +24,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
   autoPlay = false,
   loop = false,
   variant = 'simple',
+  onPlay,
   className = '',
   style,
 }) => {
@@ -57,6 +59,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
         audioRef.current.pause();
       } else {
         audioRef.current.play();
+        onPlay?.();
       }
       setIsPlaying(!isPlaying);
     }
