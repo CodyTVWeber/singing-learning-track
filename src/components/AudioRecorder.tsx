@@ -31,6 +31,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
+  const waveformCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const animationFrameRef = useRef<number | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -41,12 +42,18 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
   // Initialize audio context and analyser
   const initializeAudioContext = useCallback(async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        } as MediaTrackConstraints,
+      });
       streamRef.current = stream;
 
       audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
       analyserRef.current = audioContextRef.current.createAnalyser();
-      analyserRef.current.fftSize = 2048;
+      analyserRef.current.fftSize = 1024;
 
       const source = audioContextRef.current.createMediaStreamSource(stream);
       source.connect(analyserRef.current);
@@ -63,16 +70,53 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
   const analyzeVolume = useCallback(() => {
     if (!analyserRef.current || !isRecording) return;
 
-    const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
-    analyserRef.current.getByteFrequencyData(dataArray);
+    const analyser = analyserRef.current;
+    const dataArray = new Uint8Array(analyser.fftSize);
+    analyser.getByteTimeDomainData(dataArray);
 
     // Calculate average volume (0-100)
-    const average = dataArray.reduce((sum, value) => sum + value, 0) / dataArray.length;
-    const normalizedVolume = Math.min(100, (average / 255) * 200);
+    // Compute RMS for better volume estimate
+    let sumSquares = 0;
+    for (let i = 0; i < dataArray.length; i++) {
+      const centered = (dataArray[i] - 128) / 128; // -1..1
+      sumSquares += centered * centered;
+    }
+    const rms = Math.sqrt(sumSquares / dataArray.length);
+    const normalizedVolume = Math.min(100, Math.max(0, rms * 140));
 
     setCurrentVolume(normalizedVolume);
     setVolumeHistory(prev => [...prev, normalizedVolume]);
     onVolumeChange?.(normalizedVolume);
+
+    // Draw waveform (time-domain samples)
+    const canvas = waveformCanvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        const { width, height } = canvas;
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = colors.background;
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = currentVolume > 70 ? colors.error : currentVolume > 40 ? colors.warning : colors.primary;
+        ctx.beginPath();
+
+        const sliceWidth = width / dataArray.length;
+        let x = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+          const v = (dataArray[i] - 128) / 128; // -1..1
+          const y = height / 2 + v * (height / 2 - 4);
+          if (i === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+          x += sliceWidth;
+        }
+        ctx.stroke();
+      }
+    }
 
     animationFrameRef.current = requestAnimationFrame(analyzeVolume);
   }, [isRecording, onVolumeChange]);
@@ -87,7 +131,10 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
       chunksRef.current = [];
       setVolumeHistory([]);
       
-      mediaRecorderRef.current = new MediaRecorder(streamRef.current);
+      const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+        ? 'audio/webm;codecs=opus'
+        : 'audio/webm';
+      mediaRecorderRef.current = new MediaRecorder(streamRef.current, { mimeType });
       
       mediaRecorderRef.current.ondataavailable = (event) => {
         if (event.data.size > 0) {
@@ -96,7 +143,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
       };
 
       mediaRecorderRef.current.onstop = () => {
-        const audioBlob = new Blob(chunksRef.current, { type: 'audio/webm' });
+        const audioBlob = new Blob(chunksRef.current, { type: mediaRecorderRef.current?.mimeType || 'audio/webm' });
         const url = URL.createObjectURL(audioBlob);
         setAudioUrl(url);
         onRecordingComplete?.(audioBlob, url, volumeHistory);
@@ -265,6 +312,12 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
                     transition: 'width 100ms ease-out',
                     opacity: 0.3,
                   }}
+                />
+                <canvas
+                  ref={waveformCanvasRef}
+                  width={480}
+                  height={64}
+                  style={{ width: '100%', height: '64px' }}
                 />
                 <Icon 
                   name="play" 

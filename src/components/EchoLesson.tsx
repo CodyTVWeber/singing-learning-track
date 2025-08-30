@@ -53,10 +53,13 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
     setRecordedAudioUrl(audioUrl);
     setVolumeData(volumeHistory);
     
-    // Calculate score based on volume data and duration
+    // Calculate score based on volume stability and average
     const hasSamples = Array.isArray(volumeHistory) && volumeHistory.length > 0;
     const avgVolume = hasSamples ? volumeHistory.reduce((sum, vol) => sum + vol, 0) / volumeHistory.length : 0;
-    const rawScore = hasSamples ? (avgVolume / 70) * 100 : 0;
+    const variance = hasSamples ? volumeHistory.reduce((acc, v) => acc + Math.pow(v - avgVolume, 2), 0) / volumeHistory.length : 0;
+    const stability = hasSamples ? Math.max(0, 100 - Math.sqrt(variance) * 5) : 0; // 0..100
+    const loudnessScore = hasSamples ? Math.min(100, (avgVolume / 60) * 100) : 0;
+    const rawScore = hasSamples ? 0.6 * loudnessScore + 0.4 * stability : 0;
     const clampedScore = Math.min(100, Math.max(0, rawScore));
     const finalScore = Math.floor(clampedScore);
     
