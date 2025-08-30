@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { colors, spacing, fontSize, borderRadius, shadows, transitions } from '../theme/theme';
+import { Icon } from './Icon';
 
 export const DevNavigation: React.FC = () => {
   const navigate = useNavigate();
@@ -99,7 +100,7 @@ export const DevNavigation: React.FC = () => {
           e.currentTarget.style.transform = 'scale(1)';
         }}
       >
-        🛠️
+        <Icon name="settings" color="white" />
       </button>
 
       <div style={menuStyles}>

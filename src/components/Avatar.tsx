@@ -175,7 +175,7 @@ export const AvatarGroup: React.FC<AvatarGroupProps> = ({
         <div style={remainingStyles}>
           <Avatar
             name={`+${remainingCount}`}
-            size={React.isValidElement(visibleChildren[0]) ? visibleChildren[0].props.size : 'medium'}
+            size={React.isValidElement(visibleChildren[0]) ? (visibleChildren[0] as React.ReactElement<{ size?: 'small' | 'medium' | 'large' | number }>).props.size ?? 'medium' : 'medium'}
           />
         </div>
       )}

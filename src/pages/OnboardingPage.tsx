@@ -7,6 +7,7 @@ import { Button } from '../components/Button';
 import { Card } from '../components/Card';
 import { Container } from '../components/Container';
 import { colors, fontSize, fontWeight, spacing, borderRadius } from '../theme/theme';
+import { Icon } from '../components/Icon';
 
 export const OnboardingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -133,9 +134,9 @@ export const OnboardingPage: React.FC = () => {
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.md }}>
               {[
-                { value: 'kid' as const, label: '👶 Under 12', emoji: '🎈' },
-                { value: 'teen' as const, label: '🎸 13-17', emoji: '🎵' },
-                { value: 'adult' as const, label: '🎤 18+', emoji: '🎭' },
+                { value: 'kid' as const, label: 'Under 12' },
+                { value: 'teen' as const, label: '13-17' },
+                { value: 'adult' as const, label: '18+' },
               ].map((option) => (
                 <button
                   key={option.value}
@@ -152,13 +153,14 @@ export const OnboardingPage: React.FC = () => {
                     fontWeight: fontWeight.medium,
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between',
+                    justifyContent: 'flex-start',
+                    gap: spacing.md,
                     transition: 'all 300ms',
                     cursor: 'pointer',
                   }}
                 >
+                  <Icon name="person" />
                   <span>{option.label}</span>
-                  <span style={{ fontSize: fontSize.xxl }}>{option.emoji}</span>
                 </button>
               ))}
             </div>

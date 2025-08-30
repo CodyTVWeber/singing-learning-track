@@ -1,7 +1,8 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import React, { Component } from 'react';
+import type { ErrorInfo, ReactNode } from 'react';
 import { colors, spacing, borderRadius, fontSize, fontWeight } from '../theme/theme';
 import { Button } from './Button';
-import { Alert } from './Alert';
+// import { Alert } from './Alert';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
