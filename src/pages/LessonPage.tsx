@@ -212,7 +212,6 @@ export const LessonPage: React.FC = () => {
                 alt="Kooka singing"
                 style={{
                   width: '150px',
-                  height: '150px',
                   margin: '0 auto',
                   marginBottom: spacing.xl,
                 }}

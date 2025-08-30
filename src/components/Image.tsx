@@ -152,7 +152,6 @@ export const Image: React.FC<ImageProps> = ({
           alignItems: 'center',
           justifyContent: 'center',
           width: '100%',
-          height: '200px',
           backgroundColor: colors.featherLight,
           color: colors.textLight,
           borderRadius: typeof rounded === 'string' ? borderRadius[rounded] : 

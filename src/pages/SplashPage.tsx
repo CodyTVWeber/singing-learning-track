@@ -39,7 +39,6 @@ export const SplashPage: React.FC = () => {
         alt="Kooka the Kookaburra"
         style={{
           width: '200px',
-          height: '200px',
           marginBottom: spacing.xl,
           animation: 'float 3s ease-in-out infinite',
         }}
