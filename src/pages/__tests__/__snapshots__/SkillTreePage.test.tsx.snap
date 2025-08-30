@@ -73,7 +73,7 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
         <p
           style="font-size: 20px; color: rgb(109, 76, 65); margin-bottom: 24px;"
         >
-          Learn with Kooka
+          Discover your voice with Kooka
         </p>
         <div
           style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;"
@@ -118,7 +118,9 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                 </p>
                 <div
                   style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
-                />
+                >
+                  Echo
+                </div>
               </div>
             </div>
             <div
@@ -403,6 +405,750 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
                 >
                   Practice
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        style="margin-top: 32px;"
+      >
+        <h2
+          style="font-size: 32px; font-weight: 700; color: rgb(93, 64, 55); margin-bottom: 16px;"
+        >
+          Unit 2: Breath & Dynamics
+        </h2>
+        <p
+          style="font-size: 20px; color: rgb(109, 76, 65); margin-bottom: 24px;"
+        >
+          Stronger breath, posture, and volume control
+        </p>
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;"
+        >
+          <div
+            class=""
+            style="background-color: rgb(255, 255, 255); border-radius: 16px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); cursor: not-allowed; transition: all 300ms ease-in-out; opacity: 0.6; position: relative; overflow: hidden;"
+          >
+            <div
+              style="position: absolute; inset: 0;"
+            />
+            <div
+              style="display: flex; align-items: center; gap: 16px;"
+            >
+              <div
+                style="width: 60px; height: 60px; border-radius: 50%; background-color: rgb(215, 204, 200); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0;"
+              >
+                <svg
+                  aria-label="close icon"
+                  class=""
+                  fill="currentColor"
+                  style="width: 28px; height: 28px; color: rgb(161, 136, 127); cursor: default; transition: 150ms ease-in-out;"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </div>
+              <div
+                style="flex: 1 1 0%;"
+              >
+                <h3
+                  style="font-size: 20px; font-weight: 600; color: rgb(93, 64, 55); margin-bottom: 4px;"
+                >
+                  Book Lift Breathing
+                </h3>
+                <p
+                  style="font-size: 16px; color: rgb(109, 76, 65);"
+                >
+                  Feel your belly lift and lower.
+                </p>
+                <div
+                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                >
+                  Practice
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=""
+            style="background-color: rgb(255, 255, 255); border-radius: 16px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); cursor: not-allowed; transition: all 300ms ease-in-out; opacity: 0.6; position: relative; overflow: hidden;"
+          >
+            <div
+              style="position: absolute; inset: 0;"
+            />
+            <div
+              style="display: flex; align-items: center; gap: 16px;"
+            >
+              <div
+                style="width: 60px; height: 60px; border-radius: 50%; background-color: rgb(215, 204, 200); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0;"
+              >
+                <svg
+                  aria-label="close icon"
+                  class=""
+                  fill="currentColor"
+                  style="width: 28px; height: 28px; color: rgb(161, 136, 127); cursor: default; transition: 150ms ease-in-out;"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </div>
+              <div
+                style="flex: 1 1 0%;"
+              >
+                <h3
+                  style="font-size: 20px; font-weight: 600; color: rgb(93, 64, 55); margin-bottom: 4px;"
+                >
+                  Pulse Breath Support
+                </h3>
+                <p
+                  style="font-size: 16px; color: rgb(109, 76, 65);"
+                >
+                  Pff-pff-pff to strengthen your breath.
+                </p>
+                <div
+                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                >
+                  Practice
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=""
+            style="background-color: rgb(255, 255, 255); border-radius: 16px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); cursor: not-allowed; transition: all 300ms ease-in-out; opacity: 0.6; position: relative; overflow: hidden;"
+          >
+            <div
+              style="position: absolute; inset: 0;"
+            />
+            <div
+              style="display: flex; align-items: center; gap: 16px;"
+            >
+              <div
+                style="width: 60px; height: 60px; border-radius: 50%; background-color: rgb(215, 204, 200); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0;"
+              >
+                <svg
+                  aria-label="close icon"
+                  class=""
+                  fill="currentColor"
+                  style="width: 28px; height: 28px; color: rgb(161, 136, 127); cursor: default; transition: 150ms ease-in-out;"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </div>
+              <div
+                style="flex: 1 1 0%;"
+              >
+                <h3
+                  style="font-size: 20px; font-weight: 600; color: rgb(93, 64, 55); margin-bottom: 4px;"
+                >
+                  Loud Lion, Soft Mouse
+                </h3>
+                <p
+                  style="font-size: 16px; color: rgb(109, 76, 65);"
+                >
+                  Change volume while keeping control.
+                </p>
+                <div
+                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                >
+                  Practice
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=""
+            style="background-color: rgb(255, 255, 255); border-radius: 16px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); cursor: not-allowed; transition: all 300ms ease-in-out; opacity: 0.6; position: relative; overflow: hidden;"
+          >
+            <div
+              style="position: absolute; inset: 0;"
+            />
+            <div
+              style="display: flex; align-items: center; gap: 16px;"
+            >
+              <div
+                style="width: 60px; height: 60px; border-radius: 50%; background-color: rgb(215, 204, 200); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0;"
+              >
+                <svg
+                  aria-label="close icon"
+                  class=""
+                  fill="currentColor"
+                  style="width: 28px; height: 28px; color: rgb(161, 136, 127); cursor: default; transition: 150ms ease-in-out;"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </div>
+              <div
+                style="flex: 1 1 0%;"
+              >
+                <h3
+                  style="font-size: 20px; font-weight: 600; color: rgb(93, 64, 55); margin-bottom: 4px;"
+                >
+                  Posture: Tall Like a Tree
+                </h3>
+                <p
+                  style="font-size: 16px; color: rgb(109, 76, 65);"
+                >
+                  Stand balanced for better singing.
+                </p>
+                <div
+                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                >
+                  Practice
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=""
+            style="background-color: rgb(255, 255, 255); border-radius: 16px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); cursor: not-allowed; transition: all 300ms ease-in-out; opacity: 0.6; position: relative; overflow: hidden;"
+          >
+            <div
+              style="position: absolute; inset: 0;"
+            />
+            <div
+              style="display: flex; align-items: center; gap: 16px;"
+            >
+              <div
+                style="width: 60px; height: 60px; border-radius: 50%; background-color: rgb(215, 204, 200); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0;"
+              >
+                <svg
+                  aria-label="close icon"
+                  class=""
+                  fill="currentColor"
+                  style="width: 28px; height: 28px; color: rgb(161, 136, 127); cursor: default; transition: 150ms ease-in-out;"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </div>
+              <div
+                style="flex: 1 1 0%;"
+              >
+                <h3
+                  style="font-size: 20px; font-weight: 600; color: rgb(93, 64, 55); margin-bottom: 4px;"
+                >
+                  Song: You Are My Sunshine
+                </h3>
+                <p
+                  style="font-size: 16px; color: rgb(109, 76, 65);"
+                >
+                  Sing with happy and soft parts.
+                </p>
+                <div
+                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                >
+                  Song
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=""
+            style="background-color: rgb(255, 255, 255); border-radius: 16px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); cursor: not-allowed; transition: all 300ms ease-in-out; opacity: 0.6; position: relative; overflow: hidden;"
+          >
+            <div
+              style="position: absolute; inset: 0;"
+            />
+            <div
+              style="display: flex; align-items: center; gap: 16px;"
+            >
+              <div
+                style="width: 60px; height: 60px; border-radius: 50%; background-color: rgb(215, 204, 200); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0;"
+              >
+                <svg
+                  aria-label="close icon"
+                  class=""
+                  fill="currentColor"
+                  style="width: 28px; height: 28px; color: rgb(161, 136, 127); cursor: default; transition: 150ms ease-in-out;"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </div>
+              <div
+                style="flex: 1 1 0%;"
+              >
+                <h3
+                  style="font-size: 20px; font-weight: 600; color: rgb(93, 64, 55); margin-bottom: 4px;"
+                >
+                  Echo: Hello Sunshine
+                </h3>
+                <p
+                  style="font-size: 16px; color: rgb(109, 76, 65);"
+                >
+                  Listen, then echo the phrase.
+                </p>
+                <div
+                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                >
+                  Echo
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        style="margin-top: 32px;"
+      >
+        <h2
+          style="font-size: 32px; font-weight: 700; color: rgb(93, 64, 55); margin-bottom: 16px;"
+        >
+          Unit 3: Pitch & Articulation
+        </h2>
+        <p
+          style="font-size: 20px; color: rgb(109, 76, 65); margin-bottom: 24px;"
+        >
+          Hit notes and sing words clearly
+        </p>
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;"
+        >
+          <div
+            class=""
+            style="background-color: rgb(255, 255, 255); border-radius: 16px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); cursor: not-allowed; transition: all 300ms ease-in-out; opacity: 0.6; position: relative; overflow: hidden;"
+          >
+            <div
+              style="position: absolute; inset: 0;"
+            />
+            <div
+              style="display: flex; align-items: center; gap: 16px;"
+            >
+              <div
+                style="width: 60px; height: 60px; border-radius: 50%; background-color: rgb(215, 204, 200); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0;"
+              >
+                <svg
+                  aria-label="close icon"
+                  class=""
+                  fill="currentColor"
+                  style="width: 28px; height: 28px; color: rgb(161, 136, 127); cursor: default; transition: 150ms ease-in-out;"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </div>
+              <div
+                style="flex: 1 1 0%;"
+              >
+                <h3
+                  style="font-size: 20px; font-weight: 600; color: rgb(93, 64, 55); margin-bottom: 4px;"
+                >
+                  Tongue Twisters
+                </h3>
+                <p
+                  style="font-size: 16px; color: rgb(109, 76, 65);"
+                >
+                  Clear words: she sells seashells.
+                </p>
+                <div
+                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                >
+                  Practice
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=""
+            style="background-color: rgb(255, 255, 255); border-radius: 16px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); cursor: not-allowed; transition: all 300ms ease-in-out; opacity: 0.6; position: relative; overflow: hidden;"
+          >
+            <div
+              style="position: absolute; inset: 0;"
+            />
+            <div
+              style="display: flex; align-items: center; gap: 16px;"
+            >
+              <div
+                style="width: 60px; height: 60px; border-radius: 50%; background-color: rgb(215, 204, 200); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0;"
+              >
+                <svg
+                  aria-label="close icon"
+                  class=""
+                  fill="currentColor"
+                  style="width: 28px; height: 28px; color: rgb(161, 136, 127); cursor: default; transition: 150ms ease-in-out;"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </div>
+              <div
+                style="flex: 1 1 0%;"
+              >
+                <h3
+                  style="font-size: 20px; font-weight: 600; color: rgb(93, 64, 55); margin-bottom: 4px;"
+                >
+                  Vowel Scales (ah-ee-oo)
+                </h3>
+                <p
+                  style="font-size: 16px; color: rgb(109, 76, 65);"
+                >
+                  Sing 5-note up and down.
+                </p>
+                <div
+                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                >
+                  Sound
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=""
+            style="background-color: rgb(255, 255, 255); border-radius: 16px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); cursor: not-allowed; transition: all 300ms ease-in-out; opacity: 0.6; position: relative; overflow: hidden;"
+          >
+            <div
+              style="position: absolute; inset: 0;"
+            />
+            <div
+              style="display: flex; align-items: center; gap: 16px;"
+            >
+              <div
+                style="width: 60px; height: 60px; border-radius: 50%; background-color: rgb(215, 204, 200); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0;"
+              >
+                <svg
+                  aria-label="close icon"
+                  class=""
+                  fill="currentColor"
+                  style="width: 28px; height: 28px; color: rgb(161, 136, 127); cursor: default; transition: 150ms ease-in-out;"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </div>
+              <div
+                style="flex: 1 1 0%;"
+              >
+                <h3
+                  style="font-size: 20px; font-weight: 600; color: rgb(93, 64, 55); margin-bottom: 4px;"
+                >
+                  Hold a Note (10s)
+                </h3>
+                <p
+                  style="font-size: 16px; color: rgb(109, 76, 65);"
+                >
+                  Steady breath on one pitch.
+                </p>
+                <div
+                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                >
+                  Practice
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=""
+            style="background-color: rgb(255, 255, 255); border-radius: 16px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); cursor: not-allowed; transition: all 300ms ease-in-out; opacity: 0.6; position: relative; overflow: hidden;"
+          >
+            <div
+              style="position: absolute; inset: 0;"
+            />
+            <div
+              style="display: flex; align-items: center; gap: 16px;"
+            >
+              <div
+                style="width: 60px; height: 60px; border-radius: 50%; background-color: rgb(215, 204, 200); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0;"
+              >
+                <svg
+                  aria-label="close icon"
+                  class=""
+                  fill="currentColor"
+                  style="width: 28px; height: 28px; color: rgb(161, 136, 127); cursor: default; transition: 150ms ease-in-out;"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </div>
+              <div
+                style="flex: 1 1 0%;"
+              >
+                <h3
+                  style="font-size: 20px; font-weight: 600; color: rgb(93, 64, 55); margin-bottom: 4px;"
+                >
+                  Pitch Match Game
+                </h3>
+                <p
+                  style="font-size: 16px; color: rgb(109, 76, 65);"
+                >
+                  Same or different notes?
+                </p>
+                <div
+                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                >
+                  Sound
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=""
+            style="background-color: rgb(255, 255, 255); border-radius: 16px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); cursor: not-allowed; transition: all 300ms ease-in-out; opacity: 0.6; position: relative; overflow: hidden;"
+          >
+            <div
+              style="position: absolute; inset: 0;"
+            />
+            <div
+              style="display: flex; align-items: center; gap: 16px;"
+            >
+              <div
+                style="width: 60px; height: 60px; border-radius: 50%; background-color: rgb(215, 204, 200); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0;"
+              >
+                <svg
+                  aria-label="close icon"
+                  class=""
+                  fill="currentColor"
+                  style="width: 28px; height: 28px; color: rgb(161, 136, 127); cursor: default; transition: 150ms ease-in-out;"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </div>
+              <div
+                style="flex: 1 1 0%;"
+              >
+                <h3
+                  style="font-size: 20px; font-weight: 600; color: rgb(93, 64, 55); margin-bottom: 4px;"
+                >
+                  Song: Do-Re-Mi (simple)
+                </h3>
+                <p
+                  style="font-size: 16px; color: rgb(109, 76, 65);"
+                >
+                  Sing the first phrases with actions.
+                </p>
+                <div
+                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                >
+                  Song
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        style="margin-top: 32px;"
+      >
+        <h2
+          style="font-size: 32px; font-weight: 700; color: rgb(93, 64, 55); margin-bottom: 16px;"
+        >
+          Unit 4: Echo & Performance
+        </h2>
+        <p
+          style="font-size: 20px; color: rgb(109, 76, 65); margin-bottom: 24px;"
+        >
+          Echo patterns and perform simple songs
+        </p>
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;"
+        >
+          <div
+            class=""
+            style="background-color: rgb(255, 255, 255); border-radius: 16px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); cursor: not-allowed; transition: all 300ms ease-in-out; opacity: 0.6; position: relative; overflow: hidden;"
+          >
+            <div
+              style="position: absolute; inset: 0;"
+            />
+            <div
+              style="display: flex; align-items: center; gap: 16px;"
+            >
+              <div
+                style="width: 60px; height: 60px; border-radius: 50%; background-color: rgb(215, 204, 200); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0;"
+              >
+                <svg
+                  aria-label="close icon"
+                  class=""
+                  fill="currentColor"
+                  style="width: 28px; height: 28px; color: rgb(161, 136, 127); cursor: default; transition: 150ms ease-in-out;"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </div>
+              <div
+                style="flex: 1 1 0%;"
+              >
+                <h3
+                  style="font-size: 20px; font-weight: 600; color: rgb(93, 64, 55); margin-bottom: 4px;"
+                >
+                  Echo: Up and Down
+                </h3>
+                <p
+                  style="font-size: 16px; color: rgb(109, 76, 65);"
+                >
+                  Echo short up/down patterns.
+                </p>
+                <div
+                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                >
+                  Echo
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=""
+            style="background-color: rgb(255, 255, 255); border-radius: 16px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); cursor: not-allowed; transition: all 300ms ease-in-out; opacity: 0.6; position: relative; overflow: hidden;"
+          >
+            <div
+              style="position: absolute; inset: 0;"
+            />
+            <div
+              style="display: flex; align-items: center; gap: 16px;"
+            >
+              <div
+                style="width: 60px; height: 60px; border-radius: 50%; background-color: rgb(215, 204, 200); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0;"
+              >
+                <svg
+                  aria-label="close icon"
+                  class=""
+                  fill="currentColor"
+                  style="width: 28px; height: 28px; color: rgb(161, 136, 127); cursor: default; transition: 150ms ease-in-out;"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </div>
+              <div
+                style="flex: 1 1 0%;"
+              >
+                <h3
+                  style="font-size: 20px; font-weight: 600; color: rgb(93, 64, 55); margin-bottom: 4px;"
+                >
+                  Rhythm Sticks
+                </h3>
+                <p
+                  style="font-size: 16px; color: rgb(109, 76, 65);"
+                >
+                  Tap steady beats and patterns.
+                </p>
+                <div
+                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                >
+                  Practice
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=""
+            style="background-color: rgb(255, 255, 255); border-radius: 16px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); cursor: not-allowed; transition: all 300ms ease-in-out; opacity: 0.6; position: relative; overflow: hidden;"
+          >
+            <div
+              style="position: absolute; inset: 0;"
+            />
+            <div
+              style="display: flex; align-items: center; gap: 16px;"
+            >
+              <div
+                style="width: 60px; height: 60px; border-radius: 50%; background-color: rgb(215, 204, 200); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0;"
+              >
+                <svg
+                  aria-label="close icon"
+                  class=""
+                  fill="currentColor"
+                  style="width: 28px; height: 28px; color: rgb(161, 136, 127); cursor: default; transition: 150ms ease-in-out;"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </div>
+              <div
+                style="flex: 1 1 0%;"
+              >
+                <h3
+                  style="font-size: 20px; font-weight: 600; color: rgb(93, 64, 55); margin-bottom: 4px;"
+                >
+                  Pop the Consonants
+                </h3>
+                <p
+                  style="font-size: 16px; color: rgb(109, 76, 65);"
+                >
+                  Crisp consonants in a song.
+                </p>
+                <div
+                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                >
+                  Practice
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=""
+            style="background-color: rgb(255, 255, 255); border-radius: 16px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); cursor: not-allowed; transition: all 300ms ease-in-out; opacity: 0.6; position: relative; overflow: hidden;"
+          >
+            <div
+              style="position: absolute; inset: 0;"
+            />
+            <div
+              style="display: flex; align-items: center; gap: 16px;"
+            >
+              <div
+                style="width: 60px; height: 60px; border-radius: 50%; background-color: rgb(215, 204, 200); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0;"
+              >
+                <svg
+                  aria-label="close icon"
+                  class=""
+                  fill="currentColor"
+                  style="width: 28px; height: 28px; color: rgb(161, 136, 127); cursor: default; transition: 150ms ease-in-out;"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </div>
+              <div
+                style="flex: 1 1 0%;"
+              >
+                <h3
+                  style="font-size: 20px; font-weight: 600; color: rgb(93, 64, 55); margin-bottom: 4px;"
+                >
+                  Hymn: How Great Thou Art (simple)
+                </h3>
+                <p
+                  style="font-size: 16px; color: rgb(109, 76, 65);"
+                >
+                  Sing a simple hymn verse with feeling.
+                </p>
+                <div
+                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                >
+                  Song
                 </div>
               </div>
             </div>
