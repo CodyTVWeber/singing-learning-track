@@ -20,6 +20,15 @@ export const Grid: React.FC<GridProps> = ({
   className = '',
   style,
 }) => {
+  const stableHash = (input: string) => {
+    let hash = 0;
+    for (let i = 0; i < input.length; i++) {
+      hash = (hash << 5) - hash + input.charCodeAt(i);
+      hash |= 0;
+    }
+    return Math.abs(hash).toString(36);
+  };
+
   const getColumns = () => {
     if (typeof columns === 'number') {
       return `repeat(${columns}, 1fr)`;
@@ -41,7 +50,7 @@ export const Grid: React.FC<GridProps> = ({
 
   // Add responsive column styles if columns is an object
   if (typeof columns === 'object') {
-    const gridId = `responsive-grid-${Math.random().toString(36).substr(2, 9)}`;
+    const gridId = `responsive-grid-${stableHash(JSON.stringify(columns))}`;
     const responsiveStyles = `
       @media (max-width: ${breakpoints.mobile}) {
         .${gridId} {
@@ -93,6 +102,15 @@ export const GridItem: React.FC<GridItemProps> = ({
   className = '',
   style,
 }) => {
+  const stableHash = (input: string) => {
+    let hash = 0;
+    for (let i = 0; i < input.length; i++) {
+      hash = (hash << 5) - hash + input.charCodeAt(i);
+      hash |= 0;
+    }
+    return Math.abs(hash).toString(36);
+  };
+
   const getSpan = () => {
     if (typeof span === 'number') {
       return span;
@@ -108,7 +126,7 @@ export const GridItem: React.FC<GridItemProps> = ({
 
   // Add responsive span styles if span is an object
   if (typeof span === 'object') {
-    const itemId = `responsive-grid-item-${Math.random().toString(36).substr(2, 9)}`;
+    const itemId = `responsive-grid-item-${stableHash(JSON.stringify(span))}`;
     const responsiveStyles = `
       @media (max-width: ${breakpoints.mobile}) {
         .${itemId} {
