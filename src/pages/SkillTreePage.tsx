@@ -91,13 +91,6 @@ export const SkillTreePage: React.FC = () => {
                   {user.totalPoints}
                 </div>
               </div>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: fontSize.xs, opacity: 0.8 }}>Streak</div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: spacing.xs }}>
-                  <Icon name="star" />
-                  <span style={{ fontSize: fontSize.xl, fontWeight: fontWeight.bold }}>{user.streak}</span>
-                </div>
-              </div>
             </div>
           </div>
         </Container>

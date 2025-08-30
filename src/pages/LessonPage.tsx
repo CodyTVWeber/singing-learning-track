@@ -52,14 +52,15 @@ export const LessonPage: React.FC = () => {
       userId: user.id,
       lessonId: lesson.id,
       completed: true,
-      score,
+      score: Number.isFinite(score) ? Math.max(0, Math.floor(score)) : 0,
       completedDate: new Date(),
     });
   };
 
   const handleEchoComplete = async (score: number, _audioUrl: string) => {
     // Award 10 base points plus performance score
-    const totalScore = 10 + Math.floor(score * 0.9);
+    const raw = 10 + score * 0.9;
+    const totalScore = Number.isFinite(raw) ? Math.max(0, Math.min(100, Math.floor(raw))) : 0;
     await handleComplete(totalScore);
   };
 

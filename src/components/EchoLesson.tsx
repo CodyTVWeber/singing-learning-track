@@ -29,8 +29,7 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
   const [hasPlayedAudio, setHasPlayedAudio] = useState(false);
   const [recordedAudioUrl, setRecordedAudioUrl] = useState<string | null>(null);
   const [score, setScore] = useState(0);
-  // Keep for potential future analytics: suppress TS unused by referencing in debug flag
-  const [volumeData, setVolumeData] = useState<number[]>([]);
+  const [_volumeData, setVolumeData] = useState<number[]>([]);
 
   useEffect(() => {
     // Track lesson start
@@ -55,16 +54,16 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
     setVolumeData(volumeHistory);
     
     // Calculate score based on volume data and duration
-    const avgVolume = volumeHistory.reduce((sum, vol) => sum + vol, 0) / volumeHistory.length;
-    const volumeScore = Math.min(100, Math.max(0, (avgVolume / 70) * 100));
-    const finalScore = Math.floor(volumeScore);
+    const hasSamples = Array.isArray(volumeHistory) && volumeHistory.length > 0;
+    const avgVolume = hasSamples ? volumeHistory.reduce((sum, vol) => sum + vol, 0) / volumeHistory.length : 0;
+    const rawScore = hasSamples ? (avgVolume / 70) * 100 : 0;
+    const clampedScore = Math.min(100, Math.max(0, rawScore));
+    const finalScore = Math.floor(clampedScore);
     
     setScore(finalScore);
     setCurrentStep('review');
     
-    // Reference volumeData to satisfy noUnusedLocals when debugging
-    const _debug = volumeData.length;
-    analytics.trackEvent('recording_completed', { averageVolume: avgVolume, samples: _debug });
+    analytics.trackEvent('recording_completed', { averageVolume: avgVolume, samples: volumeHistory.length });
   };
 
   const handleTryAgain = () => {
