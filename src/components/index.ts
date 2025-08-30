@@ -38,12 +38,14 @@ export { Image } from './Image';
 export { Icon, IconButton } from './Icon';
 export { Video } from './Video';
 export { AudioPlayer } from './AudioPlayer';
+export { AudioRecorder } from './AudioRecorder';
 
 // Interactive Components
 export { Accordion, Collapsible } from './Accordion';
 export { Tabs } from './Tabs';
 export { Tooltip } from './Tooltip';
 export { Popover } from './Popover';
+export { EchoLesson } from './EchoLesson';
 
 // Utility Components
 export { Divider } from './Divider';
