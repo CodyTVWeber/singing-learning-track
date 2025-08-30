@@ -76,6 +76,41 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
           Discover your voice with Kooka
         </p>
         <div
+          style="max-width: 420px; margin-bottom: 16px;"
+        >
+          <div
+            class=""
+            style="display: flex; flex-direction: column; gap: 8px; width: 100%;"
+          >
+            <div
+              style="display: flex; justify-content: space-between; align-items: center;"
+            >
+              <span
+                style="font-size: 14px; color: rgb(109, 76, 65);"
+              >
+                Unit Progress
+              </span>
+              <span
+                style="font-size: 14px; font-weight: 500; color: rgb(62, 39, 35);"
+              >
+                0%
+              </span>
+            </div>
+            <div
+              aria-label="Unit Progress"
+              aria-valuemax="7"
+              aria-valuemin="0"
+              aria-valuenow="0"
+              role="progressbar"
+              style="width: 100%; height: 8px; background-color: rgb(215, 204, 200); border-radius: 50%; overflow: hidden; position: relative;"
+            >
+              <div
+                style="height: 100%; width: 0%; background-color: rgb(139, 105, 82); transition: 300ms ease-in-out; border-radius: 50%;"
+              />
+            </div>
+          </div>
+        </div>
+        <div
           style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;"
         >
           <div
@@ -460,6 +495,41 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
           Stronger breath, posture, and volume control
         </p>
         <div
+          style="max-width: 420px; margin-bottom: 16px;"
+        >
+          <div
+            class=""
+            style="display: flex; flex-direction: column; gap: 8px; width: 100%;"
+          >
+            <div
+              style="display: flex; justify-content: space-between; align-items: center;"
+            >
+              <span
+                style="font-size: 14px; color: rgb(109, 76, 65);"
+              >
+                Unit Progress
+              </span>
+              <span
+                style="font-size: 14px; font-weight: 500; color: rgb(62, 39, 35);"
+              >
+                0%
+              </span>
+            </div>
+            <div
+              aria-label="Unit Progress"
+              aria-valuemax="6"
+              aria-valuemin="0"
+              aria-valuenow="0"
+              role="progressbar"
+              style="width: 100%; height: 8px; background-color: rgb(215, 204, 200); border-radius: 50%; overflow: hidden; position: relative;"
+            >
+              <div
+                style="height: 100%; width: 0%; background-color: rgb(139, 105, 82); transition: 300ms ease-in-out; border-radius: 50%;"
+              />
+            </div>
+          </div>
+        </div>
+        <div
           style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;"
         >
           <div
@@ -784,6 +854,41 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
           Hit notes and sing words clearly
         </p>
         <div
+          style="max-width: 420px; margin-bottom: 16px;"
+        >
+          <div
+            class=""
+            style="display: flex; flex-direction: column; gap: 8px; width: 100%;"
+          >
+            <div
+              style="display: flex; justify-content: space-between; align-items: center;"
+            >
+              <span
+                style="font-size: 14px; color: rgb(109, 76, 65);"
+              >
+                Unit Progress
+              </span>
+              <span
+                style="font-size: 14px; font-weight: 500; color: rgb(62, 39, 35);"
+              >
+                0%
+              </span>
+            </div>
+            <div
+              aria-label="Unit Progress"
+              aria-valuemax="5"
+              aria-valuemin="0"
+              aria-valuenow="0"
+              role="progressbar"
+              style="width: 100%; height: 8px; background-color: rgb(215, 204, 200); border-radius: 50%; overflow: hidden; position: relative;"
+            >
+              <div
+                style="height: 100%; width: 0%; background-color: rgb(139, 105, 82); transition: 300ms ease-in-out; border-radius: 50%;"
+              />
+            </div>
+          </div>
+        </div>
+        <div
           style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;"
         >
           <div
@@ -1057,6 +1162,41 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
           Echo patterns and perform simple songs
         </p>
         <div
+          style="max-width: 420px; margin-bottom: 16px;"
+        >
+          <div
+            class=""
+            style="display: flex; flex-direction: column; gap: 8px; width: 100%;"
+          >
+            <div
+              style="display: flex; justify-content: space-between; align-items: center;"
+            >
+              <span
+                style="font-size: 14px; color: rgb(109, 76, 65);"
+              >
+                Unit Progress
+              </span>
+              <span
+                style="font-size: 14px; font-weight: 500; color: rgb(62, 39, 35);"
+              >
+                0%
+              </span>
+            </div>
+            <div
+              aria-label="Unit Progress"
+              aria-valuemax="4"
+              aria-valuemin="0"
+              aria-valuenow="0"
+              role="progressbar"
+              style="width: 100%; height: 8px; background-color: rgb(215, 204, 200); border-radius: 50%; overflow: hidden; position: relative;"
+            >
+              <div
+                style="height: 100%; width: 0%; background-color: rgb(139, 105, 82); transition: 300ms ease-in-out; border-radius: 50%;"
+              />
+            </div>
+          </div>
+        </div>
+        <div
           style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;"
         >
           <div
@@ -1263,6 +1403,35 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div
+      style="position: fixed; top: 24px; right: 24px; z-index: 2000; display: flex; flex-direction: column; gap: 8px; pointer-events: none;"
+    >
+      <div
+        style="pointer-events: auto;"
+      >
+        <div
+          role="alert"
+          style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background-color: rgb(111, 168, 220); color: white; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); min-width: 280px; max-width: 400px; font-size: 14px; transform: translateY(0); opacity: 1; transition: 300ms ease-in-out; cursor: pointer;"
+        >
+          <svg
+            fill="currentColor"
+            style="flex-shrink: 0; width: 20px; height: 20px;"
+            viewBox="0 0 20 20"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <span
+            style="flex: 1 1 0%; line-height: 1.4;"
+          >
+            Practice today to keep your streak!
+          </span>
         </div>
       </div>
     </div>

@@ -4,8 +4,11 @@ A mobile-first React web app for learning to sing with Kooka the Kookaburra.
 
 ## Features
 
-- 🎤 Interactive singing lessons
-- 🎯 Progressive skill tree with lesson unlocking
+- 🎤 Interactive singing lessons (Echo, Practice, Sound, Song)
+- 🎯 Progressive skill tree with lesson unlocking and unit progress bars
+- 🔥 Daily streaks with local carryover and reminder toast
+- 🎧 Waveform preview and improved audio recording quality
+- 🌐 Localization scaffold (en base) for UI strings
 - 📱 Mobile-first responsive design
 - 💾 Local storage for offline progress
 - 🎨 Beautiful Kookaburra-themed UI
@@ -50,11 +53,17 @@ The app is optimized for mobile devices with:
 
 ## Technologies
 
-- React 18 with TypeScript
+- React with TypeScript
 - Vite for fast development
 - React Router for navigation
 - LocalStorage for persistence
 - CSS-in-JS styling
+
+## Notes
+
+- i18n: strings live in `src/i18n/`, default locale set in `src/App.tsx`.
+- Streak logic: handled in `src/context/AppContext.tsx` on lesson completion. Reminder toast appears on `SkillTreePage` if no completion today.
+- Unit progress: `SkillTreePage` shows per-unit progress using `Progress` component.
 
 ## Credits
 

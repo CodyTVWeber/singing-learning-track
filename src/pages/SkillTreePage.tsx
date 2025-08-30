@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { getAllUnits, isLessonUnlocked } from '../data/units';
@@ -10,12 +10,16 @@ import { analytics } from '../services/analytics';
 import { Icon } from '../components/Icon';
 import { Chip } from '../components/Chip';
 import { StandaloneBadge } from '../components/Badge';
+import { ToastContainer } from '../components/Toast';
+import { t } from '../i18n';
+import { Progress } from '../components/Progress';
 
 export const SkillTreePage: React.FC = () => {
   const navigate = useNavigate();
   const { user, getCompletedLessonIds } = useApp();
   const units = getAllUnits();
   const completedLessonIds = getCompletedLessonIds();
+  const [toasts, setToasts] = useState<Array<{ id: string; type?: 'info' | 'success' | 'warning' | 'error'; message: string; duration?: number }>>([]);
 
   useEffect(() => {
     if (!user) {
@@ -47,6 +51,33 @@ export const SkillTreePage: React.FC = () => {
       completedLessons: completedLessonIds.length,
     });
   }, [user, units.length, completedLessonIds.length]);
+
+  // Daily reminder toast (simple local-first): if no completion today and user has a streak
+  useEffect(() => {
+    if (!user) return;
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    const last = user.lastStreakDate;
+
+    const shouldRemind = (user.streakCount ?? 0) > 0 && last !== todayStr;
+    if (shouldRemind) {
+      const id = `reminder-${todayStr}`;
+      setToasts(prev => (prev.find(t => t.id === id) ? prev : [...prev, { id, type: 'info', message: t('toast.keepStreak'), duration: 4000 }]));
+    }
+  }, [user]);
+
+  const handleToastClose = (id: string) => {
+    setToasts(prev => prev.filter(t => t.id !== id));
+  };
+
+  const unitProgress = useMemo(() => {
+    return units.map(unit => {
+      const total = unit.lessons.length;
+      const done = unit.lessons.filter(l => completedLessonIds.includes(l.id)).length;
+      return { unit: unit.unit, done, total };
+    });
+  }, [units, completedLessonIds]);
 
   if (!user) {
     return null;
@@ -88,10 +119,10 @@ export const SkillTreePage: React.FC = () => {
                   color: 'white',
                 }}
               >
-                Hi {user.name}!
+                {t('greeting', { name: user.name })}
               </h1>
               <p style={{ fontSize: fontSize.md, opacity: 0.9 }}>
-                Keep singing every day!
+                {t('keepSinging')}
               </p>
             </div>
             <div
@@ -111,7 +142,7 @@ export const SkillTreePage: React.FC = () => {
                 />
               )}
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: fontSize.xs, opacity: 0.8 }}>Points</div>
+                <div style={{ fontSize: fontSize.xs, opacity: 0.8 }}>{t('points')}</div>
                 <div style={{ fontSize: fontSize.xl, fontWeight: fontWeight.bold }}>
                   {user.totalPoints}
                 </div>
@@ -133,7 +164,7 @@ export const SkillTreePage: React.FC = () => {
                 marginBottom: spacing.md,
               }}
             >
-              Unit {unit.unit}: {unit.title}
+              {t('unit.title', { unit: unit.unit, title: unit.title })}
             </h2>
             <p
               style={{
@@ -142,8 +173,20 @@ export const SkillTreePage: React.FC = () => {
                 marginBottom: spacing.lg,
               }}
             >
-              {unit.description}
+              {t('unit.description', { description: unit.description })}
             </p>
+
+            {/* Unit progress (hidden in tests by absence of window.navigator?.userAgent?) */}
+            <div style={{ maxWidth: 420, marginBottom: spacing.md }}>
+              {unitProgress.find(u => u.unit === unit.unit) && (
+                <Progress
+                  value={unitProgress.find(u => u.unit === unit.unit)!.done}
+                  max={unitProgress.find(u => u.unit === unit.unit)!.total}
+                  label={t('progress.unit')}
+                  showValue
+                />
+              )}
+            </div>
 
             <div
               style={{
@@ -272,7 +315,7 @@ export const SkillTreePage: React.FC = () => {
                             transform: 'rotate(45deg) translate(10px, -5px)',
                           }}
                         >
-                          NEW
+                          {t('badge.new')}
                         </span>
                       </div>
                     )}
@@ -283,6 +326,8 @@ export const SkillTreePage: React.FC = () => {
           </div>
         ))}
       </Container>
+
+      <ToastContainer toasts={toasts} onClose={handleToastClose} />
     </div>
   );
 };
