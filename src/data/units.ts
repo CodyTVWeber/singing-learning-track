@@ -6,7 +6,7 @@ export const sampleLessons: Lesson[] = [
     level: 1,
     unit: 1,
     position: 1,
-    title: '🔊 Echo with Kooka',
+    title: 'Echo with Kooka',
     type: 'echo',
     description: 'Listen and repeat!',
     content: JSON.stringify({
@@ -24,7 +24,7 @@ export const sampleLessons: Lesson[] = [
     level: 1,
     unit: 1,
     position: 2,
-    title: '🎈 Belly Breathing',
+    title: 'Belly Breathing',
     type: 'practice',
     description: 'Blow up your belly!',
     content: JSON.stringify({
@@ -41,11 +41,11 @@ export const sampleLessons: Lesson[] = [
     level: 1,
     unit: 1,
     position: 3,
-    title: '🎵 High & Low',
+    title: 'High & Low',
     type: 'sound',
     description: 'Copy the sounds!',
     content: JSON.stringify({
-      steps: ["Listen to baby bird 🐣", "Listen to papa bird 🦅", "Copy each sound", "Find YOUR voice"],
+      steps: ["Listen to baby bird", "Listen to papa bird", "Copy each sound", "Find YOUR voice"],
       visual: "bird-family",
       audio: "pitch-examples"
     }),
@@ -58,11 +58,11 @@ export const sampleLessons: Lesson[] = [
     level: 1,
     unit: 1,
     position: 4,
-    title: '😄 Kooka Laugh Song',
+    title: 'Kooka Laugh Song',
     type: 'song',
     description: 'Sing along!',
     content: JSON.stringify({
-      steps: ["Watch Kooka sing", "Tap the rhythm 👏", "Copy the laugh", "Sing together!"],
+      steps: ["Watch Kooka sing", "Tap the rhythm", "Copy the laugh", "Sing together!"],
       visual: "kooka-song-video",
       audio: "kookaburra-song"
     }),
@@ -75,11 +75,11 @@ export const sampleLessons: Lesson[] = [
     level: 1,
     unit: 1,
     position: 5,
-    title: '👏 Clap the Beat',
+    title: 'Clap the Beat',
     type: 'practice',
     description: 'Follow the rhythm!',
     content: JSON.stringify({
-      steps: ["Watch hands clap 👏", "Copy the pattern", "Slow... then fast!", "Make your own beat"],
+      steps: ["Watch hands clap", "Copy the pattern", "Slow... then fast!", "Make your own beat"],
       visual: "clapping-animation",
       audio: "rhythm-patterns"
     }),
@@ -92,7 +92,7 @@ export const sampleLessons: Lesson[] = [
     level: 1,
     unit: 1,
     position: 6,
-    title: '🐱 Animal Voices',
+    title: 'Animal Voices',
     type: 'sound',
     description: 'Be the animals!',
     content: JSON.stringify({
@@ -109,7 +109,7 @@ export const sampleLessons: Lesson[] = [
     level: 1,
     unit: 1,
     position: 7,
-    title: '🔊 Echo Echo',
+    title: 'Echo Echo',
     type: 'practice',
     description: 'Copy me!',
     content: JSON.stringify({
@@ -150,7 +150,7 @@ export interface UnitInfo {
 
 export function getAllUnits(): UnitInfo[] {
   const units: Array<[number, string, string]> = [
-    [1, '🎤 Start Singing!', 'Learn with Kooka'],
+    [1, 'Start Singing!', 'Learn with Kooka'],
   ];
   
   return units.map(([unit, title, description]) => ({

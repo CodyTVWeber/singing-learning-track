@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { colors, spacing, borderRadius, fontSize, fontWeight, shadows, transitions } from '../theme/theme';
+import { colors, spacing, borderRadius, fontSize, fontWeight, shadows } from '../theme/theme';
 import { Button } from './Button';
 import { Progress } from './Progress';
 import { Icon } from './Icon';
@@ -36,7 +36,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const recordingStartTimeRef = useRef<number>(0);
   const chunksRef = useRef<Blob[]>([]);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<number | null>(null);
 
   // Initialize audio context and analyser
   const initializeAudioContext = useCallback(async () => {
@@ -111,7 +111,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
       analyzeVolume();
 
       // Timer for recording duration
-      timerRef.current = setInterval(() => {
+      timerRef.current = window.setInterval(() => {
         const elapsed = (Date.now() - recordingStartTimeRef.current) / 1000;
         setRecordingTime(elapsed);
         
@@ -244,7 +244,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
               <div
                 style={{
                   height: '80px',
-                  backgroundColor: colors.backgroundLight,
+                  backgroundColor: colors.background,
                   borderRadius: borderRadius.md,
                   padding: spacing.md,
                   display: 'flex',
@@ -267,7 +267,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
                   }}
                 />
                 <Icon 
-                  name="mic" 
+                  name="play" 
                   size={32} 
                   color={isPaused ? colors.textLight : colors.primary}
                   style={{ animation: !isPaused ? 'pulse 2s infinite' : 'none' }}
@@ -282,7 +282,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
           {/* Recording Time */}
           {isRecording && (
             <div style={{ marginBottom: spacing.lg }}>
-              <Progress value={(recordingTime / maxDuration) * 100} showLabel={false} />
+              <Progress value={(recordingTime / maxDuration) * 100} showValue={false} />
               <p style={{ marginTop: spacing.sm, fontSize: fontSize.lg, fontWeight: fontWeight.semibold }}>
                 {formatTime(recordingTime)} / {formatTime(maxDuration)}
               </p>
@@ -300,7 +300,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
                   minWidth: '160px',
                 }}
               >
-                <Icon name="mic" size={20} style={{ marginRight: spacing.sm }} />
+                <Icon name="play" size={20} style={{ marginRight: spacing.sm }} />
                 Start Recording
               </Button>
             ) : (
@@ -333,7 +333,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
               marginBottom: spacing.lg,
             }}
           >
-            🎤
+            <Icon name="play" size={60} color={colors.primary} />
           </div>
           
           <h3
@@ -367,7 +367,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
               onClick={resetRecorder}
               size="large"
             >
-              <Icon name="refresh" size={20} style={{ marginRight: spacing.sm }} />
+              <Icon name="skipPrevious" size={20} style={{ marginRight: spacing.sm }} />
               Record Again
             </Button>
           </div>

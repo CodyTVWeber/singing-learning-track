@@ -13,6 +13,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(({
   indeterminate = false,
   className = '',
   style,
+  children: _children,
   ...props
 }, ref) => {
   const containerStyles: React.CSSProperties = {

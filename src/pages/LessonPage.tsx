@@ -7,6 +7,7 @@ import { Button } from '../components/Button';
 import { Card } from '../components/Card';
 import { Container } from '../components/Container';
 import { EchoLesson } from '../components/EchoLesson';
+import { Icon } from '../components/Icon';
 import { colors, fontSize, fontWeight, spacing } from '../theme/theme';
 
 export const LessonPage: React.FC = () => {
@@ -51,14 +52,15 @@ export const LessonPage: React.FC = () => {
       userId: user.id,
       lessonId: lesson.id,
       completed: true,
-      score,
+      score: Number.isFinite(score) ? Math.max(0, Math.floor(score)) : 0,
       completedDate: new Date(),
     });
   };
 
-  const handleEchoComplete = async (score: number, audioUrl: string) => {
+  const handleEchoComplete = async (score: number, _audioUrl: string) => {
     // Award 10 base points plus performance score
-    const totalScore = 10 + Math.floor(score * 0.9);
+    const raw = 10 + score * 0.9;
+    const totalScore = Number.isFinite(raw) ? Math.max(0, Math.min(100, Math.floor(raw))) : 0;
     await handleComplete(totalScore);
   };
 
@@ -87,7 +89,7 @@ export const LessonPage: React.FC = () => {
                 animation: 'bounce 0.5s ease-out',
               }}
             >
-              🎉
+              <Icon name="star" size={80} color={colors.success} />
             </div>
             <h1
               style={{
@@ -179,12 +181,11 @@ export const LessonPage: React.FC = () => {
             background: 'none',
             border: 'none',
             color: 'white',
-            fontSize: fontSize.xl,
             cursor: 'pointer',
             padding: spacing.sm,
           }}
         >
-          ←
+          <Icon name="back" color="white" />
         </button>
         <h1
           style={{

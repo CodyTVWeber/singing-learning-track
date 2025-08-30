@@ -49,16 +49,6 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   } : animation === 'wave' ? {
     overflow: 'hidden',
     position: 'relative',
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      background: `linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent)`,
-      animation: 'skeleton-wave 1.5s linear infinite',
-    },
   } : {};
 
   return (

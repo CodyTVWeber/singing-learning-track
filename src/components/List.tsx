@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors, spacing, borderRadius, fontSize, fontWeight, transitions, shadows } from '../theme/theme';
+import { colors, spacing, borderRadius, fontSize, fontWeight, transitions } from '../theme/theme';
 
 interface ListItemProps {
   children: React.ReactNode;
@@ -161,9 +161,9 @@ export const List: React.FC<ListProps> = ({
     <ul className={className} style={listStyles}>
       {childrenArray.map((child, index) => (
         <React.Fragment key={index}>
-          {React.isValidElement(child) && React.cloneElement(child as React.ReactElement<any>, {
+          {React.isValidElement(child) && React.cloneElement(child as React.ReactElement<{ style?: React.CSSProperties }>, {
             style: {
-              ...(child.props.style || {}),
+              ...((child.props as { style?: React.CSSProperties }).style || {}),
               padding: dense ? `${spacing.sm} ${spacing.lg}` : undefined,
             },
           })}

@@ -29,6 +29,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(({
   style,
   onFocus,
   onBlur,
+  children: _children,
   ...props
 }, ref) => {
   const [isFocused, setIsFocused] = useState(false);

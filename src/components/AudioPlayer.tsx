@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { colors, spacing, borderRadius, fontSize, fontWeight, shadows, transitions } from '../theme/theme';
+import { colors, spacing, borderRadius, fontSize, fontWeight, shadows } from '../theme/theme';
 import { IconButton } from './Icon';
 import { Progress } from './Progress';
 
