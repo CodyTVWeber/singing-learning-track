@@ -53,7 +53,7 @@ export const Header: React.FC<HeaderProps> = ({
   const titleStyles: React.CSSProperties = {
     fontSize: fontSize.xl,
     fontWeight: fontWeight.bold,
-    color: colors.text,
+    color: 'white',
     margin: 0,
   };
 
@@ -78,7 +78,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
         
         <div style={titleSectionStyles}>
-          {title && <h1 style={titleStyles}>{title}</h1>}
+          {title && <h1 style={titleStyles} >{title}</h1>}
           {subtitle && <p style={subtitleStyles}>{subtitle}</p>}
         </div>
         

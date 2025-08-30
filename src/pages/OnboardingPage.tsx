@@ -63,7 +63,7 @@ export const OnboardingPage: React.FC = () => {
             style={{
               fontSize: fontSize.xxl,
               fontWeight: fontWeight.bold,
-              color: colors.primary,
+              color: 'white',
               marginBottom: spacing.sm,
             }}
           >

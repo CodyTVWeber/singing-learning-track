@@ -86,7 +86,7 @@ export const LessonPage: React.FC = () => {
               style={{
                 fontSize: fontSize.xxl,
                 fontWeight: fontWeight.bold,
-                color: colors.success,
+                color: 'white',
                 marginBottom: spacing.md,
               }}
             >
@@ -167,6 +167,7 @@ export const LessonPage: React.FC = () => {
             fontSize: fontSize.xl,
             fontWeight: fontWeight.semibold,
             flex: 1,
+            color: 'white',
           }}
         >
           {lesson.title}

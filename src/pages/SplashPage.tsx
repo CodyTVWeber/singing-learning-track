@@ -48,7 +48,7 @@ export const SplashPage: React.FC = () => {
         style={{
           fontSize: fontSize.xxxl,
           fontWeight: fontWeight.bold,
-          color: colors.primary,
+          color: 'white',
           marginBottom: spacing.md,
           textAlign: 'center',
         }}

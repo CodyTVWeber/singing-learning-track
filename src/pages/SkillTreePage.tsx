@@ -68,6 +68,7 @@ export const SkillTreePage: React.FC = () => {
                   fontSize: fontSize.xl,
                   fontWeight: fontWeight.bold,
                   marginBottom: spacing.xs,
+                  color: 'white',
                 }}
               >
                 Hi {user.name}! 👋
