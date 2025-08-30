@@ -117,9 +117,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Listen and repeat!
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Echo
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(255, 183, 77); color: rgb(93, 64, 55); border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Echo
+                  </span>
                 </div>
               </div>
             </div>
@@ -172,9 +177,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Blow up your belly!
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Practice
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(111, 168, 220); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Practice
+                  </span>
                 </div>
               </div>
             </div>
@@ -218,9 +228,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Copy the sounds!
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Sound
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(124, 179, 66); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Sound
+                  </span>
                 </div>
               </div>
             </div>
@@ -264,9 +279,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Sing along!
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Song
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(139, 105, 82); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Song
+                  </span>
                 </div>
               </div>
             </div>
@@ -310,9 +330,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Follow the rhythm!
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Practice
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(111, 168, 220); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Practice
+                  </span>
                 </div>
               </div>
             </div>
@@ -356,9 +381,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Be the animals!
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Sound
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(124, 179, 66); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Sound
+                  </span>
                 </div>
               </div>
             </div>
@@ -402,9 +432,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Copy me!
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Practice
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(111, 168, 220); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Practice
+                  </span>
                 </div>
               </div>
             </div>
@@ -466,9 +501,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Feel your belly lift and lower.
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Practice
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(111, 168, 220); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Practice
+                  </span>
                 </div>
               </div>
             </div>
@@ -512,9 +552,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Pff-pff-pff to strengthen your breath.
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Practice
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(111, 168, 220); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Practice
+                  </span>
                 </div>
               </div>
             </div>
@@ -558,9 +603,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Change volume while keeping control.
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Practice
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(111, 168, 220); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Practice
+                  </span>
                 </div>
               </div>
             </div>
@@ -604,9 +654,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Stand balanced for better singing.
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Practice
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(111, 168, 220); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Practice
+                  </span>
                 </div>
               </div>
             </div>
@@ -650,9 +705,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Sing with happy and soft parts.
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Song
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(139, 105, 82); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Song
+                  </span>
                 </div>
               </div>
             </div>
@@ -696,9 +756,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Listen, then echo the phrase.
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Echo
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(255, 183, 77); color: rgb(93, 64, 55); border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Echo
+                  </span>
                 </div>
               </div>
             </div>
@@ -760,9 +825,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Clear words: she sells seashells.
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Practice
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(111, 168, 220); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Practice
+                  </span>
                 </div>
               </div>
             </div>
@@ -806,9 +876,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Sing 5-note up and down.
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Sound
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(124, 179, 66); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Sound
+                  </span>
                 </div>
               </div>
             </div>
@@ -852,9 +927,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Steady breath on one pitch.
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Practice
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(111, 168, 220); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Practice
+                  </span>
                 </div>
               </div>
             </div>
@@ -898,9 +978,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Same or different notes?
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Sound
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(124, 179, 66); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Sound
+                  </span>
                 </div>
               </div>
             </div>
@@ -944,9 +1029,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Sing the first phrases with actions.
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Song
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(139, 105, 82); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Song
+                  </span>
                 </div>
               </div>
             </div>
@@ -1008,9 +1098,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Echo short up/down patterns.
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Echo
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(255, 183, 77); color: rgb(93, 64, 55); border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Echo
+                  </span>
                 </div>
               </div>
             </div>
@@ -1054,9 +1149,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Tap steady beats and patterns.
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Practice
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(111, 168, 220); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Practice
+                  </span>
                 </div>
               </div>
             </div>
@@ -1100,9 +1200,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Crisp consonants in a song.
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Practice
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(111, 168, 220); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Practice
+                  </span>
                 </div>
               </div>
             </div>
@@ -1146,9 +1251,14 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
                   Sing a simple hymn verse with feeling.
                 </p>
                 <div
-                  style="margin-top: 8px; font-size: 14px; color: rgb(161, 136, 127);"
+                  style="margin-top: 8px;"
                 >
-                  Song
+                  <span
+                    class=""
+                    style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background-color: rgb(139, 105, 82); color: white; border-radius: 50%; font-size: 12px; font-weight: 500; line-height: 1;"
+                  >
+                    Song
+                  </span>
                 </div>
               </div>
             </div>
