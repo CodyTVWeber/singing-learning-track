@@ -11,6 +11,9 @@ interface AudioPlayerProps {
   autoPlay?: boolean;
   loop?: boolean;
   variant?: 'simple' | 'full';
+  onPlay?: () => void;
+  onPause?: () => void;
+  onEnded?: () => void;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -23,6 +26,9 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
   autoPlay = false,
   loop = false,
   variant = 'simple',
+  onPlay,
+  onPause,
+  onEnded,
   className = '',
   style,
 }) => {
@@ -42,7 +48,10 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
 
     audio.addEventListener('timeupdate', updateTime);
     audio.addEventListener('loadedmetadata', updateDuration);
-    audio.addEventListener('ended', () => setIsPlaying(false));
+    audio.addEventListener('ended', () => {
+      setIsPlaying(false);
+      onEnded?.();
+    });
 
     return () => {
       audio.removeEventListener('timeupdate', updateTime);
@@ -55,8 +64,10 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        onPause?.();
       } else {
         audioRef.current.play();
+        onPlay?.();
       }
       setIsPlaying(!isPlaying);
     }

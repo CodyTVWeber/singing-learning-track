@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { getLessonById } from '../data/units';
-import type { LessonContent } from '../models/lesson';
+import type { LessonContent, EchoLessonContent } from '../models/lesson';
 import { Button } from '../components/Button';
 import { Card } from '../components/Card';
 import { Container } from '../components/Container';
+import { EchoLesson } from '../components/EchoLesson';
 import { colors, fontSize, fontWeight, spacing } from '../theme/theme';
 
 export const LessonPage: React.FC = () => {
@@ -16,7 +17,8 @@ export const LessonPage: React.FC = () => {
   const [isCompleted, setIsCompleted] = useState(false);
   
   const lesson = lessonId ? getLessonById(lessonId) : null;
-  const content: LessonContent | null = lesson ? JSON.parse(lesson.content) : null;
+  const content = lesson ? JSON.parse(lesson.content) : null;
+  const isEchoLesson = lesson?.type === 'echo';
 
   useEffect(() => {
     if (!lesson || !user) {
@@ -28,8 +30,25 @@ export const LessonPage: React.FC = () => {
     return null;
   }
 
+  // Handle Echo Lessons differently
+  if (isEchoLesson && content) {
+    const echoContent = content as EchoLessonContent;
+    return (
+      <EchoLesson
+        promptAudio={echoContent.promptAudio}
+        promptText={echoContent.promptText}
+        onComplete={handleEchoComplete}
+        minVolumeThreshold={echoContent.minVolumeThreshold}
+        targetDuration={echoContent.targetDuration}
+      />
+    );
+  }
+
+  // Regular lesson flow
+  const regularContent = content as LessonContent;
+
   const handleNext = () => {
-    if (currentStep < content.steps.length - 1) {
+    if (currentStep < regularContent.steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else if (!isCompleted) {
       handleComplete();
@@ -42,9 +61,8 @@ export const LessonPage: React.FC = () => {
     }
   };
 
-  const handleComplete = async () => {
+  const handleComplete = async (score: number = 100) => {
     setIsCompleted(true);
-    const score = 100; // Base score for completing a lesson
     
     await updateProgress({
       userId: user.id,
@@ -53,6 +71,12 @@ export const LessonPage: React.FC = () => {
       score,
       completedDate: new Date(),
     });
+  };
+
+  const handleEchoComplete = async (score: number, audioUrl: string) => {
+    // Award 10 base points plus performance score
+    const totalScore = 10 + Math.floor(score * 0.9);
+    await handleComplete(totalScore);
   };
 
   const handleBackToSkillTree = () => {
@@ -109,7 +133,7 @@ export const LessonPage: React.FC = () => {
                 marginBottom: spacing.xl,
               }}
             >
-              +100 points!
+              +{isEchoLesson ? '10-100' : '100'} points!
             </div>
             <Button onClick={handleBackToSkillTree} size="large" fullWidth>
               Back to Lessons
@@ -189,7 +213,7 @@ export const LessonPage: React.FC = () => {
             top: 0,
             height: '100%',
             backgroundColor: colors.secondary,
-            width: `${((currentStep + 1) / content.steps.length) * 100}%`,
+            width: `${((currentStep + 1) / regularContent.steps.length) * 100}%`,
             transition: 'width 300ms ease-out',
           }}
         />
