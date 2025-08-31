@@ -1,60 +1,63 @@
 export const colors = {
-  // Primary palette - inspired by kookaburra colors
-  primary: '#2C5F7C', // Deep ocean blue (kookaburra's wing accents)
-  primaryLight: '#4A90E2', // Bright sky blue
-  primaryDark: '#1E3A5F', // Midnight blue
+  // Primary palette - Kookaburra feather browns
+  primary: '#8B7355', // Main kookaburra brown (medium tan-brown)
+  primaryLight: '#A68B68', // Light tan-brown
+  primaryDark: '#6B5843', // Darker brown
   
-  // Secondary palette - warm earth tones
-  secondary: '#E67E22', // Vibrant sunset orange (beak color)
-  secondaryLight: '#F39C12', // Golden hour
-  secondaryDark: '#D35400', // Deep orange
+  // Secondary palette - Kookaburra accent colors
+  secondary: '#4B708B', // Kookaburra blue (wing accents)
+  secondaryLight: '#6B8CAB', // Lighter blue
+  secondaryDark: '#3B5A7B', // Deeper blue
   
-  // Accent colors - nature inspired
-  accent: '#27AE60', // Forest green
-  accentLight: '#2ECC71', // Fresh leaf green
-  accentDark: '#229954', // Deep forest
+  // Accent colors - Beak and special features
+  accent: '#3C3C3C', // Dark beak color (charcoal)
+  accentLight: '#5C5C5C', // Lighter beak
+  accentDark: '#2C2C2C', // Very dark beak
   
-  // Background colors
-  background: '#FFF9F5', // Warm cream (softer)
-  backgroundDark: '#F5EDE4', // Light sand
+  // Background colors - Inspired by kookaburra's habitat
+  background: '#FAF6F2', // Very light cream (kookaburra belly)
+  backgroundDark: '#F2E8DD', // Light tan
   surface: '#FFFFFF', // Pure white
-  surfaceElevated: '#FCFCFC', // Slightly off-white
+  surfaceElevated: '#FDFBF8', // Slightly warm white
   
   // Text colors
-  text: '#2C3E50', // Charcoal (softer than pure black)
-  textLight: '#7F8C8D', // Soft gray
-  textMuted: '#95A5A6', // Muted gray
+  text: '#3C3C3C', // Dark charcoal (matching beak)
+  textLight: '#6B5843', // Brown text
+  textMuted: '#8B7355', // Muted brown
   textOnPrimary: '#FFFFFF', // White text on primary
   textOnSecondary: '#FFFFFF', // White text on secondary
   
-  // Semantic colors
-  success: '#27AE60', // Emerald green
-  successLight: '#2ECC71', // Light emerald
-  warning: '#F39C12', // Amber
-  warningLight: '#F1C40F', // Light amber
-  error: '#E74C3C', // Coral red
-  errorLight: '#E57373', // Light coral
-  info: '#3498DB', // Info blue
-  infoLight: '#5DADE2', // Light info
+  // Semantic colors - Nature inspired but subtle
+  success: '#7B8B4B', // Eucalyptus green
+  successLight: '#9BAB6B', // Light eucalyptus
+  warning: '#D4824B', // Subtle orange (tiny bit as requested)
+  warningLight: '#E4926B', // Light orange
+  error: '#AB6B4B', // Reddish brown
+  errorLight: '#CB8B6B', // Light reddish brown
+  info: '#4B708B', // Info blue (same as secondary)
+  infoLight: '#6B8CAB', // Light info
   
-  // Special colors
-  featherBrown: '#8B6F47', // Kookaburra feather brown
-  featherCream: '#F5E6D3', // Kookaburra belly cream
-  skyBlue: '#87CEEB', // Australian sky
-  eucalyptusGreen: '#4A7C59', // Eucalyptus leaves
-  sunsetPink: '#FFB6C1', // Australian sunset
+  // Kookaburra-specific colors
+  featherBrown: '#6B5843', // Dark feather brown
+  featherMedium: '#8B7355', // Medium feather brown
+  featherLight: '#D4C4B0', // Light feather cream
+  beakDark: '#2C2C2C', // Dark beak
+  beakLight: '#4C4C4C', // Light beak shade
+  wingBlue: '#4B708B', // Wing accent blue
+  bellyCreamy: '#E8DDD0', // Belly cream color
+  eyeRing: '#F0E6D8', // Light ring around eye
   
-  // Neutral grays
-  gray50: '#FAFAFA',
-  gray100: '#F5F5F5',
-  gray200: '#EEEEEE',
-  gray300: '#E0E0E0',
-  gray400: '#BDBDBD',
-  gray500: '#9E9E9E',
-  gray600: '#757575',
-  gray700: '#616161',
-  gray800: '#424242',
-  gray900: '#212121',
+  // Neutral grays (warmer tones)
+  gray50: '#FAFAF8',
+  gray100: '#F5F5F0',
+  gray200: '#EEEEE8',
+  gray300: '#E0E0D8',
+  gray400: '#BDBDB0',
+  gray500: '#9E9E90',
+  gray600: '#757568',
+  gray700: '#616155',
+  gray800: '#424238',
+  gray900: '#212118',
 } as const;
 
 export const spacing = {
@@ -146,11 +149,13 @@ export const animations = {
 export const gradients = {
   primary: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.primaryLight} 100%)`,
   secondary: `linear-gradient(135deg, ${colors.secondary} 0%, ${colors.secondaryLight} 100%)`,
-  sunset: `linear-gradient(135deg, ${colors.secondary} 0%, ${colors.sunsetPink} 50%, ${colors.primaryLight} 100%)`,
-  ocean: `linear-gradient(135deg, ${colors.primaryDark} 0%, ${colors.primary} 50%, ${colors.skyBlue} 100%)`,
-  forest: `linear-gradient(135deg, ${colors.eucalyptusGreen} 0%, ${colors.accent} 50%, ${colors.accentLight} 100%)`,
-  warm: `linear-gradient(135deg, ${colors.featherBrown} 0%, ${colors.secondary} 50%, ${colors.featherCream} 100%)`,
+  feather: `linear-gradient(135deg, ${colors.featherBrown} 0%, ${colors.featherMedium} 50%, ${colors.featherLight} 100%)`,
+  wing: `linear-gradient(135deg, ${colors.wingBlue} 0%, ${colors.secondaryLight} 100%)`,
+  beak: `linear-gradient(135deg, ${colors.beakDark} 0%, ${colors.beakLight} 100%)`,
+  warm: `linear-gradient(135deg, ${colors.featherLight} 0%, ${colors.bellyCreamy} 50%, ${colors.background} 100%)`,
   soft: `linear-gradient(135deg, ${colors.background} 0%, ${colors.backgroundDark} 100%)`,
+  sunset: `linear-gradient(135deg, ${colors.warning} 0%, ${colors.warningLight} 50%, ${colors.featherLight} 100%)`,
+  forest: `linear-gradient(135deg, ${colors.success} 0%, ${colors.successLight} 100%)`,
 } as const;
 
 export const blurs = {
