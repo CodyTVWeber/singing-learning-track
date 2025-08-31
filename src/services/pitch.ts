@@ -1,4 +1,4 @@
-export interface PitchAnalysisResult {
+interface PitchAnalysisResult {
   frequencyHz: number | null;
   confidence: number; // 0..1
 }
@@ -30,7 +30,7 @@ export function midiNoteToName(midi: number): string {
  * Autocorrelation pitch detector (time-domain).
  * Returns primary frequency with a simple confidence metric.
  */
-export function detectPitchAutocorrelation(timeDomain: Float32Array, sampleRate: number): PitchAnalysisResult {
+function detectPitchAutocorrelation(timeDomain: Float32Array, sampleRate: number): PitchAnalysisResult {
   const input = timeDomain;
   const size = input.length;
   // Normalize to [-1,1]
@@ -82,3 +82,5 @@ export function detectPitchAutocorrelation(timeDomain: Float32Array, sampleRate:
   return { frequencyHz: frequency, confidence };
 }
 
+export { detectPitchAutocorrelation };
+export type { PitchAnalysisResult };

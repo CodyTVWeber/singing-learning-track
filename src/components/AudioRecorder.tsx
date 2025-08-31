@@ -3,7 +3,7 @@ import { colors, spacing, borderRadius, fontSize, fontWeight, shadows } from '..
 import { Button } from './Button';
 import { Progress } from './Progress';
 import { Icon } from './Icon';
-import { detectPitchAutocorrelation, PitchAnalysisResult } from '../services/pitch';
+import { detectPitchAutocorrelation, type PitchAnalysisResult } from '../services/pitch';
 
 interface AudioRecorderProps {
   maxDuration?: number; // in seconds
