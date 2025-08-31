@@ -103,7 +103,7 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
           <Icon name="play" size={60} color={colors.primary} />
         </div>
         <img
-          src="/img/kooka-burra-singing.png"
+          src="/img/kooka-burra-dancing.png"
           alt="Kooka ready to echo"
           style={{
             width: '60px',

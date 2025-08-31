@@ -5,6 +5,11 @@ const PRECACHE_URLS = [
   OFFLINE_URL,
   '/img/kooka-burra-waiving.png',
   '/img/kooka-burra-singing.png',
+  '/img/kooka-burra-flying.png',
+  '/img/kooka-burra-calling-out.png',
+  '/img/kooka-burra-dancing.png',
+  '/img/kooka-burra-flying-blue-sky-clouds-bg.jpg',
+  '/img/kooka-burra-breathing.png',
   '/audio/echo_prompt.mp3',
 ];
 

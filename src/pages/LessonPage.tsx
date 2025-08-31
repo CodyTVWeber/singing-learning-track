@@ -125,7 +125,7 @@ export const LessonPage: React.FC = () => {
         <Container maxWidth="500px" style={{ position: 'relative', zIndex: 1 }}>
           <Card variant="glass" decorative style={{ textAlign: 'center', padding: spacing.xxl }}>
             <img
-              src="/img/kooka-burra-singing.png"
+              src="/img/kooka-burra-dancing.png"
               alt="Kooka celebrating"
               style={{
                 width: '150px',
@@ -365,7 +365,7 @@ export const LessonPage: React.FC = () => {
               {stepTitle}
             </h2>
             <img
-              src="/img/kooka-burra-waiving.png"
+              src="/img/kooka-burra-calling-out.png"
               alt="Kooka guiding you"
               style={{
                 width: '40px',

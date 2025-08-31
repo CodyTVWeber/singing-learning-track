@@ -156,8 +156,8 @@ export const SkillTreePage: React.FC = () => {
             <div style={{ flex: 1, minWidth: '300px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md, marginBottom: spacing.md }}>
                 <img
-                  src="/img/kooka-burra-singing.png"
-                  alt="Kooka singing"
+                  src="/img/kooka-burra-flying.png"
+                  alt="Kooka flying high"
                   style={{
                     width: '80px',
                     height: '80px',
@@ -585,8 +585,8 @@ export const SkillTreePage: React.FC = () => {
           }}
         >
           <img
-            src="/img/kooka-burra-breathing.png"
-            alt="Kooka encouraging you"
+            src="/img/kooka-burra-dancing.png"
+            alt="Kooka dancing with excitement"
                           style={{
                 width: '120px',
                 margin: '0 auto',

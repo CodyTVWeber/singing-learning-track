@@ -130,7 +130,7 @@ export const OnboardingPage: React.FC = () => {
           }}
         >
           <img
-            src="/img/kooka-burra-waiving.png"
+            src="/img/kooka-burra-calling-out.png"
             alt="Kooka the Kookaburra welcoming you"
             style={{
               width: '150px',
@@ -318,12 +318,26 @@ export const OnboardingPage: React.FC = () => {
                   </button>
                 ))}
               </div>
+              <div style={{ textAlign: 'center', marginTop: spacing.lg }}>
+                <img
+                  src="/img/kooka-burra-dancing.png"
+                  alt="Kooka dancing with excitement"
+                  style={{
+                    width: '60px',
+                    height: '60px',
+                    objectFit: 'cover',
+                    borderRadius: '50%',
+                    marginBottom: spacing.md,
+                    opacity: 0.8,
+                  }}
+                />
+              </div>
               <Button
                 onClick={handleComplete}
                 fullWidth
                 size="large"
                 variant="gradient"
-                style={{ marginTop: spacing.xl }}
+                style={{ marginTop: spacing.md }}
                 icon={<Icon name="play" />}
                 iconPosition="right"
               >

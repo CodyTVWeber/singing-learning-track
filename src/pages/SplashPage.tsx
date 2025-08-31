@@ -9,6 +9,15 @@ export const SplashPage: React.FC = () => {
   const navigate = useNavigate();
   const { user, isLoading } = useApp();
   const [showContent, setShowContent] = useState(false);
+  
+  // Randomize kooka image for variety
+  const kookaImages = [
+    '/img/kooka-burra-waiving.png',
+    '/img/kooka-burra-singing.png',
+    '/img/kooka-burra-dancing.png',
+    '/img/kooka-burra-flying.png',
+  ];
+  const [kookaImage] = useState(() => kookaImages[Math.floor(Math.random() * kookaImages.length)]);
 
   useEffect(() => {
     // Track app open on initial mount
@@ -45,6 +54,23 @@ export const SplashPage: React.FC = () => {
       }}
     >
       {/* Background decoration */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '10%',
+          right: '5%',
+          width: '200px',
+          height: '200px',
+          backgroundImage: 'url(/img/kooka-burra-flying-blue-sky-clouds-bg.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          borderRadius: '50%',
+          filter: 'blur(2px)',
+          opacity: 0.15,
+          animation: animations.pulse,
+          pointerEvents: 'none',
+        }}
+      />
       <div
         style={{
           position: 'absolute',
@@ -87,8 +113,8 @@ export const SplashPage: React.FC = () => {
         }}
       >
         <img
-          src="/img/kooka-burra-waiving.png"
-          alt="Kooka the Kookaburra waving hello"
+          src={kookaImage}
+          alt="Kooka the Kookaburra greeting you"
                       style={{
               width: '280px',
               marginBottom: spacing.xxl,

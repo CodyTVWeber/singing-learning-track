@@ -33,6 +33,14 @@ export const Modal: React.FC<ModalProps> = ({
 }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
+  
+  // Randomize kooka image for modal variety
+  const kookaImages = [
+    '/img/kooka-burra-waiving.png',
+    '/img/kooka-burra-calling-out.png',
+    '/img/kooka-burra-singing.png',
+  ];
+  const [kookaImage] = useState(() => kookaImages[Math.floor(Math.random() * kookaImages.length)]);
 
   useEffect(() => {
     if (isOpen) {
@@ -238,7 +246,7 @@ export const Modal: React.FC<ModalProps> = ({
             <h2 id="modal-title" style={titleStyles}>
               {showKookaburra && (
                 <img
-                  src="/img/kooka-burra-waiving.png"
+                  src={kookaImage}
                   alt="Kooka"
                   style={{
                     width: '32px',

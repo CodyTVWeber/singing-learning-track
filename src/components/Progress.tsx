@@ -268,6 +268,32 @@ export const Progress: React.FC<ProgressProps> = ({
             />
           )}
         </div>
+        {displayPercentage === 100 && (
+          <div
+            style={{
+              position: 'absolute',
+              right: '-15px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: '30px',
+              height: '30px',
+              animation: 'bounce 1s ease-in-out infinite',
+            }}
+          >
+            <img
+              src="/img/kooka-burra-dancing.png"
+              alt="Kooka celebrating completion"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                borderRadius: '50%',
+                border: `2px solid ${colors.surface}`,
+                boxShadow: shadows.md,
+              }}
+            />
+          </div>
+        )}
       </div>
       
       {/* Add keyframes */}
@@ -280,6 +306,11 @@ export const Progress: React.FC<ProgressProps> = ({
           @keyframes stripes {
             0% { background-position: 0 0; }
             100% { background-position: 1rem 0; }
+          }
+          @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(-50%) scale(1); }
+            40% { transform: translateY(-60%) scale(1.1); }
+            60% { transform: translateY(-40%) scale(1.05); }
           }
         `}
       </style>
