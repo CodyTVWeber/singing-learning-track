@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
-import { colors, fontSize, fontWeight, spacing } from '../theme/theme';
+import { colors, fontSize, fontWeight, spacing, shadows } from '../theme/theme';
 import { Button } from './Button';
 import { Card } from './Card';
 import { Container } from './Container';
