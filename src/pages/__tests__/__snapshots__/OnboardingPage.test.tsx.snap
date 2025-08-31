@@ -21,7 +21,7 @@ exports[`OnboardingPage > renders and matches snapshot 1`] = `
         <img
           alt="Kooka the Kookaburra welcoming you"
           src="/img/kooka-burra-waiving.png"
-          style="width: 150px; margin: 0px auto 24px auto; filter: drop-shadow(0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.02));"
+          style="width: 250px; margin: 0px auto 32px auto; filter: drop-shadow(0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.02)); transform: scale(1); transition: transform 0.3s ease; cursor: pointer;"
         />
         <h1
           style="font-size: 48px; font-weight: 800; color: rgb(60, 60, 60); margin-bottom: 8px; letter-spacing: -0.02em;"
@@ -63,7 +63,7 @@ exports[`OnboardingPage > renders and matches snapshot 1`] = `
               />
               <button
                 disabled=""
-                style="padding: 16px 32px; border-radius: 9999px; font-size: 18px; font-weight: 600; transition: background-color 200ms ease-out, transform 200ms ease-out, box-shadow 200ms ease-out; display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 56px; cursor: not-allowed; opacity: 0.6; position: relative; overflow: hidden; text-decoration: none; white-space: nowrap; user-select: none; flex-direction: row-reverse; z-index: 1; background: linear-gradient(135deg, #8B7355 0%, #A68B68 100%); color: rgb(250, 246, 242); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.02);"
+                style="padding: 16px 32px; border-radius: 9999px; font-size: 18px; font-weight: 600; transition: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 56px; cursor: not-allowed; opacity: 0.6; position: relative; overflow: hidden; text-decoration: none; white-space: nowrap; user-select: none; flex-direction: row-reverse; background: linear-gradient(135deg, #8B7355 0%, #A68B68 100%); color: rgb(250, 246, 242); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.02);"
                 type="submit"
               >
                 <span
@@ -73,7 +73,7 @@ exports[`OnboardingPage > renders and matches snapshot 1`] = `
                     aria-label="forward icon"
                     class=""
                     fill="currentColor"
-                    style="width: 24px; height: 24px; color: rgb(60, 60, 60); cursor: default; transition: 200ms ease-out;"
+                    style="width: 24px; height: 24px; color: rgb(60, 60, 60); cursor: default; transition: none;"
                     viewBox="0 0 24 24"
                   >
                     <path
@@ -88,34 +88,22 @@ exports[`OnboardingPage > renders and matches snapshot 1`] = `
         </div>
       </div>
       <div
-        style="position: absolute; top: 15%; left: 5%; font-size: 24px; animation: float 5s ease-in-out infinite; opacity: 0.3; pointer-events: none; z-index: 1;"
+        style="position: absolute; top: 15%; left: 5%; animation: float 5s ease-in-out infinite; opacity: 0.2; pointer-events: none; z-index: 1;"
       >
-        <svg
-          aria-label="microphone icon"
-          class=""
-          fill="currentColor"
-          style="width: 24px; height: 24px; color: rgb(60, 60, 60); cursor: default; transition: 200ms ease-out;"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M12 14a3 3 0 003-3V6a3 3 0 10-6 0v5a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 0014 0h-2zm-5 7a7 7 0 01-7-7H3a9 9 0 0018 0h-2a7 7 0 01-7 7z"
-          />
-        </svg>
+        <img
+          alt="Floating Kooka"
+          src="/img/kooka-burra-flying.png"
+          style="width: 60px; border-radius: 50%; filter: drop-shadow(0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04));"
+        />
       </div>
       <div
-        style="position: absolute; bottom: 20%; right: 5%; font-size: 28px; animation: float 6s ease-in-out infinite; animation-delay: 2s; opacity: 0.3; pointer-events: none; z-index: 1;"
+        style="position: absolute; bottom: 20%; right: 5%; animation: float 6s ease-in-out infinite; animation-delay: 2s; opacity: 0.2; pointer-events: none; z-index: 1;"
       >
-        <svg
-          aria-label="play icon"
-          class=""
-          fill="currentColor"
-          style="width: 28px; height: 28px; color: rgb(60, 60, 60); cursor: default; transition: 200ms ease-out;"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M8 5v14l11-7z"
-          />
-        </svg>
+        <img
+          alt="Floating Kooka"
+          src="/img/kooka-burra-singing.png"
+          style="width: 50px; border-radius: 50%; filter: drop-shadow(0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04));"
+        />
       </div>
     </div>
   </div>

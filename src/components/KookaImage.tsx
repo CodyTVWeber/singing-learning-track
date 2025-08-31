@@ -34,12 +34,10 @@ export const KookaImage: React.FC<KookaImageProps> = ({
       {...rest}
       style={{
         width,
-        margin: '0 auto',
-        display: 'block',
         filter: useShadow ? `drop-shadow(${shadows.xl})` : undefined,
         transform: 'rotate(-3deg)',
-        transition: 'transform 0.3s ease',
-        cursor: hover ? 'pointer' : 'default',
+        transition: hover ? 'transform 0.3s ease' : undefined,
+        cursor: hover ? 'pointer' : undefined,
         ...style,
       }}
       onMouseEnter={(e) => {
