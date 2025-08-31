@@ -133,10 +133,19 @@ export const OnboardingPage: React.FC = () => {
             src="/img/kooka-burra-waiving.png"
             alt="Kooka the Kookaburra welcoming you"
             style={{
-              width: '150px',
+              width: '250px',
               margin: '0 auto',
-              marginBottom: spacing.lg,
-              filter: `drop-shadow(${shadows.lg})`,
+              marginBottom: spacing.xl,
+              filter: `drop-shadow(${shadows.xl})`,
+              transform: 'scale(1)',
+              transition: 'transform 0.3s ease',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.1) rotate(2deg)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
             }}
           />
           <h1
@@ -323,7 +332,7 @@ export const OnboardingPage: React.FC = () => {
                 fullWidth
                 size="large"
                 variant="gradient"
-                style={{ marginTop: spacing.xl }}
+                style={{ marginTop: spacing.md }}
                 icon={<Icon name="play" />}
                 iconPosition="right"
               >
@@ -333,35 +342,49 @@ export const OnboardingPage: React.FC = () => {
           )}
         </div>
 
-        {/* Floating musical elements */}
+        {/* Floating kooka elements */}
         <div
           style={{
             position: 'absolute',
             top: '15%',
             left: '5%',
-            fontSize: '24px',
             animation: 'float 5s ease-in-out infinite',
-            opacity: 0.3,
+            opacity: 0.2,
             pointerEvents: 'none',
             zIndex: 1,
           }}
         >
-          <Icon name="microphone" size={24} color={colors.text} />
+          <img
+            src="/img/kooka-burra-flying.png"
+            alt="Floating Kooka"
+            style={{
+              width: '60px',
+              borderRadius: '50%',
+              filter: `drop-shadow(${shadows.sm})`,
+            }}
+          />
         </div>
         <div
           style={{
             position: 'absolute',
             bottom: '20%',
             right: '5%',
-            fontSize: '28px',
             animation: 'float 6s ease-in-out infinite',
             animationDelay: '2s',
-            opacity: 0.3,
+            opacity: 0.2,
             pointerEvents: 'none',
             zIndex: 1,
           }}
         >
-          <Icon name="play" size={28} color={colors.text} />
+          <img
+            src="/img/kooka-burra-singing.png"
+            alt="Floating Kooka"
+            style={{
+              width: '50px',
+              borderRadius: '50%',
+              filter: `drop-shadow(${shadows.sm})`,
+            }}
+          />
         </div>
       </Container>
     </div>

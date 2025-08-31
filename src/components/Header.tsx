@@ -27,6 +27,15 @@ export const Header: React.FC<HeaderProps> = ({
   style,
 }) => {
   const [scrolled, setScrolled] = useState(false);
+  
+  // Randomize kooka image for variety in header
+  const kookaImages = [
+    '/img/kooka-burra-waiving.png',
+    '/img/kooka-burra-singing.png',
+    '/img/kooka-burra-calling-out.png',
+    '/img/kooka-burra-flying.png',
+  ];
+  const [kookaImage] = useState(() => kookaImages[Math.floor(Math.random() * kookaImages.length)]);
 
   useEffect(() => {
     if (sticky && !transparent) {
@@ -145,11 +154,20 @@ export const Header: React.FC<HeaderProps> = ({
             <h1 style={titleStyles}>
               {showKookaburra && (
                 <img
-                  src="/img/kooka-burra-waiving.png"
+                  src={kookaImage}
                   alt="Kooka"
                   style={{
-                    width: '32px',
-                    objectFit: 'contain',
+                    width: '48px',
+                    marginRight: spacing.sm,
+                    transform: 'scale(1)',
+                    transition: 'transform 0.3s ease',
+                    cursor: 'pointer',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.2) rotate(10deg)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
                   }}
                 />
               )}

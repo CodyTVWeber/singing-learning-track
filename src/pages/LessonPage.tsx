@@ -125,16 +125,22 @@ export const LessonPage: React.FC = () => {
         <Container maxWidth="500px" style={{ position: 'relative', zIndex: 1 }}>
           <Card variant="glass" decorative style={{ textAlign: 'center', padding: spacing.xxl }}>
             <img
-              src="/img/kooka-burra-singing.png"
+              src="/img/kooka-burra-dancing.png"
               alt="Kooka celebrating"
               style={{
-                width: '150px',
-                height: '150px',
-                objectFit: 'cover',
+                width: '220px',
                 margin: '0 auto',
-                marginBottom: spacing.lg,
-                borderRadius: borderRadius.round,
-                boxShadow: shadows.lg,
+                marginBottom: spacing.xl,
+                filter: `drop-shadow(${shadows.xl})`,
+                transform: 'scale(1)',
+                transition: 'transform 0.4s ease',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.1) rotate(-2deg)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
               }}
             />
             
@@ -365,13 +371,19 @@ export const LessonPage: React.FC = () => {
               {stepTitle}
             </h2>
             <img
-              src="/img/kooka-burra-waiving.png"
+              src="/img/kooka-burra-calling-out.png"
               alt="Kooka guiding you"
               style={{
-                width: '40px',
-                height: '40px',
-                objectFit: 'contain',
-                opacity: 0.8,
+                width: '60px',
+                transform: 'scale(1)',
+                transition: 'transform 0.3s ease',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.2) rotate(5deg)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
               }}
             />
           </div>
@@ -521,10 +533,19 @@ export const LessonPage: React.FC = () => {
             src="/img/kooka-burra-breathing.png"
             alt="Kooka encouraging you"
                           style={{
-                width: '80px',
-                marginBottom: spacing.md,
-                opacity: 0.6,
+                width: '140px',
+                marginBottom: spacing.lg,
+                filter: `drop-shadow(${shadows.md})`,
+                transform: 'scale(1)',
+                transition: 'transform 0.3s ease',
+                cursor: 'pointer',
               }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
           />
           <p
             style={{

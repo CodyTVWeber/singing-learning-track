@@ -9,6 +9,15 @@ export const SplashPage: React.FC = () => {
   const navigate = useNavigate();
   const { user, isLoading } = useApp();
   const [showContent, setShowContent] = useState(false);
+  
+  // Randomize kooka image for variety
+  const kookaImages = [
+    '/img/kooka-burra-waiving.png',
+    '/img/kooka-burra-singing.png',
+    '/img/kooka-burra-dancing.png',
+    '/img/kooka-burra-flying.png',
+  ];
+  const [kookaImage] = useState(() => kookaImages[Math.floor(Math.random() * kookaImages.length)]);
 
   useEffect(() => {
     // Track app open on initial mount
@@ -45,6 +54,23 @@ export const SplashPage: React.FC = () => {
       }}
     >
       {/* Background decoration */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '10%',
+          right: '5%',
+          width: '200px',
+          height: '200px',
+          backgroundImage: 'url(/img/kooka-burra-flying-blue-sky-clouds-bg.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          borderRadius: '50%',
+          filter: 'blur(2px)',
+          opacity: 0.15,
+          animation: animations.pulse,
+          pointerEvents: 'none',
+        }}
+      />
       <div
         style={{
           position: 'absolute',
@@ -87,14 +113,22 @@ export const SplashPage: React.FC = () => {
         }}
       >
         <img
-          src="/img/kooka-burra-waiving.png"
-          alt="Kooka the Kookaburra waving hello"
+          src={kookaImage}
+          alt="Kooka the Kookaburra greeting you"
                       style={{
-              width: '280px',
-              marginBottom: spacing.xxl,
+              width: '400px',
+              marginBottom: spacing.xl,
               filter: `drop-shadow(${shadows.xl})`,
-              transform: 'rotate(-5deg)',
+              transform: 'rotate(-3deg)',
+              transition: 'transform 0.3s ease',
+              cursor: 'pointer',
             }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'rotate(0deg) scale(1.05)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'rotate(-3deg) scale(1)';
+          }}
         />
         
         <h1
@@ -156,7 +190,15 @@ export const SplashPage: React.FC = () => {
           pointerEvents: 'none',
         }}
       >
-        🎵
+        <img
+          src="/img/kooka-burra-breathing.png"
+          alt="Floating Kooka"
+          style={{
+            width: '40px',
+            borderRadius: '50%',
+            transform: 'rotate(15deg)',
+          }}
+        />
       </div>
       <div
         style={{
@@ -166,11 +208,19 @@ export const SplashPage: React.FC = () => {
           fontSize: '25px',
           animation: 'float 5s ease-in-out infinite',
           animationDelay: '1.5s',
-          opacity: 0.3,
+          opacity: 0.15,
           pointerEvents: 'none',
         }}
       >
-        🎶
+        <img
+          src="/img/kooka-burra-calling-out.png"
+          alt="Floating Kooka"
+          style={{
+            width: '50px',
+            borderRadius: '50%',
+            transform: 'rotate(-10deg)',
+          }}
+        />
       </div>
       <div
         style={{
@@ -180,11 +230,19 @@ export const SplashPage: React.FC = () => {
           fontSize: '20px',
           animation: 'float 6s ease-in-out infinite',
           animationDelay: '2s',
-          opacity: 0.3,
+          opacity: 0.1,
           pointerEvents: 'none',
         }}
       >
-        🎤
+        <img
+          src="/img/kooka-burra-waiving.png"
+          alt="Floating Kooka"
+          style={{
+            width: '35px',
+            borderRadius: '50%',
+            transform: 'rotate(25deg)',
+          }}
+        />
       </div>
     </div>
   );

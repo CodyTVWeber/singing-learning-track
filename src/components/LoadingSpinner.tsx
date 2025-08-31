@@ -13,9 +13,9 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   color = colors.primary 
 }) => {
   const sizeMap = {
-    small: 24,
-    medium: 40,
-    large: 60,
+    small: 40,
+    medium: 60,
+    large: 80,
   };
 
   const spinnerSize = sizeMap[size];
@@ -74,15 +74,29 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   }
 
   if (variant === 'kookaburra') {
+    const kookaImages = [
+      '/img/kooka-burra-flying.png',
+      '/img/kooka-burra-dancing.png',
+      '/img/kooka-burra-calling-out.png',
+    ];
+    const kookaImage = kookaImages[Math.floor(Math.random() * kookaImages.length)];
+    
     return (
       <div
         style={{
           display: 'inline-block',
-          fontSize: spinnerSize,
           animation: animations.wiggle,
         }}
       >
-        🦜
+        <img
+          src={kookaImage}
+          alt="Kooka loading"
+          style={{
+            width: spinnerSize,
+            borderRadius: '50%',
+            filter: `drop-shadow(${shadows.md})`,
+          }}
+        />
       </div>
     );
   }

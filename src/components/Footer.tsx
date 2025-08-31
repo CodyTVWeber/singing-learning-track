@@ -19,6 +19,13 @@ export const Footer: React.FC<FooterProps> = ({
   className = '',
   style,
 }) => {
+  // Randomize kooka image for footer variety
+  const kookaImages = [
+    '/img/kooka-burra-waiving.png',
+    '/img/kooka-burra-breathing.png',
+    '/img/kooka-burra-dancing.png',
+  ];
+  const [kookaImage] = React.useState(() => kookaImages[Math.floor(Math.random() * kookaImages.length)]);
   const getVariantStyles = (): React.CSSProperties => {
     switch (variant) {
       case 'gradient':
@@ -70,11 +77,20 @@ export const Footer: React.FC<FooterProps> = ({
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: spacing.md }}>
       {showKookaburra && (
         <img
-          src="/img/kooka-burra-waiving.png"
-          alt="Kooka waving goodbye"
+          src={kookaImage}
+          alt="Kooka saying goodbye"
           style={{
-            width: '40px',
-            opacity: 0.8,
+            width: '64px',
+            filter: `drop-shadow(${shadows.md})`,
+            transform: 'scale(1)',
+            transition: 'transform 0.3s ease',
+            cursor: 'pointer',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.15) rotate(-5deg)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
           }}
         />
       )}

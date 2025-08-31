@@ -372,7 +372,7 @@ export const ComponentShowcase: React.FC = () => {
           <div style={demoStyles}>
             <Components.Flex gap="md" align="center">
               <Components.Avatar name="John Doe" />
-              <Components.Avatar src="/img/kooka-burra-singing.png" alt="Kooka" />
+              <Components.Avatar src="/img/kooka-burra-flying.png" alt="Kooka" size="large" />
               <Components.Avatar name="Jane Smith" size="large" status="online" />
               <Components.AvatarGroup>
                 <Components.Avatar name="User 1" size="small" />
@@ -474,13 +474,13 @@ export const ComponentShowcase: React.FC = () => {
           <div style={demoStyles}>
             <Components.Grid columns={{ mobile: 1, tablet: 2, desktop: 3 }} gap="md">
               <Components.Image
-                src="/img/kooka-burra-singing.png"
+                src="/img/kooka-burra-calling-out.png"
                 alt="Kooka singing"
                 rounded
                 aspectRatio="100%"
               />
               <Components.Image
-                src="/img/kooka-burra-waiving.png"
+                src="/img/kooka-burra-dancing.png"
                 alt="Kooka waving"
                 rounded="lg"
                 aspectRatio="100%"
@@ -488,7 +488,7 @@ export const ComponentShowcase: React.FC = () => {
               <Components.Image
                 src="/invalid-image.jpg"
                 alt="Fallback demo"
-                fallbackSrc="/img/kooka-burra-singing.png"
+                fallbackSrc="/img/kooka-burra-flying.png"
                 rounded
                 aspectRatio="100%"
               />
@@ -517,7 +517,7 @@ export const ComponentShowcase: React.FC = () => {
               src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
               title="Sample Audio"
               artist="Sound Helix"
-              cover="/img/kooka-burra-singing.png"
+              cover="/img/kooka-burra-flying-blue-sky-clouds-bg.jpg"
               variant="full"
             />
           </div>

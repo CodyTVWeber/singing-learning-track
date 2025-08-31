@@ -15,7 +15,7 @@ export const sampleLessons: Lesson[] = [
       minVolumeThreshold: 30,
       targetDuration: 3
     }),
-    imageUrl: 'kooka-singing',
+    imageUrl: 'kooka-dancing',
     unlocked: true,
     prerequisite: undefined,
   },
@@ -32,7 +32,7 @@ export const sampleLessons: Lesson[] = [
       visual: "kooka-belly-animation",
       audio: "breath-guide"
     }),
-    imageUrl: 'kooka-breathing',
+    imageUrl: 'kooka-flying',
     unlocked: false,
     prerequisite: 'echo-introduction',
   },
@@ -49,7 +49,7 @@ export const sampleLessons: Lesson[] = [
       visual: "bird-family",
       audio: "pitch-examples"
     }),
-    imageUrl: 'kooka-voice-range',
+    imageUrl: 'kooka-calling-out',
     unlocked: false,
     prerequisite: 'breath-basics',
   },
@@ -1592,7 +1592,7 @@ export const sampleLessons: Lesson[] = [
       visual: 'kookaburra-round',
       audio: 'kookaburra-round'
     }),
-    imageUrl: 'song-kookaburra',
+    imageUrl: 'kooka-calling-out',
     unlocked: false,
     prerequisite: 'u21-phrasing-breaths',
   },

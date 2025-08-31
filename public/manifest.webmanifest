@@ -8,7 +8,7 @@
   "description": "Learn to sing with Kooka the Kookaburra!",
   "icons": [
     {
-      "src": "/img/kooka-burra-waiving.png",
+      "src": "/img/kooka-burra-singing.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
