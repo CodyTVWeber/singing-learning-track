@@ -116,11 +116,19 @@ export const SplashPage: React.FC = () => {
           src={kookaImage}
           alt="Kooka the Kookaburra greeting you"
                       style={{
-              width: '280px',
-              marginBottom: spacing.xxl,
+              width: '400px',
+              marginBottom: spacing.xl,
               filter: `drop-shadow(${shadows.xl})`,
-              transform: 'rotate(-5deg)',
+              transform: 'rotate(-3deg)',
+              transition: 'transform 0.3s ease',
+              cursor: 'pointer',
             }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'rotate(0deg) scale(1.05)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'rotate(-3deg) scale(1)';
+          }}
         />
         
         <h1
@@ -182,7 +190,15 @@ export const SplashPage: React.FC = () => {
           pointerEvents: 'none',
         }}
       >
-        🎵
+        <img
+          src="/img/kooka-burra-breathing.png"
+          alt="Floating Kooka"
+          style={{
+            width: '40px',
+            borderRadius: '50%',
+            transform: 'rotate(15deg)',
+          }}
+        />
       </div>
       <div
         style={{
@@ -192,11 +208,19 @@ export const SplashPage: React.FC = () => {
           fontSize: '25px',
           animation: 'float 5s ease-in-out infinite',
           animationDelay: '1.5s',
-          opacity: 0.3,
+          opacity: 0.15,
           pointerEvents: 'none',
         }}
       >
-        🎶
+        <img
+          src="/img/kooka-burra-calling-out.png"
+          alt="Floating Kooka"
+          style={{
+            width: '50px',
+            borderRadius: '50%',
+            transform: 'rotate(-10deg)',
+          }}
+        />
       </div>
       <div
         style={{
@@ -206,11 +230,19 @@ export const SplashPage: React.FC = () => {
           fontSize: '20px',
           animation: 'float 6s ease-in-out infinite',
           animationDelay: '2s',
-          opacity: 0.3,
+          opacity: 0.1,
           pointerEvents: 'none',
         }}
       >
-        🎤
+        <img
+          src="/img/kooka-burra-waiving.png"
+          alt="Floating Kooka"
+          style={{
+            width: '35px',
+            borderRadius: '50%',
+            transform: 'rotate(25deg)',
+          }}
+        />
       </div>
     </div>
   );

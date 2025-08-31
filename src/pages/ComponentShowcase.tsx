@@ -372,7 +372,7 @@ export const ComponentShowcase: React.FC = () => {
           <div style={demoStyles}>
             <Components.Flex gap="md" align="center">
               <Components.Avatar name="John Doe" />
-              <Components.Avatar src="/img/kooka-burra-flying.png" alt="Kooka" />
+              <Components.Avatar src="/img/kooka-burra-flying.png" alt="Kooka" size="large" />
               <Components.Avatar name="Jane Smith" size="large" status="online" />
               <Components.AvatarGroup>
                 <Components.Avatar name="User 1" size="small" />

@@ -80,8 +80,17 @@ export const Footer: React.FC<FooterProps> = ({
           src={kookaImage}
           alt="Kooka saying goodbye"
           style={{
-            width: '40px',
-            opacity: 0.8,
+            width: '64px',
+            filter: `drop-shadow(${shadows.md})`,
+            transform: 'scale(1)',
+            transition: 'transform 0.3s ease',
+            cursor: 'pointer',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.15) rotate(-5deg)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
           }}
         />
       )}

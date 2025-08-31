@@ -22,6 +22,23 @@ export const SkillTreePage: React.FC = () => {
   const [toasts, setToasts] = useState<Array<{ id: string; type?: 'info' | 'success' | 'warning' | 'error'; message: string; duration?: number }>>([]);
   const [selectedUnit, setSelectedUnit] = useState<number | null>(null);
 
+  // Get appropriate kooka image for each unit
+  const getUnitKookaImage = (unitNumber: number, isComplete: boolean) => {
+    if (isComplete) {
+      return '/img/kooka-burra-dancing.png'; // Celebration for completed units
+    }
+    
+    const kookaOptions = [
+      '/img/kooka-burra-singing.png',
+      '/img/kooka-burra-calling-out.png',
+      '/img/kooka-burra-flying.png',
+      '/img/kooka-burra-waiving.png',
+    ];
+    
+    // Use unit number to consistently assign same image to same unit
+    return kookaOptions[unitNumber % kookaOptions.length];
+  };
+
   useEffect(() => {
     if (!user) {
       navigate('/onboarding', { replace: true });
@@ -159,12 +176,19 @@ export const SkillTreePage: React.FC = () => {
                   src="/img/kooka-burra-flying.png"
                   alt="Kooka flying high"
                   style={{
-                    width: '80px',
-                    height: '80px',
-                    objectFit: 'cover',
+                    width: '120px',
                     borderRadius: '50%',
                     border: `4px solid ${colors.surface}`,
-                    boxShadow: shadows.lg,
+                    boxShadow: shadows.xl,
+                    transform: 'scale(1)',
+                    transition: 'transform 0.3s ease',
+                    cursor: 'pointer',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.1) rotate(5deg)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
                   }}
                 />
                 <div>
@@ -333,21 +357,58 @@ export const SkillTreePage: React.FC = () => {
                     <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md }}>
                       <div
                         style={{
-                          width: '60px',
-                          height: '60px',
-                          minWidth: '60px',
-                          minHeight: '60px',
+                          width: '80px',
+                          height: '80px',
+                          minWidth: '80px',
+                          minHeight: '80px',
                           borderRadius: borderRadius.round,
-                          background: isUnitComplete ? gradients.forest : gradients.primary,
+                          background: 'rgba(255, 255, 255, 0.9)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          fontSize: fontSize.xxl,
-                          boxShadow: shadows.md,
+                          boxShadow: shadows.lg,
                           flexShrink: 0,
+                          overflow: 'hidden',
+                          position: 'relative',
+                          transform: 'scale(1)',
+                          transition: 'transform 0.3s ease',
+                          cursor: 'pointer',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'scale(1.1)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'scale(1)';
                         }}
                       >
-                        <Icon name={isUnitComplete ? 'star' : 'play'} size={28} color={colors.textOnPrimary} />
+                        <img
+                          src={getUnitKookaImage(unit.unit, isUnitComplete)}
+                          alt={`Kooka for Unit ${unit.unit}`}
+                          style={{
+                            width: '70px',
+                            objectFit: 'cover',
+                            borderRadius: borderRadius.lg,
+                          }}
+                        />
+                        {isUnitComplete && (
+                          <div
+                            style={{
+                              position: 'absolute',
+                              top: '-5px',
+                              right: '-5px',
+                              width: '24px',
+                              height: '24px',
+                              borderRadius: '50%',
+                              background: gradients.forest,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              boxShadow: shadows.md,
+                            }}
+                          >
+                            <Icon name="star" size={14} color={colors.textOnPrimary} />
+                          </div>
+                        )}
                       </div>
                       <div>
                         <h3
@@ -588,10 +649,20 @@ export const SkillTreePage: React.FC = () => {
             src="/img/kooka-burra-dancing.png"
             alt="Kooka dancing with excitement"
                           style={{
-                width: '120px',
+                width: '180px',
                 margin: '0 auto',
-                marginBottom: spacing.lg,
+                marginBottom: spacing.xl,
+                filter: `drop-shadow(${shadows.xl})`,
+                transform: 'scale(1)',
+                transition: 'transform 0.4s ease',
+                cursor: 'pointer',
               }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.15) rotate(-3deg)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
+            }}
           />
           <h3
             style={{

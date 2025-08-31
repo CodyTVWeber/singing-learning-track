@@ -106,10 +106,19 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
           src="/img/kooka-burra-dancing.png"
           alt="Kooka ready to echo"
           style={{
-            width: '60px',
-            height: '60px',
-            objectFit: 'cover',
+            width: '80px',
             borderRadius: '50%',
+            border: `3px solid ${colors.surface}`,
+            boxShadow: shadows.lg,
+            transform: 'scale(1)',
+            transition: 'transform 0.3s ease',
+            cursor: 'pointer',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.15) rotate(5deg)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
           }}
         />
       </div>

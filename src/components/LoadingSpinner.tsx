@@ -13,9 +13,9 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   color = colors.primary 
 }) => {
   const sizeMap = {
-    small: 24,
-    medium: 40,
-    large: 60,
+    small: 40,
+    medium: 60,
+    large: 80,
   };
 
   const spinnerSize = sizeMap[size];
@@ -93,9 +93,8 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
           alt="Kooka loading"
           style={{
             width: spinnerSize,
-            height: spinnerSize,
-            objectFit: 'cover',
             borderRadius: '50%',
+            filter: `drop-shadow(${shadows.md})`,
           }}
         />
       </div>

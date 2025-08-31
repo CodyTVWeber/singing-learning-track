@@ -272,12 +272,13 @@ export const Progress: React.FC<ProgressProps> = ({
           <div
             style={{
               position: 'absolute',
-              right: '-15px',
+              right: '-25px',
               top: '50%',
               transform: 'translateY(-50%)',
-              width: '30px',
-              height: '30px',
-              animation: 'bounce 1s ease-in-out infinite',
+              width: '50px',
+              height: '50px',
+              animation: 'bounce 1.5s ease-in-out infinite',
+              zIndex: 10,
             }}
           >
             <img
@@ -285,11 +286,10 @@ export const Progress: React.FC<ProgressProps> = ({
               alt="Kooka celebrating completion"
               style={{
                 width: '100%',
-                height: '100%',
-                objectFit: 'cover',
                 borderRadius: '50%',
-                border: `2px solid ${colors.surface}`,
-                boxShadow: shadows.md,
+                border: `3px solid ${colors.surface}`,
+                boxShadow: shadows.xl,
+                filter: `drop-shadow(${shadows.lg})`,
               }}
             />
           </div>

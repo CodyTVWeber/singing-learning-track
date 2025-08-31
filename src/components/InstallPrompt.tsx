@@ -83,7 +83,22 @@ export const InstallPrompt: React.FC = () => {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md }}>
-        <img src="/img/kooka-burra-calling-out.png" alt="Kooka" style={{ width: 40 }} />
+        <img 
+          src="/img/kooka-burra-calling-out.png" 
+          alt="Kooka" 
+          style={{ 
+            width: 56,
+            transform: 'scale(1)',
+            transition: 'transform 0.3s ease',
+            cursor: 'pointer',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.1) rotate(5deg)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
+          }}
+        />
         <div>
           <div style={{ fontSize: fontSize.md, fontWeight: fontWeight.semibold, color: colors.text }}>Install Kooka Sing?</div>
           <div style={{ fontSize: fontSize.sm, color: colors.textLight }}>Get quick access and offline support</div>
