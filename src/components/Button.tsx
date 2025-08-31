@@ -88,6 +88,36 @@ export const Button: React.FC<ButtonProps> = ({
         ...variantStyles[variant],
         ...style,
       }}
+      onMouseEnter={(e) => {
+        if (props.disabled) return;
+        const el = e.currentTarget;
+        if (variant === 'primary') {
+          el.style.backgroundColor = colors.primaryLight;
+        } else if (variant === 'secondary') {
+          el.style.backgroundColor = colors.secondaryLight;
+        } else if (variant === 'outline') {
+          el.style.backgroundColor = colors.featherLight;
+        } else if (variant === 'ghost') {
+          el.style.backgroundColor = colors.gray100;
+        } else if (variant === 'gradient') {
+          el.style.backgroundImage = gradients.sunset;
+        }
+      }}
+      onMouseLeave={(e) => {
+        const el = e.currentTarget;
+        // reset to base styles without transitions
+        if (variant === 'primary') {
+          el.style.backgroundColor = colors.primary;
+        } else if (variant === 'secondary') {
+          el.style.backgroundColor = colors.secondary;
+        } else if (variant === 'outline') {
+          el.style.backgroundColor = 'transparent';
+        } else if (variant === 'ghost') {
+          el.style.backgroundColor = 'transparent';
+        } else if (variant === 'gradient') {
+          el.style.backgroundImage = gradients.primary;
+        }
+      }}
     >
       {icon && <span style={{ display: 'flex', alignItems: 'center' }}>{icon}</span>}
       {children}
