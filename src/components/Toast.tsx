@@ -61,27 +61,23 @@ export const Toast: React.FC<ToastProps> = ({
 
   const typeConfig = {
     info: { 
-      gradient: gradients.ocean,
+      gradient: gradients.feather,
       icon: 'info',
-      emoji: '💡',
       color: colors.info,
     },
     success: { 
       gradient: gradients.forest,
-      icon: 'check_circle',
-      emoji: '✅',
+      icon: 'check',
       color: colors.success,
     },
     warning: { 
       gradient: gradients.warm,
       icon: 'warning',
-      emoji: '⚠️',
       color: colors.warning,
     },
     error: { 
       gradient: gradients.sunset,
       icon: 'error',
-      emoji: '❌',
       color: colors.error,
     },
   };
@@ -180,9 +176,7 @@ export const Toast: React.FC<ToastProps> = ({
     >
       {/* Icon Container with Emoji/Icon */}
       <div style={iconContainerStyles}>
-        <span style={{ fontSize: '20px' }}>
-          {currentConfig.emoji}
-        </span>
+        <Icon name={currentConfig.icon} size={20} color={colors.textOnPrimary} />
       </div>
 
       {/* Message */}

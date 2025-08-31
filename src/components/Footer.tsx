@@ -1,5 +1,6 @@
 import React from 'react';
 import { colors, spacing, fontSize, transitions, gradients, fontWeight, borderRadius } from '../theme/theme';
+import { Icon } from './Icon';
 
 interface FooterProps {
   children?: React.ReactNode;
@@ -85,7 +86,7 @@ export const Footer: React.FC<FooterProps> = ({
           marginBottom: spacing.xs,
           opacity: 0.95,
         }}>
-          Made with 💙 by Kooka Sing
+          Made with care by Kooka Sing
         </p>
         <p style={{ 
           fontSize: fontSize.sm,
@@ -100,7 +101,7 @@ export const Footer: React.FC<FooterProps> = ({
         gap: spacing.md,
         marginTop: spacing.sm,
       }}>
-        {['🎵', '🎤', '🎶'].map((emoji, index) => (
+        {[0,1,2].map((index) => (
           <span
             key={index}
             style={{
@@ -108,9 +109,12 @@ export const Footer: React.FC<FooterProps> = ({
               opacity: 0.6,
               animation: `float ${3 + index}s ease-in-out infinite`,
               animationDelay: `${index * 0.5}s`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
-            {emoji}
+            <Icon name={index === 1 ? 'microphone' : 'play'} size={20} color={getVariantStyles().color || colors.text} />
           </span>
         ))}
       </div>
