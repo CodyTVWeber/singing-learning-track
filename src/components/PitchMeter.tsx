@@ -38,7 +38,7 @@ export const PitchMeter: React.FC<PitchMeterProps> = ({ targetHz, currentHz, con
           }}
         />
         {/* Center marker */}
-        <div style={{ position: 'absolute', left: '50%', top: -4, width: 2, bottom: -4, backgroundColor: colors.earthTone, opacity: 0.4 }} />
+        <div style={{ position: 'absolute', left: '50%', top: -4, width: 2, bottom: -4, backgroundColor: colors.textLight, opacity: 0.4 }} />
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: spacing.xs, fontSize: fontSize.xs, color: colors.textLight }}>
@@ -47,7 +47,7 @@ export const PitchMeter: React.FC<PitchMeterProps> = ({ targetHz, currentHz, con
         <span>+100¢</span>
       </div>
 
-      <div style={{ marginTop: spacing.sm, textAlign: 'center', fontSize: fontSize.md, fontWeight: fontWeight.semibold, color: colors.darkBrown }}>
+      <div style={{ marginTop: spacing.sm, textAlign: 'center', fontSize: fontSize.md, fontWeight: fontWeight.semibold, color: colors.text }}>
         {currentHz ? `${Math.round(currentHz)} Hz${cents !== null ? ` (${cents > 0 ? '+' : ''}${Math.round(cents)}¢)` : ''}` : '—'}
       </div>
     </div>

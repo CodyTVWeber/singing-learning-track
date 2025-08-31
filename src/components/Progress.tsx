@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { colors, spacing, borderRadius, fontSize, fontWeight, transitions, gradients, shadows, animations } from '../theme/theme';
+import { colors, spacing, borderRadius, fontSize, fontWeight, transitions, gradients, shadows } from '../theme/theme';
 
 interface ProgressProps {
   value: number;

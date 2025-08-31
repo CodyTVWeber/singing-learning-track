@@ -4,16 +4,14 @@ import { useApp } from '../context/AppContext';
 import { getAllUnits, isLessonUnlocked } from '../data/units';
 import { Card } from '../components/Card';
 import { Container } from '../components/Container';
-import { colors, fontSize, fontWeight, spacing, borderRadius, shadows, gradients, transitions, animations, blurs } from '../theme/theme';
+import { colors, fontSize, fontWeight, spacing, borderRadius, shadows, gradients, transitions, blurs } from '../theme/theme';
 import type { Lesson } from '../models/lesson';
 import { analytics } from '../services/analytics';
 import { Icon } from '../components/Icon';
 import { Chip } from '../components/Chip';
 import { StandaloneBadge } from '../components/Badge';
 import { ToastContainer } from '../components/Toast';
-import { t } from '../i18n';
 import { Progress } from '../components/Progress';
-import { Header } from '../components/Header';
 import { Button } from '../components/Button';
 
 export const SkillTreePage: React.FC = () => {
@@ -127,7 +125,7 @@ export const SkillTreePage: React.FC = () => {
             width: '600px',
             height: '600px',
             background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
-            animation: animations.pulse,
+            animation: 'pulse 2s ease-in-out infinite',
           }}
         />
         <div
@@ -138,7 +136,7 @@ export const SkillTreePage: React.FC = () => {
             width: '400px',
             height: '400px',
             background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)',
-            animation: animations.pulse,
+            animation: 'pulse 2s ease-in-out infinite',
             animationDelay: '1s',
           }}
         />
@@ -336,7 +334,7 @@ export const SkillTreePage: React.FC = () => {
                           width: '60px',
                           height: '60px',
                           borderRadius: borderRadius.round,
-                          background: isUnitComplete ? gradients.success : gradients.primary,
+                          background: isUnitComplete ? gradients.forest : gradients.primary,
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -418,6 +416,22 @@ export const SkillTreePage: React.FC = () => {
                 }}
               >
                 {unit.lessons.map((lesson, lessonIndex) => {
+                  // Derive safe fallbacks for lessons missing optional metadata
+                  let durationMinutes = (lesson as any).durationMinutes as number | undefined;
+                  let points = (lesson as any).points as number | undefined;
+                  let shortDescription = (lesson as any).shortDescription as string | undefined;
+                  try {
+                    const parsed = JSON.parse(lesson.content) as any;
+                    const stepsCount = Array.isArray(parsed?.steps) ? parsed.steps.length : undefined;
+                    if (durationMinutes == null && stepsCount != null) {
+                      durationMinutes = Math.max(1, stepsCount);
+                    }
+                  } catch (_) {
+                    // ignore JSON parse errors; fallbacks will remain undefined
+                  }
+                  if (durationMinutes == null) durationMinutes = 3;
+                  if (points == null) points = 10;
+                  if (!shortDescription) shortDescription = lesson.description;
                   const status = getLessonStatus(lesson);
                   const isLocked = status === 'locked';
                   const isCompleted = status === 'completed';
@@ -443,7 +457,7 @@ export const SkillTreePage: React.FC = () => {
                             height: '50px',
                             borderRadius: borderRadius.round,
                             background: isCompleted 
-                              ? gradients.success 
+                              ? gradients.forest 
                               : isLocked 
                                 ? colors.gray200 
                                 : gradients.sunset,
@@ -484,7 +498,7 @@ export const SkillTreePage: React.FC = () => {
                             minHeight: '40px',
                           }}
                         >
-                          {lesson.shortDescription}
+                          {shortDescription}
                         </p>
 
                         {/* Lesson Details */}
@@ -499,13 +513,13 @@ export const SkillTreePage: React.FC = () => {
                         >
                           <div style={{ display: 'flex', gap: spacing.sm }}>
                             <Chip
-                              label={`${lesson.durationMinutes} min`}
+                              label={`${durationMinutes} min`}
                               size="small"
                               variant="outlined"
                               icon={<Icon name="schedule" size={14} />}
                             />
                             <Chip
-                              label={`${lesson.points} pts`}
+                              label={`${points} pts`}
                               size="small"
                               variant="outlined"
                               color="secondary"

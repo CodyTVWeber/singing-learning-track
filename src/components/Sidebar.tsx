@@ -44,6 +44,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     opacity: isOpen ? 1 : 0,
     visibility: isOpen || isAnimating ? 'visible' : 'hidden',
+    pointerEvents: isOpen || isAnimating ? 'auto' : 'none',
     transition: transitions.normal,
     zIndex: 1100,
   };

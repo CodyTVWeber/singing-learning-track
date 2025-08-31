@@ -75,7 +75,7 @@ export const DevNavigation: React.FC = () => {
     position: 'absolute',
     bottom: '70px',
     right: '60px',
-    backgroundColor: colors.darkBrown,
+    backgroundColor: colors.text,
     color: 'white',
     padding: `${spacing.xs} ${spacing.sm}`,
     borderRadius: borderRadius.sm,

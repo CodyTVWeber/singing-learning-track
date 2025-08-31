@@ -39,16 +39,32 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
     const audio = audioRef.current;
     if (!audio) return;
 
-    const updateTime = () => setCurrentTime(audio.currentTime);
-    const updateDuration = () => setDuration(audio.duration);
+    const updateTime = () => setCurrentTime(Number.isFinite(audio.currentTime) ? audio.currentTime : 0);
+    const updateDuration = () => {
+      let d = audio.duration;
+      if (!Number.isFinite(d) || isNaN(d) || d === Infinity) {
+        try {
+          if (audio.seekable && audio.seekable.length > 0) {
+            d = audio.seekable.end(audio.seekable.length - 1);
+          } else {
+            d = 0;
+          }
+        } catch (_) {
+          d = 0;
+        }
+      }
+      setDuration(d);
+    };
 
     audio.addEventListener('timeupdate', updateTime);
     audio.addEventListener('loadedmetadata', updateDuration);
+    audio.addEventListener('durationchange', updateDuration);
     audio.addEventListener('ended', () => setIsPlaying(false));
 
     return () => {
       audio.removeEventListener('timeupdate', updateTime);
       audio.removeEventListener('loadedmetadata', updateDuration);
+      audio.removeEventListener('durationchange', updateDuration);
       audio.removeEventListener('ended', () => setIsPlaying(false));
     };
   }, []);
@@ -95,6 +111,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
   };
 
   const formatTime = (time: number) => {
+    if (!Number.isFinite(time) || isNaN(time) || time <= 0) return '0:00';
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;

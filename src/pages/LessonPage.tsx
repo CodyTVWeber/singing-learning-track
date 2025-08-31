@@ -12,7 +12,7 @@ import { PitchPractice } from '../components/PitchPractice';
 import { Icon, IconButton } from '../components/Icon';
 import { Header } from '../components/Header';
 import { Progress } from '../components/Progress';
-import { colors, fontSize, fontWeight, spacing, gradients, shadows, transitions, animations, borderRadius } from '../theme/theme';
+import { colors, fontSize, fontWeight, spacing, gradients, shadows, transitions, borderRadius } from '../theme/theme';
 
 export const LessonPage: React.FC = () => {
   const { lessonId } = useParams<{ lessonId: string }>();
@@ -201,14 +201,14 @@ export const LessonPage: React.FC = () => {
                 style={{
                   padding: spacing.lg,
                   minWidth: '120px',
-                  background: gradients.success,
+                  background: gradients.forest,
                 }}
               >
                 <div style={{ fontSize: fontSize.sm, opacity: 0.9, marginBottom: spacing.xs }}>
                   Points
                 </div>
                 <div style={{ fontSize: fontSize.xxl, fontWeight: fontWeight.bold }}>
-                  +{isEchoLesson ? Math.floor(completionScore) : lesson.points}
+                  +{isEchoLesson ? Math.floor(completionScore) : ((lesson as any).points ?? 10)}
                 </div>
               </Card>
             </div>
@@ -390,7 +390,7 @@ export const LessonPage: React.FC = () => {
                     Listen and Learn
                   </span>
                 </h3>
-                <ReferenceAudio audioUrl={stepAudioUrl} />
+                <ReferenceAudio audioId={stepAudioUrl} />
               </Card>
             </div>
           )}
@@ -412,8 +412,8 @@ export const LessonPage: React.FC = () => {
                   </span>
                 </h3>
                 <PitchPractice
-                  targetNote={(!isStringStep && currentStepContent?.targetNote) || 'C4'}
-                  onComplete={() => {}}
+                  audioId={(!isStringStep && currentStepContent?.audioId) || undefined}
+                  targetHz={(!isStringStep && currentStepContent?.targetHz) || undefined}
                 />
               </Card>
             </div>

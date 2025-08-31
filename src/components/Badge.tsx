@@ -46,7 +46,7 @@ export const Badge: React.FC<BadgeProps> = ({
     padding: dot ? 0 : `0 ${spacing.xs}`,
     background: color === 'primary' ? gradients.primary : 
                 color === 'secondary' ? gradients.secondary :
-                color === 'success' ? gradients.success :
+                color === 'success' ? gradients.forest :
                 colorMap[color],
     color: colors.textOnPrimary,
     borderRadius: borderRadius.round,
@@ -111,10 +111,12 @@ export const StandaloneBadge: React.FC<StandaloneBadgeProps> = ({
   className = '',
   style,
 }) => {
-  const colorMap = {
+  type BadgeColorKey = 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'default';
+  interface BadgeColorConfig { bg: string; text: string; gradient: string }
+  const colorMap: Record<BadgeColorKey, BadgeColorConfig> = {
     primary: { bg: colors.primary, text: colors.textOnPrimary, gradient: gradients.primary },
     secondary: { bg: colors.secondary, text: colors.textOnSecondary, gradient: gradients.secondary },
-    success: { bg: colors.success, text: colors.textOnPrimary, gradient: gradients.success },
+    success: { bg: colors.success, text: colors.textOnPrimary, gradient: gradients.forest },
     warning: { bg: colors.warning, text: colors.text, gradient: gradients.warm },
     error: { bg: colors.error, text: colors.textOnPrimary, gradient: gradients.sunset },
     default: { bg: colors.gray200, text: colors.text, gradient: gradients.soft },
