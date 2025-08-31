@@ -4,6 +4,7 @@ import type { UserProfile } from '../models/user';
 import type { LessonProgress } from '../models/progress';
 import { getUser, saveUser as saveUserToStorage } from '../storage/userStore';
 import { getProgress, saveProgress as saveProgressToStorage } from '../storage/progressStore';
+import { getActiveProfile, addCompletedLesson } from '../storage/profilesStore';
 import { analytics } from '../services/analytics';
 
 interface AppContextType {
@@ -33,6 +34,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [user, setUserState] = useState<UserProfile | null>(null);
   const [progress, setProgress] = useState<LessonProgress[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [profileCompletedLessons, setProfileCompletedLessons] = useState<string[]>([]);
 
   useEffect(() => {
     loadUserData();
@@ -40,20 +42,38 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 
   const loadUserData = async () => {
     try {
-      const loadedUser = await getUser();
-      if (loadedUser) {
-        // Migrate missing streak fields for existing users
-        const migratedUser: UserProfile = {
-          ...loadedUser,
-          streakCount: typeof (loadedUser as any).streakCount === 'number' ? (loadedUser as any).streakCount : 0,
-          lastStreakDate: (loadedUser as any).lastStreakDate ?? null,
+      // Prefer active profile if present
+      const activeProfile = await getActiveProfile();
+      if (activeProfile) {
+        const syntheticUser: UserProfile = {
+          id: activeProfile.id,
+          name: activeProfile.name,
+          ageGroup: activeProfile.ageGroup,
+          currentLevel: 1,
+          totalPoints: 0,
+          streakCount: 0,
+          lastStreakDate: null,
         };
-        if (migratedUser !== loadedUser) {
-          await saveUserToStorage(migratedUser);
-        }
-        setUserState(migratedUser);
-        const userProgress = await getProgress(loadedUser.id);
+        setUserState(syntheticUser);
+        setProfileCompletedLessons(activeProfile.completedLessons ?? []);
+        const userProgress = await getProgress(activeProfile.id);
         setProgress(userProgress);
+      } else {
+        const loadedUser = await getUser();
+        if (loadedUser) {
+          // Migrate missing streak fields for existing users
+          const migratedUser: UserProfile = {
+            ...loadedUser,
+            streakCount: typeof (loadedUser as any).streakCount === 'number' ? (loadedUser as any).streakCount : 0,
+            lastStreakDate: (loadedUser as any).lastStreakDate ?? null,
+          };
+          if (migratedUser !== loadedUser) {
+            await saveUserToStorage(migratedUser);
+          }
+          setUserState(migratedUser);
+          const userProgress = await getProgress(loadedUser.id);
+          setProgress(userProgress);
+        }
       }
     } catch (error) {
       console.error('Error loading user data:', error);
@@ -88,8 +108,16 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       return [...prev, newProgress];
     });
 
-    // Update user points and streaks when a lesson is completed
+    // Also persist minimal progress into the active profile
     if (user && newProgress.completed) {
+      try {
+        await addCompletedLesson(user.id, newProgress.lessonId);
+        setProfileCompletedLessons(prev => prev.includes(newProgress.lessonId) ? prev : [...prev, newProgress.lessonId]);
+      } catch (_e) {
+        // no-op: profile updates are best-effort
+      }
+
+      // Update user points and streaks when a lesson is completed
       const safeScore = Number.isFinite(newProgress.score) ? Math.max(0, Math.floor(newProgress.score)) : 0;
 
       // Compute local YYYY-MM-DD for today and yesterday
@@ -142,6 +170,9 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   };
 
   const getCompletedLessonIds = () => {
+    if (profileCompletedLessons.length > 0) {
+      return profileCompletedLessons;
+    }
     return progress
       .filter(p => p.completed)
       .map(p => p.lessonId);

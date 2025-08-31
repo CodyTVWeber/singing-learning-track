@@ -4,6 +4,7 @@ import { useApp } from '../context/AppContext';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { colors, fontSize, fontWeight, spacing, gradients, shadows, animations } from '../theme/theme';
 import { analytics } from '../services/analytics';
+import { getProfiles } from '../storage/profilesStore';
 
 export const SplashPage: React.FC = () => {
   const navigate = useNavigate();
@@ -27,11 +28,16 @@ export const SplashPage: React.FC = () => {
     setTimeout(() => setShowContent(true), 100);
 
     if (!isLoading) {
-      const timer = setTimeout(() => {
+      const timer = setTimeout(async () => {
         if (user) {
           navigate('/skill-tree');
         } else {
-          navigate('/onboarding');
+          const profiles = await getProfiles();
+          if (profiles.length > 0) {
+            navigate('/profiles');
+          } else {
+            navigate('/onboarding');
+          }
         }
       }, 2500);
 

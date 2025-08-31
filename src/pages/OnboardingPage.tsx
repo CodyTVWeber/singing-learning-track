@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useApp } from '../context/AppContext';
 import type { UserProfile } from '../models/user';
+import { saveProfile, setActiveProfileId } from '../storage/profilesStore';
 import { Button } from '../components/Button';
 import { Card } from '../components/Card';
 import { Container } from '../components/Container';
@@ -33,8 +34,9 @@ export const OnboardingPage: React.FC = () => {
   };
 
   const handleComplete = async () => {
+    const id = uuidv4();
     const newUser: UserProfile = {
-      id: uuidv4(),
+      id,
       name: name.trim(),
       ageGroup,
       currentLevel: 1,
@@ -43,6 +45,9 @@ export const OnboardingPage: React.FC = () => {
       lastStreakDate: null,
     };
 
+    // Create corresponding minimal profile and set active
+    await saveProfile({ id, name: newUser.name, ageGroup: newUser.ageGroup, completedLessons: [] });
+    await setActiveProfileId(id);
     await setUser(newUser);
     navigate('/skill-tree');
   };
