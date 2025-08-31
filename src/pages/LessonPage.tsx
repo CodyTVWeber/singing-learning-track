@@ -223,7 +223,7 @@ export const LessonPage: React.FC = () => {
               icon={<Icon name="forward" />}
               iconPosition="right"
             >
-              Continue Your Journey
+              Keep Learning
             </Button>
           </Card>
         </Container>
