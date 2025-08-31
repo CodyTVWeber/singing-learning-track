@@ -1,5 +1,4 @@
-# Kooka Sing 🎵 
-## Discover Your Voice with Kooka the Kookaburra
+# Kooka Sing 🎵 - Discover Your Voice with Kooka the Kookaburra
 
 <div align="center">
   <img src="public/img/kooka-burra-singing.png" alt="Kooka the Kookaburra singing happily" width="300" style="border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);" />
