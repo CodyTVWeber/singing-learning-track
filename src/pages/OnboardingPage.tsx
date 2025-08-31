@@ -130,7 +130,7 @@ export const OnboardingPage: React.FC = () => {
           }}
         >
           <img
-            src="/img/kooka-burra-calling-out.png"
+            src="/img/kooka-burra-waiving.png"
             alt="Kooka the Kookaburra welcoming you"
             style={{
               width: '250px',
@@ -326,26 +326,6 @@ export const OnboardingPage: React.FC = () => {
                     )}
                   </button>
                 ))}
-              </div>
-              <div style={{ textAlign: 'center', marginTop: spacing.xl }}>
-                <img
-                  src="/img/kooka-burra-dancing.png"
-                  alt="Kooka dancing with excitement"
-                  style={{
-                    width: '120px',
-                    marginBottom: spacing.lg,
-                    filter: `drop-shadow(${shadows.lg})`,
-                    transform: 'scale(1)',
-                    transition: 'transform 0.3s ease',
-                    cursor: 'pointer',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.15) rotate(-5deg)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
-                  }}
-                />
               </div>
               <Button
                 onClick={handleComplete}
