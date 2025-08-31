@@ -83,7 +83,6 @@ export const Button: React.FC<ButtonProps> = ({
     if (props.disabled) return {};
     
     const baseHover = {
-      transform: 'translateY(-2px) scale(1.02)',
       boxShadow: shadows.xl,
     };
     
@@ -102,7 +101,6 @@ export const Button: React.FC<ButtonProps> = ({
       case 'ghost':
         return { 
           backgroundColor: colors.bellyCreamy,
-          transform: 'translateY(-1px)',
         };
       case 'gradient':
         return { 
@@ -118,7 +116,6 @@ export const Button: React.FC<ButtonProps> = ({
   const getActiveStyles = (): React.CSSProperties => {
     if (props.disabled) return {};
     return {
-      transform: 'translateY(0) scale(0.98)',
       boxShadow: shadows.sm,
     };
   };
