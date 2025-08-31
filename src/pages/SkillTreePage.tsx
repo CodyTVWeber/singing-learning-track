@@ -177,17 +177,16 @@ export const SkillTreePage: React.FC = () => {
                   src="/img/kooka-burra-flying.png"
                   alt="Kooka flying high"
                   style={{
-                    width: '180px',
-                    borderRadius: '50%',
-                    border: `6px solid ${colors.surface}`,
-                    boxShadow: shadows.xl,
-                    transform: 'scale(1)',
-                    transition: 'transform 0.4s ease',
-                    cursor: 'pointer',
+                    width: '280px',
+                    margin: '0 auto',
+                    marginBottom: spacing.xl,
                     filter: `drop-shadow(${shadows.xl})`,
+                    transform: 'scale(1)',
+                    transition: 'transform 0.3s ease',
+                    cursor: 'pointer',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.1) rotate(3deg)';
+                    e.currentTarget.style.transform = 'scale(1.1) rotate(2deg)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
@@ -199,24 +198,23 @@ export const SkillTreePage: React.FC = () => {
               <div style={{ textAlign: 'center', marginBottom: spacing.lg }}>
                 <h1
                   style={{
-                    fontSize: fontSize.huge,
+                    fontSize: fontSize.xxxl,
                     fontWeight: fontWeight.extrabold,
                     marginBottom: spacing.md,
                     letterSpacing: '-0.02em',
-                    textShadow: '0 2px 10px rgba(0,0,0,0.1)',
                     color: colors.text,
                   }}
                 >
                   Welcome back, {user.name}!
                 </h1>
                 <p style={{ 
-                  fontSize: fontSize.xl, 
+                  fontSize: fontSize.lg, 
                   color: colors.textLight,
                   fontWeight: fontWeight.medium,
-                  opacity: 0.8,
-                  maxWidth: '400px',
+                  opacity: 0.75,
+                  maxWidth: '350px',
                   margin: '0 auto',
-                  lineHeight: 1.5,
+                  lineHeight: 1.4,
                 }}>
                   Your voice is getting stronger every day!
                 </p>
