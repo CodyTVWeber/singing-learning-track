@@ -110,8 +110,8 @@ export const SkillTreePage: React.FC = () => {
       {/* Hero Section with Gradient Background */}
       <div
         style={{
-          background: gradients.ocean,
-          color: colors.textOnPrimary,
+          background: gradients.warm,
+          color: colors.text,
           padding: `${spacing.xxl} 0`,
           position: 'relative',
           overflow: 'hidden',
@@ -162,11 +162,9 @@ export const SkillTreePage: React.FC = () => {
                   alt="Kooka singing"
                   style={{
                     width: '80px',
-                    height: '80px',
                     borderRadius: '50%',
                     border: `4px solid ${colors.surface}`,
                     boxShadow: shadows.lg,
-                    animation: animations.bounce,
                   }}
                 />
                 <div>
@@ -222,10 +220,10 @@ export const SkillTreePage: React.FC = () => {
                   padding: spacing.lg,
                   textAlign: 'center',
                   minWidth: '120px',
-                  background: 'rgba(255, 255, 255, 0.15)',
+                  background: 'rgba(255, 255, 255, 0.8)',
                   backdropFilter: `blur(${blurs.md})`,
                   WebkitBackdropFilter: `blur(${blurs.md})`,
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  border: '1px solid rgba(255, 255, 255, 0.5)',
                 }}
               >
                 <div style={{ fontSize: fontSize.xs, opacity: 0.9, marginBottom: spacing.xs }}>
@@ -430,12 +428,14 @@ export const SkillTreePage: React.FC = () => {
                   return (
                     <Card
                       key={lesson.id}
-                      variant={isCompleted ? 'gradient' : isLocked ? 'outlined' : 'elevated'}
+                      variant={isCompleted ? 'gradient' : isLocked ? 'default' : 'elevated'}
                       onClick={() => handleLessonClick(lesson)}
                       style={{
-                        opacity: isLocked ? 0.6 : 1,
+                        opacity: isLocked ? 0.85 : 1,
                         transform: isExpanded ? 'translateY(0)' : 'translateY(-20px)',
                         transition: `all 0.3s ease-out ${lessonIndex * 0.05}s`,
+                        backgroundColor: isLocked ? colors.gray100 : undefined,
+                        border: isLocked ? `2px solid ${colors.gray300}` : undefined,
                       }}
                     >
                       <div style={{ position: 'relative' }}>
@@ -449,18 +449,19 @@ export const SkillTreePage: React.FC = () => {
                               ? gradients.success 
                               : isLocked 
                                 ? colors.gray200 
-                                : gradients.secondary,
+                                : gradients.sunset,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             marginBottom: spacing.md,
-                            boxShadow: shadows.sm,
+                            boxShadow: isLocked ? 'none' : shadows.md,
+                            border: isLocked ? `2px solid ${colors.gray300}` : 'none',
                           }}
                         >
                           {isLocked ? (
                             <Icon name="lock" size={24} color={colors.gray600} />
                           ) : isCompleted ? (
-                            <Icon name="done" size={24} color="white" />
+                            <Icon name="done" size={24} color={colors.text} />
                           ) : (
                             <span style={{ fontSize: '24px' }}>🎶</span>
                           )}
@@ -562,19 +563,17 @@ export const SkillTreePage: React.FC = () => {
           <img
             src="/img/kooka-burra-breathing.png"
             alt="Kooka encouraging you"
-            style={{
-              width: '120px',
-              height: '120px',
-              margin: '0 auto',
-              marginBottom: spacing.lg,
-              animation: animations.float,
-            }}
+                          style={{
+                width: '120px',
+                margin: '0 auto',
+                marginBottom: spacing.lg,
+              }}
           />
           <h3
             style={{
               fontSize: fontSize.xxl,
               fontWeight: fontWeight.bold,
-              color: colors.textOnPrimary,
+              color: colors.text,
               marginBottom: spacing.md,
             }}
           >
@@ -583,7 +582,7 @@ export const SkillTreePage: React.FC = () => {
           <p
             style={{
               fontSize: fontSize.lg,
-              color: colors.textOnPrimary,
+              color: colors.text,
               opacity: 0.95,
               maxWidth: '500px',
               margin: '0 auto',

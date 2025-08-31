@@ -89,13 +89,12 @@ export const SplashPage: React.FC = () => {
         <img
           src="/img/kooka-burra-waiving.png"
           alt="Kooka the Kookaburra waving hello"
-          style={{
-            width: '280px',
-            marginBottom: spacing.xxl,
-            animation: animations.float,
-            filter: `drop-shadow(${shadows.xl})`,
-            transform: 'rotate(-5deg)',
-          }}
+                      style={{
+              width: '280px',
+              marginBottom: spacing.xxl,
+              filter: `drop-shadow(${shadows.xl})`,
+              transform: 'rotate(-5deg)',
+            }}
         />
         
         <h1

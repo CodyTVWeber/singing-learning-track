@@ -134,10 +134,8 @@ export const OnboardingPage: React.FC = () => {
             alt="Kooka the Kookaburra welcoming you"
             style={{
               width: '150px',
-              height: '150px',
               margin: '0 auto',
               marginBottom: spacing.lg,
-              animation: animations.float,
               filter: `drop-shadow(${shadows.lg})`,
             }}
           />
@@ -174,7 +172,7 @@ export const OnboardingPage: React.FC = () => {
           }}
         >
           {step === 0 ? (
-            <Card variant="glass" padding="xl" decorative>
+            <Card variant="glass" padding="xl">
               <form onSubmit={handleNameSubmit}>
                 <h2
                   style={{
@@ -238,7 +236,7 @@ export const OnboardingPage: React.FC = () => {
               </form>
             </Card>
           ) : (
-            <Card variant="glass" padding="xl" decorative>
+            <Card variant="glass" padding="xl">
               <h2
                 style={{
                   fontSize: fontSize.xxl,

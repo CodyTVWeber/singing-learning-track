@@ -24,8 +24,8 @@ export const colors = {
   text: '#3C3C3C', // Dark charcoal (matching beak)
   textLight: '#6B5843', // Brown text
   textMuted: '#8B7355', // Muted brown
-  textOnPrimary: '#FFFFFF', // White text on primary
-  textOnSecondary: '#FFFFFF', // White text on secondary
+  textOnPrimary: '#FAF6F2', // Very light cream on primary
+  textOnSecondary: '#FAF6F2', // Very light cream on secondary
   
   // Semantic colors - Nature inspired but subtle
   success: '#7B8B4B', // Eucalyptus green

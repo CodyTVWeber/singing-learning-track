@@ -126,12 +126,10 @@ export const LessonPage: React.FC = () => {
               alt="Kooka celebrating"
               style={{
                 width: '150px',
-                height: '150px',
                 margin: '0 auto',
                 marginBottom: spacing.lg,
                 borderRadius: borderRadius.round,
                 boxShadow: shadows.lg,
-                animation: `${animations.bounce}, ${animations.float}`,
               }}
             />
             
@@ -248,7 +246,7 @@ export const LessonPage: React.FC = () => {
               variant="ghost"
               onClick={() => navigate('/skill-tree')}
               icon={<Icon name="arrow_back" />}
-              style={{ color: colors.textOnPrimary }}
+              style={{ color: colors.text }}
             >
               Back
             </Button>
@@ -494,13 +492,11 @@ export const LessonPage: React.FC = () => {
           <img
             src="/img/kooka-burra-breathing.png"
             alt="Kooka encouraging you"
-            style={{
-              width: '80px',
-              height: '80px',
-              marginBottom: spacing.md,
-              opacity: 0.6,
-              animation: animations.pulse,
-            }}
+                          style={{
+                width: '80px',
+                marginBottom: spacing.md,
+                opacity: 0.6,
+              }}
           />
           <p
             style={{

@@ -89,26 +89,26 @@ export const Button: React.FC<ButtonProps> = ({
     
     switch (variant) {
       case 'primary':
-        return { ...baseHover, backgroundColor: colors.primaryDark };
+        return { ...baseHover, backgroundColor: colors.warning };
       case 'secondary':
-        return { ...baseHover, backgroundColor: colors.secondaryDark };
+        return { ...baseHover, backgroundColor: colors.secondaryLight };
       case 'outline':
         return { 
           ...baseHover, 
-          backgroundColor: colors.primary,
-          color: colors.textOnPrimary,
-          borderColor: colors.primary,
+          backgroundColor: colors.featherLight,
+          color: colors.text,
+          borderColor: colors.warning,
         };
       case 'ghost':
         return { 
-          backgroundColor: colors.gray100,
+          backgroundColor: colors.bellyCreamy,
           transform: 'translateY(-1px)',
         };
       case 'gradient':
         return { 
           ...baseHover,
-          background: gradients.ocean,
-          boxShadow: `${shadows.colored} ${colors.primaryLight}`,
+          background: gradients.sunset,
+          boxShadow: `${shadows.colored} ${colors.warning}`,
         };
       default:
         return baseHover;

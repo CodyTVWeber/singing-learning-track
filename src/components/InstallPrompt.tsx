@@ -83,7 +83,7 @@ export const InstallPrompt: React.FC = () => {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md }}>
-        <img src="/img/kooka-burra-waiving.png" alt="Kooka" style={{ width: 40, height: 40 }} />
+        <img src="/img/kooka-burra-waiving.png" alt="Kooka" style={{ width: 40 }} />
         <div>
           <div style={{ fontSize: fontSize.md, fontWeight: fontWeight.semibold, color: colors.text }}>Install Kooka Sing?</div>
           <div style={{ fontSize: fontSize.sm, color: colors.textLight }}>Get quick access and offline support</div>

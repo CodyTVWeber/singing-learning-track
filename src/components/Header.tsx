@@ -44,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({
     switch (variant) {
       case 'gradient':
         return {
-          background: gradients.primary,
+          background: gradients.feather,
           boxShadow: scrolled ? shadows.lg : shadows.md,
           backdropFilter: `blur(${blurs.sm})`,
           WebkitBackdropFilter: `blur(${blurs.sm})`,
@@ -103,7 +103,7 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   const getTitleColor = () => {
-    if (variant === 'gradient') return colors.textOnPrimary;
+    if (variant === 'gradient') return colors.text;
     if (variant === 'glass' || variant === 'minimal') return colors.text;
     return colors.text;
   };
@@ -121,7 +121,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   const subtitleStyles: React.CSSProperties = {
     fontSize: fontSize.sm,
-    color: variant === 'gradient' ? colors.textOnPrimary : colors.textLight,
+    color: variant === 'gradient' ? colors.text : colors.textLight,
     margin: 0,
     opacity: 0.9,
   };
@@ -149,9 +149,7 @@ export const Header: React.FC<HeaderProps> = ({
                   alt="Kooka"
                   style={{
                     width: '32px',
-                    height: '32px',
                     objectFit: 'contain',
-                    animation: scrolled ? 'wiggle 2s ease-in-out infinite' : 'none',
                   }}
                 />
               )}

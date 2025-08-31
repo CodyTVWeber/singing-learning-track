@@ -241,8 +241,6 @@ export const Modal: React.FC<ModalProps> = ({
                   alt="Kooka"
                   style={{
                     width: '32px',
-                    height: '32px',
-                    animation: animations.bounce,
                   }}
                 />
               )}
