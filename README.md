@@ -1,4 +1,4 @@
-# Kooka Sing (React)
+# Kooka Burra Sing
 
 A mobile-first React web app for learning to sing with Kooka the Kookaburra.
 
