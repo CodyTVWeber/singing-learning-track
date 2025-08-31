@@ -305,7 +305,8 @@ img {
 }
 
 /* Smooth transitions for responsive changes */
-* {
+/* Only apply to specific properties to avoid interfering with interactions */
+body, .container, h1, h2, h3, h4, h5, h6, p {
   transition-property: padding, margin, font-size;
   transition-duration: 0.2s;
   transition-timing-function: ease-out;

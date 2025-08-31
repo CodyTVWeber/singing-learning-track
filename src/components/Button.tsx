@@ -29,7 +29,7 @@ export const Button: React.FC<ButtonProps> = ({
               size === 'large' ? fontSize.lg : 
               fontSize.md,
     fontWeight: fontWeight.semibold,
-    transition: transitions.smooth,
+    transition: `background-color ${transitions.fast}, transform ${transitions.fast}, box-shadow ${transitions.fast}`,
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -47,6 +47,7 @@ export const Button: React.FC<ButtonProps> = ({
     whiteSpace: 'nowrap',
     userSelect: 'none',
     flexDirection: iconPosition === 'right' ? 'row-reverse' : 'row',
+    zIndex: 1,
   };
 
   const variantStyles: Record<string, React.CSSProperties> = {

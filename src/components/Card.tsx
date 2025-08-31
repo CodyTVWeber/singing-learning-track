@@ -91,12 +91,13 @@ export const Card: React.FC<CardProps> = ({
               right: '-20%',
               width: '200px',
               height: '200px',
-              background: gradients.ocean,
+              background: gradients.wing,
               borderRadius: '50%',
               filter: `blur(${blurs.xl})`,
               opacity: 0.3,
               transition: transitions.slow,
               transform: isHovered ? 'scale(1.2)' : 'scale(1)',
+              pointerEvents: 'none',
             }}
           />
           <div
@@ -106,12 +107,13 @@ export const Card: React.FC<CardProps> = ({
               left: '-20%',
               width: '150px',
               height: '150px',
-              background: gradients.sunset,
+              background: gradients.feather,
               borderRadius: '50%',
               filter: `blur(${blurs.xl})`,
               opacity: 0.3,
               transition: transitions.slow,
               transform: isHovered ? 'scale(1.2)' : 'scale(1)',
+              pointerEvents: 'none',
             }}
           />
         </>

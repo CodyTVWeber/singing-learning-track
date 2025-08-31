@@ -92,11 +92,13 @@ export const OnboardingPage: React.FC = () => {
           left: '-10%',
           width: '300px',
           height: '300px',
-          background: gradients.ocean,
+          background: gradients.wing,
           borderRadius: '50%',
           filter: 'blur(80px)',
           opacity: 0.3,
           animation: animations.pulse,
+          pointerEvents: 'none',
+          zIndex: 0,
         }}
       />
       <div
@@ -106,16 +108,18 @@ export const OnboardingPage: React.FC = () => {
           right: '-10%',
           width: '350px',
           height: '350px',
-          background: gradients.sunset,
+          background: gradients.feather,
           borderRadius: '50%',
           filter: 'blur(80px)',
           opacity: 0.3,
           animation: animations.pulse,
           animationDelay: '1s',
+          pointerEvents: 'none',
+          zIndex: 0,
         }}
       />
 
-      <Container maxWidth="500px">
+      <Container maxWidth="500px" style={{ position: 'relative', zIndex: 10 }}>
         <div 
           style={{ 
             textAlign: 'center', 
@@ -284,18 +288,7 @@ export const OnboardingPage: React.FC = () => {
                       opacity: 0,
                       animation: `slideUp 0.4s ease-out ${index * 0.1}s forwards`,
                     }}
-                    onMouseEnter={(e) => {
-                      if (ageGroup !== option.value) {
-                        e.currentTarget.style.transform = 'scale(1.02)';
-                        e.currentTarget.style.boxShadow = shadows.sm;
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (ageGroup !== option.value) {
-                        e.currentTarget.style.transform = 'scale(1)';
-                        e.currentTarget.style.boxShadow = 'none';
-                      }
-                    }}
+
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md }}>
                       <span style={{ fontSize: '2rem' }}>{option.icon}</span>
@@ -354,6 +347,8 @@ export const OnboardingPage: React.FC = () => {
             fontSize: '24px',
             animation: 'float 5s ease-in-out infinite',
             opacity: 0.3,
+            pointerEvents: 'none',
+            zIndex: 1,
           }}
         >
           🎤
@@ -367,6 +362,8 @@ export const OnboardingPage: React.FC = () => {
             animation: 'float 6s ease-in-out infinite',
             animationDelay: '2s',
             opacity: 0.3,
+            pointerEvents: 'none',
+            zIndex: 1,
           }}
         >
           🎶

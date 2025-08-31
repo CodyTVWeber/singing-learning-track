@@ -52,11 +52,12 @@ export const SplashPage: React.FC = () => {
           right: '-10%',
           width: '400px',
           height: '400px',
-          background: gradients.ocean,
+          background: gradients.wing,
           borderRadius: '50%',
           filter: 'blur(100px)',
           opacity: 0.3,
           animation: animations.pulse,
+          pointerEvents: 'none',
         }}
       />
       <div
@@ -66,12 +67,13 @@ export const SplashPage: React.FC = () => {
           left: '-10%',
           width: '400px',
           height: '400px',
-          background: gradients.sunset,
+          background: gradients.feather,
           borderRadius: '50%',
           filter: 'blur(100px)',
           opacity: 0.3,
           animation: animations.pulse,
           animationDelay: '1s',
+          pointerEvents: 'none',
         }}
       />
       
@@ -152,6 +154,7 @@ export const SplashPage: React.FC = () => {
           animation: 'float 4s ease-in-out infinite',
           animationDelay: '0.5s',
           opacity: 0.3,
+          pointerEvents: 'none',
         }}
       >
         🎵
@@ -165,6 +168,7 @@ export const SplashPage: React.FC = () => {
           animation: 'float 5s ease-in-out infinite',
           animationDelay: '1.5s',
           opacity: 0.3,
+          pointerEvents: 'none',
         }}
       >
         🎶
@@ -178,6 +182,7 @@ export const SplashPage: React.FC = () => {
           animation: 'float 6s ease-in-out infinite',
           animationDelay: '2s',
           opacity: 0.3,
+          pointerEvents: 'none',
         }}
       >
         🎤
