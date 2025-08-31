@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { colors, spacing, borderRadius, fontSize, fontWeight, shadows, transitions, gradients, blurs, animations } from '../theme/theme';
+import { colors, spacing, borderRadius, fontSize, fontWeight, shadows, transitions, gradients, blurs } from '../theme/theme';
 import { Icon } from './Icon';
 
 interface ModalProps {
@@ -84,6 +84,7 @@ export const Modal: React.FC<ModalProps> = ({
     padding: size === 'fullscreen' ? 0 : spacing.lg,
     opacity: isOpen ? 1 : 0,
     visibility: isOpen || isAnimating ? 'visible' : 'hidden',
+    pointerEvents: isOpen || isAnimating ? 'auto' : 'none',
     transition: transitions.smooth,
     zIndex: 1500,
   };
@@ -210,7 +211,7 @@ export const Modal: React.FC<ModalProps> = ({
                 right: '-10%',
                 width: '200px',
                 height: '200px',
-                background: gradients.ocean,
+                background: gradients.secondary,
                 borderRadius: '50%',
                 filter: `blur(${blurs.xl})`,
                 opacity: 0.3,

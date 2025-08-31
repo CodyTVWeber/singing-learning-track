@@ -62,7 +62,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
             style={{
               width: dotSize / 2,
               height: '100%',
-              background: gradients.ocean,
+              background: gradients.secondary,
               borderRadius: dotSize / 4,
               animation: `pulse 1.2s ease-in-out ${i * 0.15}s infinite`,
               transformOrigin: 'bottom',

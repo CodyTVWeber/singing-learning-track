@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { colors, fontSize, fontWeight, spacing } from '../theme/theme';
 import { Button } from './Button';
 import { Card } from './Card';
@@ -24,7 +24,7 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
   promptText,
   onComplete,
 }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<LessonStep>('intro');
   const [hasPlayedAudio, setHasPlayedAudio] = useState(false);
   const [recordedAudioUrl, setRecordedAudioUrl] = useState<string | null>(null);
@@ -36,9 +36,9 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
     analytics.trackEvent('lesson_started', { lessonType: 'echo' });
   }, []);
 
-  const handleBackToSkillTree = () => {
-    navigate('/skill-tree');
-  };
+  // const handleBackToSkillTree = () => {
+  //   navigate('/skill-tree');
+  // };
 
   const handleAudioPlay = () => {
     setHasPlayedAudio(true);
@@ -118,7 +118,7 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
         style={{
           fontSize: fontSize.xxl,
           fontWeight: fontWeight.bold,
-          color: colors.darkBrown,
+          color: colors.text,
           marginBottom: spacing.lg,
         }}
       >
@@ -157,7 +157,7 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
         style={{
           fontSize: fontSize.xxl,
           fontWeight: fontWeight.bold,
-          color: colors.darkBrown,
+          color: colors.text,
           marginBottom: spacing.lg,
         }}
       >
@@ -214,7 +214,7 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
         style={{
           fontSize: fontSize.xxl,
           fontWeight: fontWeight.bold,
-          color: colors.darkBrown,
+          color: colors.text,
           marginBottom: spacing.lg,
         }}
       >
@@ -257,7 +257,7 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
           style={{
             fontSize: fontSize.xxl,
             fontWeight: fontWeight.bold,
-            color: colors.darkBrown,
+            color: colors.text,
             marginBottom: spacing.lg,
           }}
         >
@@ -344,8 +344,8 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
     </div>
   );
 
-  function getProgressPercentage(): number {
-    const stepMap = { intro: 0, listen: 25, record: 50, review: 100 };
-    return stepMap[currentStep] || 0;
-  }
+  // function getProgressPercentage(): number {
+  //   const stepMap = { intro: 0, listen: 25, record: 50, review: 100 };
+  //   return stepMap[currentStep] || 0;
+  // }
 };

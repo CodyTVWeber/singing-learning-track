@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { colors, spacing, shadows, transitions, fontSize, fontWeight, gradients, blurs, borderRadius } from '../theme/theme';
+import { colors, spacing, shadows, transitions, fontSize, fontWeight, gradients, blurs } from '../theme/theme';
 
 interface HeaderProps {
   title?: string;

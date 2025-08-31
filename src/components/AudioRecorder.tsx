@@ -71,7 +71,10 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
 
   // Analyze volume
   const analyzeVolume = useCallback(() => {
-    if (!analyserRef.current || !isRecording) return;
+    if (!analyserRef.current || !isRecording || isPaused) {
+      // If paused, do not schedule next animation frame to avoid busy loop
+      return;
+    }
 
     const analyser = analyserRef.current;
     const dataArray = new Uint8Array(analyser.fftSize);
@@ -138,7 +141,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
     }
 
     animationFrameRef.current = requestAnimationFrame(analyzeVolume);
-  }, [isRecording, onVolumeChange]);
+  }, [isRecording, isPaused, onVolumeChange]);
 
   // Start recording
   const startRecording = useCallback(async () => {
@@ -174,6 +177,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
       recordingStartTimeRef.current = Date.now();
 
       // Start volume analysis
+      animationFrameRef.current && cancelAnimationFrame(animationFrameRef.current);
       analyzeVolume();
 
       // Timer for recording duration
@@ -224,11 +228,21 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
     if (isPaused) {
       mediaRecorderRef.current.resume();
       setIsPaused(false);
+      // Resume analysis loop
+      if (isRecording) {
+        animationFrameRef.current && cancelAnimationFrame(animationFrameRef.current);
+        analyzeVolume();
+      }
     } else {
       mediaRecorderRef.current.pause();
       setIsPaused(true);
+      // Cancel animation while paused
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
     }
-  }, [isPaused]);
+  }, [isPaused, isRecording, analyzeVolume]);
 
   // Play recorded audio
   const playAudio = useCallback(() => {
@@ -270,6 +284,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
   }, [stopRecording, audioUrl]);
 
   const formatTime = (seconds: number) => {
+    if (!Number.isFinite(seconds) || isNaN(seconds) || seconds < 0) return '0:00';
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs.toString().padStart(2, '0')}`;
@@ -342,7 +357,6 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
                   name="play" 
                   size={32} 
                   color={isPaused ? colors.textLight : colors.primary}
-                  style={{ animation: !isPaused ? 'pulse 2s infinite' : 'none' }}
                 />
               </div>
               <p style={{ marginTop: spacing.sm, fontSize: fontSize.sm, color: colors.textLight }}>
@@ -446,15 +460,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
         </div>
       )}
 
-      <style>
-        {`
-          @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-          }
-        `}
-      </style>
+      {/* animations removed for simplicity */}
     </div>
   );
 };

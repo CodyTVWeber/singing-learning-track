@@ -39,7 +39,7 @@ export const Video: React.FC<VideoProps> = ({
     position: 'relative',
     width: width || '100%',
     paddingBottom: aspectRatio,
-    backgroundColor: colors.darkBrown,
+    backgroundColor: colors.text,
     borderRadius: typeof rounded === 'string' ? borderRadius[rounded] : 
                   rounded ? borderRadius.md : 0,
     overflow: 'hidden',
@@ -47,7 +47,7 @@ export const Video: React.FC<VideoProps> = ({
     position: 'relative',
     width: width || '100%',
     height: height || 'auto',
-    backgroundColor: colors.darkBrown,
+    backgroundColor: colors.text,
     borderRadius: typeof rounded === 'string' ? borderRadius[rounded] : 
                   rounded ? borderRadius.md : 0,
     overflow: 'hidden',

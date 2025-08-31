@@ -16,14 +16,14 @@ export class ToneGenerator {
 
   async ensureContext(): Promise<AudioContext> {
     if (this.audioContext && this.audioContext.state !== 'closed') {
-      return this.audioContext;
+      return this.audioContext as AudioContext;
     }
     const Ctx = (window as any).AudioContext || (window as any).webkitAudioContext;
     this.audioContext = new Ctx();
-    this.gainNode = this.audioContext.createGain();
+    this.gainNode = (this.audioContext as AudioContext).createGain();
     this.gainNode.gain.value = 0.18; // gentle default volume
-    this.gainNode.connect(this.audioContext.destination);
-    return this.audioContext;
+    this.gainNode.connect((this.audioContext as AudioContext).destination);
+    return this.audioContext as AudioContext;
   }
 
   async playFrequency(frequencyHz: number, durationMs: number, volume?: number): Promise<void> {

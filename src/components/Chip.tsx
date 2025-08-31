@@ -30,10 +30,12 @@ export const Chip: React.FC<ChipProps> = ({
   className = '',
   style,
 }) => {
-  const colorMap = {
+  type ChipColorKey = 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'default';
+  interface ChipColorConfig { bg: string; text: string; border: string; gradient: string }
+  const colorMap: Record<ChipColorKey, ChipColorConfig> = {
     primary: { bg: colors.primary, text: colors.textOnPrimary, border: colors.primary, gradient: gradients.primary },
     secondary: { bg: colors.secondary, text: colors.textOnSecondary, border: colors.secondary, gradient: gradients.secondary },
-    success: { bg: colors.success, text: colors.textOnPrimary, border: colors.success, gradient: gradients.success },
+    success: { bg: colors.success, text: colors.textOnPrimary, border: colors.success, gradient: gradients.forest },
     warning: { bg: colors.warning, text: colors.text, border: colors.warning, gradient: gradients.warm },
     error: { bg: colors.error, text: colors.textOnPrimary, border: colors.error, gradient: gradients.sunset },
     default: { bg: colors.gray100, text: colors.text, border: colors.gray300, gradient: colors.gray100 },

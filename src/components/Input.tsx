@@ -1,5 +1,5 @@
 import React, { forwardRef, useState, useEffect } from 'react';
-import { colors, spacing, borderRadius, fontSize, transitions, fontWeight, shadows, gradients, animations } from '../theme/theme';
+import { colors, spacing, borderRadius, fontSize, transitions, fontWeight, gradients } from '../theme/theme';
 import { Icon } from './Icon';
 import { LoadingSpinner } from './LoadingSpinner';
 

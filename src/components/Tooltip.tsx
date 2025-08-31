@@ -98,8 +98,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
     position: 'fixed',
     top: tooltipPosition.top,
     left: tooltipPosition.left,
-    zIndex: 9999,
-    backgroundColor: colors.darkBrown,
+    zIndex: 1500,
+    backgroundColor: colors.text,
     color: 'white',
     padding: `${spacing.xs} ${spacing.sm}`,
     borderRadius: borderRadius.sm,
@@ -134,7 +134,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
           left: '50%',
           transform: 'translateX(-50%)',
           borderWidth: `${arrowSize}px ${arrowSize}px 0`,
-          borderColor: `${colors.darkBrown} transparent transparent`,
+          borderColor: `${colors.text} transparent transparent`,
         };
       case 'bottom':
         return {
@@ -143,7 +143,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
           left: '50%',
           transform: 'translateX(-50%)',
           borderWidth: `0 ${arrowSize}px ${arrowSize}px`,
-          borderColor: `transparent transparent ${colors.darkBrown}`,
+          borderColor: `transparent transparent ${colors.text}`,
         };
       case 'left':
         return {
@@ -152,7 +152,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
           top: '50%',
           transform: 'translateY(-50%)',
           borderWidth: `${arrowSize}px 0 ${arrowSize}px ${arrowSize}px`,
-          borderColor: `transparent transparent transparent ${colors.darkBrown}`,
+          borderColor: `transparent transparent transparent ${colors.text}`,
         };
       case 'right':
         return {
@@ -161,7 +161,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
           top: '50%',
           transform: 'translateY(-50%)',
           borderWidth: `${arrowSize}px ${arrowSize}px ${arrowSize}px 0`,
-          borderColor: `transparent ${colors.darkBrown} transparent transparent`,
+          borderColor: `transparent ${colors.text} transparent transparent`,
         };
       default:
         return baseArrowStyles;

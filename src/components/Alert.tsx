@@ -21,11 +21,11 @@ export const Alert: React.FC<AlertProps> = ({
   style,
 }) => {
   const typeColors = {
-    info: { bg: colors.skyLight, text: colors.darkBrown, icon: colors.secondary },
-    success: { bg: '#E8F5E9', text: colors.darkBrown, icon: colors.success },
-    warning: { bg: '#FFF3E0', text: colors.darkBrown, icon: colors.warning },
-    error: { bg: '#FFEBEE', text: colors.darkBrown, icon: colors.error },
-  };
+    info: { bg: colors.gray50, text: colors.text, icon: colors.secondary },
+    success: { bg: '#E8F5E9', text: colors.text, icon: colors.success },
+    warning: { bg: '#FFF3E0', text: colors.text, icon: colors.warning },
+    error: { bg: '#FFEBEE', text: colors.text, icon: colors.error },
+  } as const;
 
   const currentColors = typeColors[type];
 
