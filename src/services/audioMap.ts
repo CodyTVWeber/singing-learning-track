@@ -34,6 +34,35 @@ export function resolveAudioId(audioId?: string | null): ResolvedAudio | null {
     };
   }
 
+  // Bird sounds for voice discovery lesson
+  if (audioId === 'baby-bird') {
+    // High-pitched tweet tweet sounds like a baby bird
+    return {
+      type: 'sequence',
+      sequence: [
+        { frequency: 800.0, durationMs: 300, gapMs: 100 },
+        { frequency: 900.0, durationMs: 300, gapMs: 200 },
+        { frequency: 800.0, durationMs: 300, gapMs: 100 },
+        { frequency: 900.0, durationMs: 300, gapMs: 0 },
+      ],
+      volume: 0.15,
+    };
+  }
+
+  if (audioId === 'papa-bird') {
+    // Lower-pitched tweet tweet sounds like a papa bird
+    return {
+      type: 'sequence',
+      sequence: [
+        { frequency: 400.0, durationMs: 400, gapMs: 150 },
+        { frequency: 450.0, durationMs: 400, gapMs: 250 },
+        { frequency: 400.0, durationMs: 400, gapMs: 150 },
+        { frequency: 450.0, durationMs: 400, gapMs: 0 },
+      ],
+      volume: 0.18,
+    };
+  }
+
   if (audioId === 'piano-intervals') {
     // same, then different: C4 -> C4, C4 -> E4
     return {

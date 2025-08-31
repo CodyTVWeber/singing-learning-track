@@ -9,6 +9,7 @@ import { Container } from '../components/Container';
 import { EchoLesson } from '../components/EchoLesson';
 import { ReferenceAudio } from '../components/ReferenceAudio';
 import { PitchPractice } from '../components/PitchPractice';
+import { BirdSounds } from '../components/BirdSounds';
 import { Icon, IconButton } from '../components/Icon';
 import { Header } from '../components/Header';
 import { Progress } from '../components/Progress';
@@ -443,6 +444,13 @@ export const LessonPage: React.FC = () => {
                   targetHz={(!isStringStep && currentStepContent?.targetHz) || undefined}
                 />
               </Card>
+            </div>
+          )}
+
+          {/* Bird Sounds for Voice Discovery Lesson */}
+          {lesson.id === 'voice-discovery' && (
+            <div style={{ marginBottom: spacing.xl }}>
+              <BirdSounds />
             </div>
           )}
 

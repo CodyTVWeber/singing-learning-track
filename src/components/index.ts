@@ -38,6 +38,7 @@ export { Image } from './Image';
 export { Icon, IconButton } from './Icon';
 export { Video } from './Video';
 export { AudioPlayer } from './AudioPlayer';
+export { BirdSounds } from './BirdSounds';
 
 // Interactive Components
 export { Accordion, Collapsible } from './Accordion';
