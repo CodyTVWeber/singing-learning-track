@@ -171,46 +171,55 @@ export const SkillTreePage: React.FC = () => {
             }}
           >
             <div style={{ flex: 1, minWidth: '300px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md, marginBottom: spacing.md }}>
+              {/* Centered Kooka Image */}
+              <div style={{ textAlign: 'center', marginBottom: spacing.xl }}>
                 <img
                   src="/img/kooka-burra-flying.png"
                   alt="Kooka flying high"
                   style={{
-                    width: '120px',
+                    width: '180px',
                     borderRadius: '50%',
-                    border: `4px solid ${colors.surface}`,
+                    border: `6px solid ${colors.surface}`,
                     boxShadow: shadows.xl,
                     transform: 'scale(1)',
-                    transition: 'transform 0.3s ease',
+                    transition: 'transform 0.4s ease',
                     cursor: 'pointer',
+                    filter: `drop-shadow(${shadows.xl})`,
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.1) rotate(5deg)';
+                    e.currentTarget.style.transform = 'scale(1.1) rotate(3deg)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
                   }}
                 />
-                <div>
-                  <h1
-                    style={{
-                      fontSize: fontSize.xxxl,
-                      fontWeight: fontWeight.extrabold,
-                      marginBottom: spacing.xs,
-                      letterSpacing: '-0.02em',
-                      textShadow: '0 2px 10px rgba(0,0,0,0.2)',
-                    }}
-                  >
-                    Welcome back, {user.name}!
-                  </h1>
-                  <p style={{ 
-                    fontSize: fontSize.lg, 
-                    opacity: 0.95,
-                    fontWeight: fontWeight.medium,
-                  }}>
-                    Your voice is getting stronger every day!
-                  </p>
-                </div>
+              </div>
+              
+              {/* Centered Text Content */}
+              <div style={{ textAlign: 'center', marginBottom: spacing.lg }}>
+                <h1
+                  style={{
+                    fontSize: fontSize.huge,
+                    fontWeight: fontWeight.extrabold,
+                    marginBottom: spacing.md,
+                    letterSpacing: '-0.02em',
+                    textShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                    color: colors.text,
+                  }}
+                >
+                  Welcome back, {user.name}!
+                </h1>
+                <p style={{ 
+                  fontSize: fontSize.xl, 
+                  color: colors.textLight,
+                  fontWeight: fontWeight.medium,
+                  opacity: 0.8,
+                  maxWidth: '400px',
+                  margin: '0 auto',
+                  lineHeight: 1.5,
+                }}>
+                  Your voice is getting stronger every day!
+                </p>
               </div>
               
               {/* Overall Progress */}
