@@ -50,6 +50,11 @@ export { Divider } from './Divider';
 export { Spacer } from './Spacer';
 export { ScrollToTop, ScrollArea } from './ScrollToTop';
 export { ErrorBoundary, useErrorHandler, withErrorBoundary } from './ErrorBoundary';
+export * as Primitives from './primitives';
+export { KookaImage } from './KookaImage';
+export { StatCard } from './StatCard';
+export { UnitCard } from './UnitCard';
+export { LessonCard } from './LessonCard';
 
 // Existing Components
 export { Button } from './Button';
