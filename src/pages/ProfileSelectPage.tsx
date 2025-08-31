@@ -12,7 +12,9 @@ export const ProfileSelectPage: React.FC = () => {
   const navigate = useNavigate();
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [ageGroup, setAgeGroup] = useState<'kid' | 'teen' | 'adult'>('kid');
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -28,14 +30,24 @@ export const ProfileSelectPage: React.FC = () => {
 
   const handleCreate = async () => {
     const trimmed = name.trim();
-    if (!trimmed) return;
+    const trimmedEmail = email.trim().toLowerCase();
+    if (!trimmed || !trimmedEmail) {
+      setError('Please enter a name and email');
+      return;
+    }
     const profile: Profile = {
       id: uuidv4(),
       name: trimmed,
       ageGroup,
+      email: trimmedEmail,
       completedLessons: [],
     };
-    await saveProfile(profile);
+    try {
+      await saveProfile(profile);
+    } catch (e: any) {
+      setError(e?.message || 'Could not create profile');
+      return;
+    }
     await setActiveProfileId(profile.id);
     navigate('/skill-tree');
   };
@@ -82,9 +94,8 @@ export const ProfileSelectPage: React.FC = () => {
                 >
                   <div>
                     <div style={{ fontWeight: fontWeight.bold }}>{p.name}</div>
-                    <div style={{ fontSize: fontSize.sm, color: colors.textLight }}>
-                      {p.ageGroup}
-                    </div>
+                    <div style={{ fontSize: fontSize.sm, color: colors.textLight }}>{p.email || 'no email'}</div>
+                    <div style={{ fontSize: fontSize.sm, color: colors.textLight }}>{p.ageGroup}</div>
                   </div>
                   <div style={{ fontSize: fontSize.sm, color: colors.textMuted }}>
                     {p.completedLessons.length} lessons completed
@@ -98,10 +109,24 @@ export const ProfileSelectPage: React.FC = () => {
         <Card variant="glass">
           <h2 style={{ fontSize: fontSize.xl, marginBottom: spacing.md }}>Create New Profile</h2>
           <div style={{ display: 'grid', gap: spacing.md }}>
+            {error && (
+              <div style={{ color: colors.error, fontSize: fontSize.sm }}>{error}</div>
+            )}
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter name"
+              style={{
+                padding: spacing.md,
+                borderRadius: borderRadius.md,
+                border: '1px solid rgba(0,0,0,0.1)',
+              }}
+            />
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter email"
+              inputMode="email"
               style={{
                 padding: spacing.md,
                 borderRadius: borderRadius.md,
@@ -122,7 +147,7 @@ export const ProfileSelectPage: React.FC = () => {
                 </label>
               ))}
             </div>
-            <Button onClick={handleCreate} disabled={!name.trim()}>
+            <Button onClick={handleCreate} disabled={!name.trim() || !email.trim()}>
               Create and Continue
             </Button>
           </div>

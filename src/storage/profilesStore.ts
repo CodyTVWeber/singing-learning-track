@@ -14,6 +14,7 @@ function readAllProfiles(): Profile[] {
       id: p.id,
       name: p.name,
       ageGroup: p.ageGroup,
+      email: (p as any).email ? String((p as any).email).trim().toLowerCase() : '',
       completedLessons: Array.isArray(p.completedLessons) ? p.completedLessons : [],
     }));
   } catch (_err) {
@@ -36,6 +37,13 @@ export async function getProfileById(id: string): Promise<Profile | null> {
 
 export async function saveProfile(profile: Profile): Promise<void> {
   const all = readAllProfiles();
+  // Enforce unique email (case-insensitive)
+  const normalizedEmail = profile.email.trim().toLowerCase();
+  const duplicate = all.find((p) => p.email && p.email.trim().toLowerCase() === normalizedEmail && p.id !== profile.id);
+  if (duplicate) {
+    throw new Error('Email already exists');
+  }
+  profile.email = normalizedEmail;
   const idx = all.findIndex((p) => p.id === profile.id);
   if (idx >= 0) {
     all[idx] = profile;

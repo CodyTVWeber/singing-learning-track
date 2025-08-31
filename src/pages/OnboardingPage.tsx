@@ -16,6 +16,8 @@ export const OnboardingPage: React.FC = () => {
   const [step, setStep] = useState(0);
   const [name, setName] = useState('');
   const [ageGroup, setAgeGroup] = useState<'kid' | 'teen' | 'adult'>('kid');
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
@@ -34,6 +36,11 @@ export const OnboardingPage: React.FC = () => {
   };
 
   const handleComplete = async () => {
+    const trimmedEmail = email.trim().toLowerCase();
+    if (!trimmedEmail) {
+      setError('Please enter your email');
+      return;
+    }
     const id = uuidv4();
     const newUser: UserProfile = {
       id,
@@ -46,7 +53,12 @@ export const OnboardingPage: React.FC = () => {
     };
 
     // Create corresponding minimal profile and set active
-    await saveProfile({ id, name: newUser.name, ageGroup: newUser.ageGroup, completedLessons: [] });
+    try {
+      await saveProfile({ id, name: newUser.name, ageGroup: newUser.ageGroup, email: trimmedEmail, completedLessons: [] });
+    } catch (e: any) {
+      setError(e?.message || 'Email already exists');
+      return;
+    }
     await setActiveProfileId(id);
     await setUser(newUser);
     navigate('/skill-tree');
@@ -332,6 +344,35 @@ export const OnboardingPage: React.FC = () => {
                   </button>
                 ))}
               </div>
+              {error && (
+                <div style={{ color: colors.error, fontSize: fontSize.sm, marginTop: spacing.md, textAlign: 'center' }}>{error}</div>
+              )}
+              <div style={{ marginTop: spacing.md }}>
+                <label style={{ display: 'block', marginBottom: spacing.xs, fontSize: fontSize.sm, color: colors.textLight }}>Your email (username)</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  style={{
+                    width: '100%',
+                    padding: `${spacing.md} ${spacing.lg}`,
+                    fontSize: fontSize.md,
+                    borderRadius: borderRadius.pill,
+                    border: `2px solid ${colors.gray200}`,
+                    backgroundColor: colors.surface,
+                    transition: transitions.smooth,
+                  }}
+                  onFocus={(e) => {
+                    (e.currentTarget as HTMLInputElement).style.borderColor = colors.secondary;
+                    (e.currentTarget as HTMLInputElement).style.boxShadow = `0 0 0 4px ${colors.secondaryLight}20`;
+                  }}
+                  onBlur={(e) => {
+                    (e.currentTarget as HTMLInputElement).style.borderColor = colors.gray200;
+                    (e.currentTarget as HTMLInputElement).style.boxShadow = 'none';
+                  }}
+                />
+              </div>
               <Button
                 onClick={handleComplete}
                 fullWidth
@@ -340,6 +381,7 @@ export const OnboardingPage: React.FC = () => {
                 style={{ marginTop: spacing.md }}
                 icon={<Icon name="play" />}
                 iconPosition="right"
+                disabled={!email.trim()}
               >
                 Start My Journey!
               </Button>
