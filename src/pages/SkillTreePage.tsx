@@ -4,7 +4,7 @@ import { useApp } from '../context/AppContext';
 import { getAllUnits, isLessonUnlocked } from '../data/units';
 import { Card } from '../components/Card';
 import { Container } from '../components/Container';
-import { colors, fontSize, fontWeight, spacing, borderRadius, shadows } from '../theme/theme';
+import { colors, fontSize, fontWeight, spacing, borderRadius, shadows, gradients, transitions, animations, blurs } from '../theme/theme';
 import type { Lesson } from '../models/lesson';
 import { analytics } from '../services/analytics';
 import { Icon } from '../components/Icon';
@@ -13,6 +13,8 @@ import { StandaloneBadge } from '../components/Badge';
 import { ToastContainer } from '../components/Toast';
 import { t } from '../i18n';
 import { Progress } from '../components/Progress';
+import { Header } from '../components/Header';
+import { Button } from '../components/Button';
 
 export const SkillTreePage: React.FC = () => {
   const navigate = useNavigate();
@@ -20,6 +22,7 @@ export const SkillTreePage: React.FC = () => {
   const units = getAllUnits();
   const completedLessonIds = getCompletedLessonIds();
   const [toasts, setToasts] = useState<Array<{ id: string; type?: 'info' | 'success' | 'warning' | 'error'; message: string; duration?: number }>>([]);
+  const [selectedUnit, setSelectedUnit] = useState<number | null>(null);
 
   useEffect(() => {
     if (!user) {
@@ -41,6 +44,13 @@ export const SkillTreePage: React.FC = () => {
     const status = getLessonStatus(lesson);
     if (status !== 'locked') {
       navigate(`/lesson/${lesson.id}`);
+    } else {
+      setToasts(prev => [...prev, {
+        id: Date.now().toString(),
+        type: 'warning',
+        message: '🔒 Complete previous lessons to unlock this one!',
+        duration: 3000
+      }]);
     }
   };
 
@@ -58,48 +68,81 @@ export const SkillTreePage: React.FC = () => {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-    const last = user.lastStreakDate;
+    
+    const hasCompletedToday = user.lastStreakDate === todayStr;
+    const hasSeen = localStorage.getItem('reminderShown') === todayStr;
 
-    const shouldRemind = (user.streakCount ?? 0) > 0 && last !== todayStr;
-    if (shouldRemind) {
-      const id = `reminder-${todayStr}`;
-      setToasts(prev => (prev.find(t => t.id === id) ? prev : [...prev, { id, type: 'info', message: t('toast.keepStreak'), duration: 4000 }]));
+    if (!hasCompletedToday && !hasSeen && user.streakCount > 0) {
+      setTimeout(() => {
+        setToasts(prev => [...prev, {
+          id: 'streak-reminder',
+          type: 'info',
+          message: `🔥 Keep your ${user.streakCount} day streak going! Complete a lesson today!`,
+          duration: 5000
+        }]);
+        localStorage.setItem('reminderShown', todayStr);
+      }, 1000);
     }
   }, [user]);
 
-  const handleToastClose = (id: string) => {
-    setToasts(prev => prev.filter(t => t.id !== id));
-  };
-
+  // Calculate unit progress
   const unitProgress = useMemo(() => {
     return units.map(unit => {
       const total = unit.lessons.length;
-      const done = unit.lessons.filter(l => completedLessonIds.includes(l.id)).length;
-      return { unit: unit.unit, done, total };
+      const done = unit.lessons.filter(lesson => completedLessonIds.includes(lesson.id)).length;
+      return { unit: unit.unit, total, done };
     });
   }, [units, completedLessonIds]);
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
+
+  const totalLessons = units.reduce((sum, unit) => sum + unit.lessons.length, 0);
+  const overallProgress = (completedLessonIds.length / totalLessons) * 100;
 
   return (
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: colors.background,
-        paddingBottom: spacing.xl,
+        background: gradients.soft,
+        paddingBottom: spacing.xxl,
       }}
     >
-      {/* Header */}
+      {/* Hero Section with Gradient Background */}
       <div
         style={{
-          backgroundColor: colors.primary,
-          color: 'white',
-          padding: spacing.lg,
-          boxShadow: shadows.md,
+          background: gradients.warm,
+          color: colors.text,
+          padding: `${spacing.xxl} 0`,
+          position: 'relative',
+          overflow: 'hidden',
+          marginBottom: spacing.xxl,
         }}
       >
+        {/* Animated background elements */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '-50%',
+            right: '-20%',
+            width: '600px',
+            height: '600px',
+            background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
+            animation: animations.pulse,
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '-30%',
+            left: '-10%',
+            width: '400px',
+            height: '400px',
+            background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)',
+            animation: animations.pulse,
+            animationDelay: '1s',
+          }}
+        />
+        
         <Container>
           <div
             style={{
@@ -107,227 +150,450 @@ export const SkillTreePage: React.FC = () => {
               justifyContent: 'space-between',
               alignItems: 'center',
               flexWrap: 'wrap',
-              gap: spacing.md,
+              gap: spacing.xl,
+              position: 'relative',
+              zIndex: 1,
             }}
           >
-            <div>
-              <h1
-                style={{
-                  fontSize: fontSize.xl,
-                  fontWeight: fontWeight.bold,
-                  marginBottom: spacing.xs,
-                  color: 'white',
-                }}
-              >
-                {t('greeting', { name: user.name })}
-              </h1>
-              <p style={{ fontSize: fontSize.md, opacity: 0.9 }}>
-                {t('keepSinging')}
-              </p>
+            <div style={{ flex: 1, minWidth: '300px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md, marginBottom: spacing.md }}>
+                <img
+                  src="/img/kooka-burra-singing.png"
+                  alt="Kooka singing"
+                  style={{
+                    width: '80px',
+                    borderRadius: '50%',
+                    border: `4px solid ${colors.surface}`,
+                    boxShadow: shadows.lg,
+                  }}
+                />
+                <div>
+                  <h1
+                    style={{
+                      fontSize: fontSize.xxxl,
+                      fontWeight: fontWeight.extrabold,
+                      marginBottom: spacing.xs,
+                      letterSpacing: '-0.02em',
+                      textShadow: '0 2px 10px rgba(0,0,0,0.2)',
+                    }}
+                  >
+                    Welcome back, {user.name}! 🎵
+                  </h1>
+                  <p style={{ 
+                    fontSize: fontSize.lg, 
+                    opacity: 0.95,
+                    fontWeight: fontWeight.medium,
+                  }}>
+                    Your voice is getting stronger every day!
+                  </p>
+                </div>
+              </div>
+              
+              {/* Overall Progress */}
+              <div style={{ marginTop: spacing.lg }}>
+                <div style={{ marginBottom: spacing.sm, fontSize: fontSize.sm, opacity: 0.9 }}>
+                  Journey Progress
+                </div>
+                <Progress
+                  value={overallProgress}
+                  max={100}
+                  size="large"
+                  color="success"
+                  animated
+                  label={`${completedLessonIds.length} of ${totalLessons} lessons`}
+                />
+              </div>
             </div>
+            
             <div
               style={{
                 display: 'flex',
-                gap: spacing.lg,
+                gap: spacing.md,
                 alignItems: 'center',
+                flexWrap: 'wrap',
               }}
             >
-              {/* Streak chip */}
-              {typeof user.streakCount === 'number' && user.streakCount > 0 && (
-                <Chip
-                  label={`${user.streakCount} day${user.streakCount === 1 ? '' : 's'} 🔥`}
-                  color="warning"
-                  variant="filled"
-                  size="medium"
-                />
-              )}
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: fontSize.xs, opacity: 0.8 }}>{t('points')}</div>
-                <div style={{ fontSize: fontSize.xl, fontWeight: fontWeight.bold }}>
+              {/* Stats Cards */}
+              <Card
+                variant="glass"
+                style={{
+                  padding: spacing.lg,
+                  textAlign: 'center',
+                  minWidth: '120px',
+                  background: 'rgba(255, 255, 255, 0.8)',
+                  backdropFilter: `blur(${blurs.md})`,
+                  WebkitBackdropFilter: `blur(${blurs.md})`,
+                  border: '1px solid rgba(255, 255, 255, 0.5)',
+                }}
+              >
+                <div style={{ fontSize: fontSize.xs, opacity: 0.9, marginBottom: spacing.xs }}>
+                  Points Earned
+                </div>
+                <div style={{ fontSize: fontSize.xxl, fontWeight: fontWeight.bold }}>
                   {user.totalPoints}
                 </div>
-              </div>
+                <div style={{ fontSize: fontSize.sm, opacity: 0.9 }}>
+                  ⭐
+                </div>
+              </Card>
+              
+              {/* Streak Card */}
+              {typeof user.streakCount === 'number' && user.streakCount > 0 && (
+                <Card
+                  variant="glass"
+                  style={{
+                    padding: spacing.lg,
+                    textAlign: 'center',
+                    minWidth: '120px',
+                    background: 'rgba(255, 255, 255, 0.15)',
+                    backdropFilter: `blur(${blurs.md})`,
+                    WebkitBackdropFilter: `blur(${blurs.md})`,
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                  }}
+                >
+                  <div style={{ fontSize: fontSize.xs, opacity: 0.9, marginBottom: spacing.xs }}>
+                    Daily Streak
+                  </div>
+                  <div style={{ fontSize: fontSize.xxl, fontWeight: fontWeight.bold }}>
+                    {user.streakCount}
+                  </div>
+                  <div style={{ fontSize: fontSize.sm }}>
+                    🔥
+                  </div>
+                </Card>
+              )}
             </div>
           </div>
         </Container>
       </div>
 
-      {/* Units */}
+      {/* Units Section */}
       <Container>
-        {units.map((unit) => (
-          <div key={unit.unit} style={{ marginTop: spacing.xl }}>
-            <h2
-              style={{
-                fontSize: fontSize.xxl,
-                fontWeight: fontWeight.bold,
-                color: colors.darkBrown,
-                marginBottom: spacing.md,
-              }}
-            >
-              {t('unit.title', { unit: unit.unit, title: unit.title })}
-            </h2>
-            <p
-              style={{
-                fontSize: fontSize.lg,
-                color: colors.textLight,
-                marginBottom: spacing.lg,
-              }}
-            >
-              {t('unit.description', { description: unit.description })}
-            </p>
+        <div style={{ marginBottom: spacing.xxl }}>
+          <h2
+            style={{
+              fontSize: fontSize.xxxl,
+              fontWeight: fontWeight.extrabold,
+              color: colors.text,
+              marginBottom: spacing.md,
+              textAlign: 'center',
+              background: gradients.primary,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
+            Your Singing Journey
+          </h2>
+          <p
+            style={{
+              fontSize: fontSize.lg,
+              color: colors.textLight,
+              textAlign: 'center',
+              maxWidth: '600px',
+              margin: '0 auto',
+            }}
+          >
+            Each unit teaches you new skills. Complete lessons to unlock the next adventures!
+          </p>
+        </div>
 
-            {/* Unit progress (hidden in tests by absence of window.navigator?.userAgent?) */}
-            <div style={{ maxWidth: 420, marginBottom: spacing.md }}>
-              {unitProgress.find(u => u.unit === unit.unit) && (
-                <Progress
-                  value={unitProgress.find(u => u.unit === unit.unit)!.done}
-                  max={unitProgress.find(u => u.unit === unit.unit)!.total}
-                  label={t('progress.unit')}
-                  showValue
-                />
-              )}
-            </div>
-
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                gap: spacing.lg,
+        {units.map((unit, unitIndex) => {
+          const unitProg = unitProgress.find(u => u.unit === unit.unit);
+          const isUnitComplete = unitProg && unitProg.done === unitProg.total;
+          const isExpanded = selectedUnit === unit.unit;
+          
+          return (
+            <div 
+              key={unit.unit} 
+              style={{ 
+                marginBottom: spacing.xxl,
+                opacity: 0,
+                animation: `slideUp 0.5s ease-out ${unitIndex * 0.1}s forwards`,
               }}
             >
-              {unit.lessons.map((lesson) => {
-                const status = getLessonStatus(lesson);
-                return (
-                  <Card
-                    key={lesson.id}
-                    onClick={() => handleLessonClick(lesson)}
-                    style={{
-                      opacity: status === 'locked' ? 0.6 : 1,
-                      cursor: status === 'locked' ? 'not-allowed' : 'pointer',
-                      position: 'relative',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    {/* Transparent overlay to track clicks */}
-                    <div
-                      onClick={() => {
-                        if (status !== 'locked') {
-                          analytics.trackEvent('lesson_card_click', {
-                            lessonId: lesson.id,
-                            status,
-                          });
-                        }
-                      }}
-                      style={{ position: 'absolute', inset: 0 }}
-                    />
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: spacing.md,
-                      }}
-                    >
+              <Card
+                variant={isUnitComplete ? 'gradient' : 'elevated'}
+                decorative
+                style={{
+                  marginBottom: spacing.lg,
+                  cursor: 'pointer',
+                  transition: transitions.smooth,
+                  transform: isExpanded ? 'scale(1.02)' : 'scale(1)',
+                }}
+                onClick={() => setSelectedUnit(isExpanded ? null : unit.unit)}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    gap: spacing.md,
+                  }}
+                >
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md }}>
                       <div
                         style={{
                           width: '60px',
                           height: '60px',
                           borderRadius: borderRadius.round,
-                          backgroundColor:
-                            status === 'completed'
-                              ? colors.success
-                              : status === 'unlocked'
-                              ? colors.secondary
-                              : colors.featherLight,
+                          background: isUnitComplete ? gradients.success : gradients.primary,
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           fontSize: fontSize.xxl,
-                          flexShrink: 0,
+                          boxShadow: shadows.md,
                         }}
                       >
-                        <Icon
-                          name={status === 'completed' ? 'check' : status === 'locked' ? 'close' : 'play'}
-                          color={status === 'locked' ? colors.earthTone : 'white'}
-                          size={28}
-                        />
+                        {isUnitComplete ? '🏆' : unit.unit === 1 ? '🎵' : unit.unit === 2 ? '🎤' : '🌟'}
                       </div>
-                      <div style={{ flex: 1 }}>
+                      <div>
                         <h3
                           style={{
-                            fontSize: fontSize.lg,
-                            fontWeight: fontWeight.semibold,
-                            color: colors.darkBrown,
+                            fontSize: fontSize.xxl,
+                            fontWeight: fontWeight.bold,
+                            color: colors.text,
                             marginBottom: spacing.xs,
                           }}
                         >
-                          {lesson.title}
+                          Unit {unit.unit}: {unit.title}
                         </h3>
                         <p
                           style={{
                             fontSize: fontSize.md,
                             color: colors.textLight,
+                            margin: 0,
                           }}
                         >
-                          {lesson.description}
+                          {unit.description}
                         </p>
-                        <div
-                          style={{
-                            marginTop: spacing.sm,
-                          }}
-                        >
-                          <StandaloneBadge
-                            label={
-                              lesson.type === 'practice' ? 'Practice' :
-                              lesson.type === 'sound' ? 'Sound' :
-                              lesson.type === 'song' ? 'Song' : 'Echo'
-                            }
-                            color={
-                              lesson.type === 'practice' ? 'secondary' :
-                              lesson.type === 'sound' ? 'success' :
-                              lesson.type === 'song' ? 'primary' : 'warning'
-                            }
-                            variant="filled"
-                            size="small"
-                          />
-                        </div>
                       </div>
                     </div>
-                    {status === 'unlocked' && (
-                      <div
-                        style={{
-                          position: 'absolute',
-                          top: 0,
-                          right: 0,
-                          width: '80px',
-                          height: '80px',
-                          background: `linear-gradient(135deg, transparent 50%, ${colors.warning} 50%)`,
-                          display: 'flex',
-                          alignItems: 'flex-start',
-                          justifyContent: 'flex-end',
-                          padding: spacing.xs,
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontSize: fontSize.xs,
-                            fontWeight: fontWeight.bold,
-                            color: 'white',
-                            transform: 'rotate(45deg) translate(10px, -5px)',
-                          }}
-                        >
-                          {t('badge.new')}
-                        </span>
+                    
+                    {/* Unit Progress */}
+                    {unitProg && (
+                      <div style={{ marginTop: spacing.md, maxWidth: '400px' }}>
+                        <Progress
+                          value={unitProg.done}
+                          max={unitProg.total}
+                          label={`${unitProg.done} of ${unitProg.total} lessons completed`}
+                          showValue
+                          color={isUnitComplete ? 'success' : 'primary'}
+                          size="small"
+                        />
                       </div>
                     )}
-                  </Card>
-                );
-              })}
+                  </div>
+                  
+                  <Icon
+                    name={isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+                    size={32}
+                    color={colors.textLight}
+                  />
+                </div>
+
+                {isUnitComplete && (
+                  <StandaloneBadge
+                    icon="🏅"
+                    label="Unit Complete!"
+                    color="success"
+                    style={{
+                      position: 'absolute',
+                      top: '-10px',
+                      right: '20px',
+                    }}
+                  />
+                )}
+              </Card>
+
+              {/* Lessons Grid */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                  gap: spacing.lg,
+                  maxHeight: isExpanded ? '2000px' : '0',
+                  overflow: 'hidden',
+                  transition: 'max-height 0.5s ease-in-out',
+                  opacity: isExpanded ? 1 : 0,
+                }}
+              >
+                {unit.lessons.map((lesson, lessonIndex) => {
+                  const status = getLessonStatus(lesson);
+                  const isLocked = status === 'locked';
+                  const isCompleted = status === 'completed';
+                  
+                  return (
+                    <Card
+                      key={lesson.id}
+                      variant={isCompleted ? 'gradient' : isLocked ? 'default' : 'elevated'}
+                      onClick={() => handleLessonClick(lesson)}
+                      style={{
+                        opacity: isLocked ? 0.85 : 1,
+                        transform: isExpanded ? 'translateY(0)' : 'translateY(-20px)',
+                        transition: `all 0.3s ease-out ${lessonIndex * 0.05}s`,
+                        backgroundColor: isLocked ? colors.gray100 : undefined,
+                        border: isLocked ? `2px solid ${colors.gray300}` : undefined,
+                      }}
+                    >
+                      <div style={{ position: 'relative' }}>
+                        {/* Lesson Icon */}
+                        <div
+                          style={{
+                            width: '50px',
+                            height: '50px',
+                            borderRadius: borderRadius.round,
+                            background: isCompleted 
+                              ? gradients.success 
+                              : isLocked 
+                                ? colors.gray200 
+                                : gradients.sunset,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginBottom: spacing.md,
+                            boxShadow: isLocked ? 'none' : shadows.md,
+                            border: isLocked ? `2px solid ${colors.gray300}` : 'none',
+                          }}
+                        >
+                          {isLocked ? (
+                            <Icon name="lock" size={24} color={colors.gray600} />
+                          ) : isCompleted ? (
+                            <Icon name="done" size={24} color={colors.text} />
+                          ) : (
+                            <span style={{ fontSize: '24px' }}>🎶</span>
+                          )}
+                        </div>
+
+                        {/* Lesson Content */}
+                        <h4
+                          style={{
+                            fontSize: fontSize.lg,
+                            fontWeight: fontWeight.semibold,
+                            color: colors.text,
+                            marginBottom: spacing.sm,
+                          }}
+                        >
+                          {lesson.title}
+                        </h4>
+                        
+                        <p
+                          style={{
+                            fontSize: fontSize.sm,
+                            color: colors.textLight,
+                            marginBottom: spacing.md,
+                            minHeight: '40px',
+                          }}
+                        >
+                          {lesson.shortDescription}
+                        </p>
+
+                        {/* Lesson Details */}
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            gap: spacing.sm,
+                            flexWrap: 'wrap',
+                          }}
+                        >
+                          <div style={{ display: 'flex', gap: spacing.sm }}>
+                            <Chip
+                              label={`${lesson.durationMinutes} min`}
+                              size="small"
+                              variant="outlined"
+                              icon={<Icon name="schedule" size={14} />}
+                            />
+                            <Chip
+                              label={`${lesson.points} pts`}
+                              size="small"
+                              variant="outlined"
+                              color="secondary"
+                              icon={<span>⭐</span>}
+                            />
+                          </div>
+                          
+                          {!isLocked && (
+                            <Button
+                              size="small"
+                              variant={isCompleted ? 'outline' : 'primary'}
+                              style={{ minWidth: '80px' }}
+                            >
+                              {isCompleted ? 'Review' : 'Start'}
+                            </Button>
+                          )}
+                        </div>
+
+                        {/* Completed Badge */}
+                        {isCompleted && (
+                          <StandaloneBadge
+                            icon="✅"
+                            label="Complete"
+                            color="success"
+                            size="small"
+                            style={{
+                              position: 'absolute',
+                              top: '-8px',
+                              right: '-8px',
+                            }}
+                          />
+                        )}
+                      </div>
+                    </Card>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
+
+        {/* Motivational Footer */}
+        <Card
+          variant="gradient"
+          decorative
+          style={{
+            marginTop: spacing.xxxl,
+            textAlign: 'center',
+            background: gradients.sunset,
+          }}
+        >
+          <img
+            src="/img/kooka-burra-breathing.png"
+            alt="Kooka encouraging you"
+                          style={{
+                width: '120px',
+                margin: '0 auto',
+                marginBottom: spacing.lg,
+              }}
+          />
+          <h3
+            style={{
+              fontSize: fontSize.xxl,
+              fontWeight: fontWeight.bold,
+              color: colors.text,
+              marginBottom: spacing.md,
+            }}
+          >
+            You're doing amazing!
+          </h3>
+          <p
+            style={{
+              fontSize: fontSize.lg,
+              color: colors.text,
+              opacity: 0.95,
+              maxWidth: '500px',
+              margin: '0 auto',
+            }}
+          >
+            Every lesson brings you closer to finding your unique voice. Keep singing, keep growing! 🌟
+          </p>
+        </Card>
       </Container>
 
-      <ToastContainer toasts={toasts} onClose={handleToastClose} />
+      <ToastContainer toasts={toasts} />
     </div>
   );
 };

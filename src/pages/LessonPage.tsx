@@ -10,7 +10,9 @@ import { EchoLesson } from '../components/EchoLesson';
 import { ReferenceAudio } from '../components/ReferenceAudio';
 import { PitchPractice } from '../components/PitchPractice';
 import { Icon } from '../components/Icon';
-import { colors, fontSize, fontWeight, spacing } from '../theme/theme';
+import { Header } from '../components/Header';
+import { Progress } from '../components/Progress';
+import { colors, fontSize, fontWeight, spacing, gradients, shadows, transitions, animations, borderRadius } from '../theme/theme';
 
 export const LessonPage: React.FC = () => {
   const { lessonId } = useParams<{ lessonId: string }>();
@@ -18,6 +20,8 @@ export const LessonPage: React.FC = () => {
   const { user, updateProgress } = useApp();
   const [currentStep, setCurrentStep] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [showContent, setShowContent] = useState(false);
+  const [completionScore, setCompletionScore] = useState(0);
   
   const lesson = lessonId ? getLessonById(lessonId) : null;
   const content = lesson ? JSON.parse(lesson.content) : null;
@@ -26,6 +30,8 @@ export const LessonPage: React.FC = () => {
   useEffect(() => {
     if (!lesson || !user) {
       navigate('/skill-tree');
+    } else {
+      setTimeout(() => setShowContent(true), 100);
     }
   }, [lesson, user, navigate]);
 
@@ -35,7 +41,11 @@ export const LessonPage: React.FC = () => {
 
   const handleNext = () => {
     if (currentStep < regularContent.steps.length - 1) {
-      setCurrentStep(currentStep + 1);
+      setShowContent(false);
+      setTimeout(() => {
+        setCurrentStep(currentStep + 1);
+        setShowContent(true);
+      }, 200);
     } else if (!isCompleted) {
       handleComplete();
     }
@@ -43,11 +53,16 @@ export const LessonPage: React.FC = () => {
 
   const handlePrevious = () => {
     if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
+      setShowContent(false);
+      setTimeout(() => {
+        setCurrentStep(currentStep - 1);
+        setShowContent(true);
+      }, 200);
     }
   };
 
   const handleComplete = async (score: number = 100) => {
+    setCompletionScore(score);
     setIsCompleted(true);
     
     await updateProgress({
@@ -75,66 +90,137 @@ export const LessonPage: React.FC = () => {
       <div
         style={{
           minHeight: '100vh',
-          backgroundColor: colors.background,
+          background: gradients.soft,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           padding: spacing.md,
+          position: 'relative',
+          overflow: 'hidden',
         }}
       >
-        <Container maxWidth="500px">
-          <Card style={{ textAlign: 'center' }}>
+        {/* Confetti-like background */}
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+          {[...Array(6)].map((_, i) => (
             <div
+              key={i}
               style={{
-                fontSize: '80px',
-                marginBottom: spacing.lg,
-                animation: 'bounce 0.5s ease-out',
+                position: 'absolute',
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                fontSize: '30px',
+                animation: `float ${4 + i}s ease-in-out infinite`,
+                animationDelay: `${i * 0.5}s`,
+                opacity: 0.3,
               }}
             >
-              <Icon name="star" size={80} color={colors.success} />
+              {['🎵', '🎶', '🎤', '⭐', '🎯', '✨'][i]}
             </div>
+          ))}
+        </div>
+
+        <Container maxWidth="500px" style={{ position: 'relative', zIndex: 1 }}>
+          <Card variant="glass" decorative style={{ textAlign: 'center', padding: spacing.xxl }}>
+            <img
+              src="/img/kooka-burra-singing.png"
+              alt="Kooka celebrating"
+              style={{
+                width: '150px',
+                margin: '0 auto',
+                marginBottom: spacing.lg,
+                borderRadius: borderRadius.round,
+                boxShadow: shadows.lg,
+              }}
+            />
+            
             <h1
               style={{
-                fontSize: fontSize.xxl,
-                fontWeight: fontWeight.bold,
-                color: colors.success,
+                fontSize: fontSize.huge,
+                fontWeight: fontWeight.extrabold,
+                background: gradients.primary,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
                 marginBottom: spacing.md,
+                letterSpacing: '-0.02em',
               }}
             >
-              Fantastic Job!
+              Spectacular!
             </h1>
+            
             <p
               style={{
-                fontSize: fontSize.lg,
-                color: colors.textLight,
-                marginBottom: spacing.lg,
+                fontSize: fontSize.xl,
+                color: colors.text,
+                marginBottom: spacing.sm,
+                fontWeight: fontWeight.medium,
               }}
             >
-              You completed "{lesson.title}"
+              You mastered "{lesson.title}"
             </p>
-            <div
+            
+            <p
               style={{
-                fontSize: fontSize.xl,
-                fontWeight: fontWeight.semibold,
-                color: colors.primary,
+                fontSize: fontSize.md,
+                color: colors.textLight,
                 marginBottom: spacing.xl,
               }}
             >
-              +{isEchoLesson ? '10-100' : '100'} points!
+              Your voice is getting stronger with every lesson!
+            </p>
+            
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                gap: spacing.lg,
+                marginBottom: spacing.xl,
+              }}
+            >
+              <Card
+                variant="gradient"
+                style={{
+                  padding: spacing.lg,
+                  minWidth: '120px',
+                  background: gradients.secondary,
+                }}
+              >
+                <div style={{ fontSize: fontSize.sm, opacity: 0.9, marginBottom: spacing.xs }}>
+                  Score
+                </div>
+                <div style={{ fontSize: fontSize.xxl, fontWeight: fontWeight.bold }}>
+                  {completionScore}%
+                </div>
+              </Card>
+              
+              <Card
+                variant="gradient"
+                style={{
+                  padding: spacing.lg,
+                  minWidth: '120px',
+                  background: gradients.success,
+                }}
+              >
+                <div style={{ fontSize: fontSize.sm, opacity: 0.9, marginBottom: spacing.xs }}>
+                  Points
+                </div>
+                <div style={{ fontSize: fontSize.xxl, fontWeight: fontWeight.bold }}>
+                  +{isEchoLesson ? Math.floor(completionScore) : lesson.points}
+                </div>
+              </Card>
             </div>
-            <Button onClick={handleBackToSkillTree} size="large" fullWidth>
-              Back to Lessons
+            
+            <Button 
+              onClick={handleBackToSkillTree} 
+              size="large" 
+              fullWidth
+              variant="gradient"
+              icon={<span>🎯</span>}
+              iconPosition="right"
+            >
+              Continue Your Journey
             </Button>
           </Card>
-          <style>
-            {`
-              @keyframes bounce {
-                0% { transform: scale(0); }
-                50% { transform: scale(1.2); }
-                100% { transform: scale(1); }
-              }
-            `}
-          </style>
         </Container>
       </div>
     );
@@ -144,172 +230,285 @@ export const LessonPage: React.FC = () => {
   if (isEchoLesson && content) {
     const echoContent = content as EchoLessonContent;
     return (
-      <EchoLesson
-        promptAudio={echoContent.promptAudio}
-        promptText={echoContent.promptText}
-        onComplete={handleEchoComplete}
-        minVolumeThreshold={echoContent.minVolumeThreshold}
-        targetDuration={echoContent.targetDuration}
-      />
+      <div
+        style={{
+          minHeight: '100vh',
+          background: gradients.soft,
+        }}
+      >
+        <Header 
+          title={lesson.title}
+          subtitle="Echo Lesson"
+          variant="gradient"
+          showKookaburra
+          leftAction={
+            <Button
+              variant="ghost"
+              onClick={() => navigate('/skill-tree')}
+              icon={<Icon name="arrow_back" />}
+              style={{ color: colors.text }}
+            >
+              Back
+            </Button>
+          }
+        />
+        <Container style={{ paddingTop: spacing.xl, paddingBottom: spacing.xl }}>
+          <EchoLesson
+            promptAudio={echoContent.promptAudio}
+            promptText={echoContent.promptText}
+            onComplete={handleEchoComplete}
+          />
+        </Container>
+      </div>
     );
   }
 
-  // Regular lesson flow
+  // Regular lesson
   const regularContent = content as LessonContent;
+  const currentStepContent = regularContent.steps[currentStep];
+  const progress = ((currentStep + 1) / regularContent.steps.length) * 100;
 
   return (
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: colors.background,
-        display: 'flex',
-        flexDirection: 'column',
+        background: gradients.soft,
       }}
     >
-      {/* Header */}
-      <div
-        style={{
-          backgroundColor: colors.primary,
-          color: 'white',
-          padding: spacing.lg,
-          display: 'flex',
-          alignItems: 'center',
-          gap: spacing.md,
-        }}
-      >
-        <button
-          onClick={handleBackToSkillTree}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'white',
-            cursor: 'pointer',
-            padding: spacing.sm,
-          }}
-        >
-          <Icon name="back" color="white" />
-        </button>
-        <h1
-          style={{
-            fontSize: fontSize.xl,
-            fontWeight: fontWeight.semibold,
-            flex: 1,
-          }}
-        >
-          {lesson.title}
-        </h1>
-      </div>
+      <Header 
+        title={lesson.title}
+        subtitle={`Step ${currentStep + 1} of ${regularContent.steps.length}`}
+        variant="gradient"
+        showKookaburra
+        leftAction={
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/skill-tree')}
+            icon={<Icon name="arrow_back" />}
+            style={{ color: colors.textOnPrimary }}
+          >
+            Back
+          </Button>
+        }
+      />
 
-      {/* Progress Bar */}
-      <div
-        style={{
-          height: '8px',
-          backgroundColor: colors.featherLight,
-          position: 'relative',
-        }}
-      >
+      <Container style={{ paddingTop: spacing.xl, paddingBottom: spacing.xl }}>
+        {/* Progress Bar */}
+        <div style={{ marginBottom: spacing.xl }}>
+          <Progress 
+            value={progress} 
+            max={100} 
+            size="medium"
+            color="primary"
+            animated
+            label={`Lesson Progress`}
+            showValue
+          />
+        </div>
+
+        {/* Step Content */}
+        <Card 
+          variant="elevated" 
+          decorative
+          style={{
+            opacity: showContent ? 1 : 0,
+            transform: showContent ? 'scale(1)' : 'scale(0.95)',
+            transition: transitions.smooth,
+            marginBottom: spacing.xl,
+          }}
+        >
+          {/* Step Title with Icon */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: spacing.md,
+              marginBottom: spacing.xl,
+            }}
+          >
+            <div
+              style={{
+                width: '50px',
+                height: '50px',
+                borderRadius: borderRadius.round,
+                background: gradients.primary,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: shadows.md,
+              }}
+            >
+              <span style={{ fontSize: '24px' }}>
+                {currentStep === 0 ? '📚' : currentStep === 1 ? '🎵' : '🎤'}
+              </span>
+            </div>
+            <h2
+              style={{
+                fontSize: fontSize.xxl,
+                fontWeight: fontWeight.bold,
+                color: colors.text,
+                margin: 0,
+              }}
+            >
+              {currentStepContent.title}
+            </h2>
+          </div>
+
+          {/* Step Content */}
+          <div
+            style={{
+              fontSize: fontSize.lg,
+              color: colors.text,
+              lineHeight: 1.8,
+              marginBottom: spacing.xl,
+            }}
+          >
+            {currentStepContent.content}
+          </div>
+
+          {/* Additional Components */}
+          {currentStepContent.audioUrl && (
+            <div style={{ marginBottom: spacing.xl }}>
+              <Card variant="glass" style={{ padding: spacing.lg }}>
+                <h3
+                  style={{
+                    fontSize: fontSize.lg,
+                    fontWeight: fontWeight.semibold,
+                    marginBottom: spacing.md,
+                    color: colors.text,
+                  }}
+                >
+                  🎧 Listen and Learn
+                </h3>
+                <ReferenceAudio audioUrl={currentStepContent.audioUrl} />
+              </Card>
+            </div>
+          )}
+
+          {currentStepContent.practiceType === 'pitch' && (
+            <div style={{ marginBottom: spacing.xl }}>
+              <Card variant="glass" style={{ padding: spacing.lg }}>
+                <h3
+                  style={{
+                    fontSize: fontSize.lg,
+                    fontWeight: fontWeight.semibold,
+                    marginBottom: spacing.md,
+                    color: colors.text,
+                  }}
+                >
+                  🎯 Pitch Practice
+                </h3>
+                <PitchPractice
+                  targetNote={currentStepContent.targetNote || 'C4'}
+                  onComplete={() => {}}
+                />
+              </Card>
+            </div>
+          )}
+
+          {/* Tips Section */}
+          {currentStepContent.tips && currentStepContent.tips.length > 0 && (
+            <Card 
+              variant="gradient" 
+              style={{ 
+                background: gradients.warm,
+                marginBottom: spacing.xl,
+              }}
+            >
+              <h3
+                style={{
+                  fontSize: fontSize.lg,
+                  fontWeight: fontWeight.semibold,
+                  marginBottom: spacing.md,
+                  color: colors.text,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: spacing.sm,
+                }}
+              >
+                <span>💡</span> Kooka's Tips
+              </h3>
+              <ul
+                style={{
+                  margin: 0,
+                  paddingLeft: spacing.lg,
+                  color: colors.text,
+                }}
+              >
+                {currentStepContent.tips.map((tip, index) => (
+                  <li
+                    key={index}
+                    style={{
+                      marginBottom: spacing.sm,
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {tip}
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          )}
+        </Card>
+
+        {/* Navigation Buttons */}
         <div
           style={{
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            height: '100%',
-            backgroundColor: colors.secondary,
-            width: `${((currentStep + 1) / regularContent.steps.length) * 100}%`,
-            transition: 'width 300ms ease-out',
+            display: 'flex',
+            justifyContent: 'space-between',
+            gap: spacing.md,
+            flexWrap: 'wrap',
           }}
-        />
-      </div>
+        >
+          <Button
+            onClick={handlePrevious}
+            disabled={currentStep === 0}
+            variant="outline"
+            size="large"
+            icon={<Icon name="arrow_back" />}
+          >
+            Previous
+          </Button>
+          
+          <Button
+            onClick={handleNext}
+            size="large"
+            variant="gradient"
+            icon={<Icon name={currentStep === regularContent.steps.length - 1 ? 'done' : 'arrow_forward'} />}
+            iconPosition="right"
+          >
+            {currentStep === regularContent.steps.length - 1 ? 'Complete Lesson' : 'Next Step'}
+          </Button>
+        </div>
 
-      {/* Content */}
-      <div
-        style={{
-          flex: 1,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: spacing.md,
-        }}
-      >
-        <Container maxWidth="600px" style={{ width: '100%' }}>
-          <Card>
-            <div style={{ textAlign: 'center' }}>
-              <img
-                src="/img/kooka-burra-singing.png"
-                alt="Kooka singing"
-                style={{
-                  width: '150px',
-                  margin: '0 auto',
-                  marginBottom: spacing.xl,
-                }}
-              />
-              
-              <h2
-                style={{
-                  fontSize: fontSize.xxl,
-                  fontWeight: fontWeight.bold,
-                  color: colors.darkBrown,
-                  marginBottom: spacing.lg,
-                }}
-              >
-                Step {currentStep + 1} of {regularContent.steps.length}
-              </h2>
-              
-              {/* Instruction text */}
-              <p
-                style={{
-                  fontSize: fontSize.xl,
-                  color: colors.text,
-                  marginBottom: spacing.xl,
-                  lineHeight: 1.6,
-                }}
-              >
-                {regularContent.steps[currentStep]}
-              </p>
-
-              {/* Reference audio or tones, if defined */}
-              {regularContent.audio && (
-                <div style={{ marginBottom: spacing.lg }}>
-                  <ReferenceAudio audioId={regularContent.audio} />
-                </div>
-              )}
-
-              {/* For sound lessons, provide pitch practice to verify notes */}
-              {lesson.type === 'sound' && (
-                <div style={{ marginBottom: spacing.lg }}>
-                  <PitchPractice audioId={regularContent.audio} />
-                </div>
-              )}
-
-              <div
-                style={{
-                  display: 'flex',
-                  gap: spacing.md,
-                  justifyContent: 'center',
-                  flexWrap: 'wrap',
-                }}
-              >
-                {currentStep > 0 && (
-                  <Button
-                    onClick={handlePrevious}
-                    variant="outline"
-                    size="large"
-                  >
-                    Previous
-                  </Button>
-                )}
-                <Button
-                  onClick={handleNext}
-                  size="large"
-                  style={{ minWidth: '120px' }}
-                >
-                  {currentStep < regularContent.steps.length - 1 ? 'Next' : 'Complete'}
-                </Button>
-              </div>
-            </div>
-          </Card>
-        </Container>
-      </div>
+        {/* Motivational Kooka */}
+        <div
+          style={{
+            textAlign: 'center',
+            marginTop: spacing.xxl,
+            opacity: 0.8,
+          }}
+        >
+          <img
+            src="/img/kooka-burra-breathing.png"
+            alt="Kooka encouraging you"
+                          style={{
+                width: '80px',
+                marginBottom: spacing.md,
+                opacity: 0.6,
+              }}
+          />
+          <p
+            style={{
+              fontSize: fontSize.md,
+              color: colors.textLight,
+              fontStyle: 'italic',
+            }}
+          >
+            "You're doing great! Keep going!" - Kooka
+          </p>
+        </div>
+      </Container>
     </div>
   );
 };

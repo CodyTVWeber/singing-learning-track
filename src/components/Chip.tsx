@@ -1,5 +1,5 @@
-import React from 'react';
-import { colors, spacing, borderRadius, fontSize, fontWeight, transitions, shadows } from '../theme/theme';
+import React, { useState } from 'react';
+import { colors, spacing, borderRadius, fontSize, fontWeight, transitions, shadows, gradients } from '../theme/theme';
 
 interface ChipProps {
   label: string;
@@ -31,35 +31,41 @@ export const Chip: React.FC<ChipProps> = ({
   style,
 }) => {
   const colorMap = {
-    primary: { bg: colors.primary, text: 'white', border: colors.primary },
-    secondary: { bg: colors.secondary, text: 'white', border: colors.secondary },
-    success: { bg: colors.success, text: 'white', border: colors.success },
-    warning: { bg: colors.warning, text: colors.darkBrown, border: colors.warning },
-    error: { bg: colors.error, text: 'white', border: colors.error },
-    default: { bg: colors.featherLight, text: colors.text, border: colors.featherLight },
+    primary: { bg: colors.primary, text: colors.textOnPrimary, border: colors.primary, gradient: gradients.primary },
+    secondary: { bg: colors.secondary, text: colors.textOnSecondary, border: colors.secondary, gradient: gradients.secondary },
+    success: { bg: colors.success, text: colors.textOnPrimary, border: colors.success, gradient: gradients.success },
+    warning: { bg: colors.warning, text: colors.text, border: colors.warning, gradient: gradients.warm },
+    error: { bg: colors.error, text: colors.textOnPrimary, border: colors.error, gradient: gradients.sunset },
+    default: { bg: colors.gray100, text: colors.text, border: colors.gray300, gradient: colors.gray100 },
   };
 
   const currentColor = colorMap[color];
+
+  const [isHovered, setIsHovered] = useState(false);
 
   const chipStyles: React.CSSProperties = {
     display: 'inline-flex',
     alignItems: 'center',
     gap: spacing.xs,
-    height: size === 'small' ? '24px' : '32px',
-    padding: avatar ? `0 ${spacing.sm} 0 0` : `0 ${spacing.sm}`,
-    backgroundColor: variant === 'filled' ? 
-      (selected ? currentColor.bg : currentColor.bg) : 
-      (selected ? `${currentColor.bg}20` : 'transparent'),
+    height: size === 'small' ? '28px' : '36px',
+    padding: avatar ? `2px ${spacing.md} 2px 2px` : `0 ${spacing.md}`,
+    background: variant === 'filled' ? 
+      (selected ? currentColor.gradient : currentColor.gradient) : 
+      'transparent',
+    backgroundColor: variant === 'filled' && !currentColor.gradient ? currentColor.bg : 'transparent',
     color: variant === 'filled' ? currentColor.text : currentColor.border,
-    border: `1px solid ${variant === 'outlined' ? currentColor.border : 'transparent'}`,
-    borderRadius: borderRadius.round,
+    border: variant === 'outlined' ? `2px solid ${currentColor.border}` : 'none',
+    borderRadius: borderRadius.pill,
     fontSize: size === 'small' ? fontSize.xs : fontSize.sm,
-    fontWeight: fontWeight.medium,
+    fontWeight: fontWeight.semibold,
     cursor: disabled ? 'not-allowed' : onClick ? 'pointer' : 'default',
-    opacity: disabled ? 0.5 : 1,
-    transition: transitions.fast,
-    boxShadow: selected ? shadows.sm : 'none',
+    opacity: disabled ? 0.6 : 1,
+    transition: transitions.smooth,
+    transform: isHovered && !disabled ? 'scale(1.05)' : 'scale(1)',
+    boxShadow: selected || (isHovered && !disabled) ? shadows.md : 'none',
     userSelect: 'none',
+    position: 'relative',
+    overflow: 'hidden',
     ...style,
   };
 
@@ -131,6 +137,7 @@ export const Chip: React.FC<ChipProps> = ({
       aria-disabled={disabled}
       aria-pressed={selected}
       onMouseEnter={(e) => {
+        setIsHovered(true);
         if (!disabled && onClick) {
           e.currentTarget.style.boxShadow = shadows.sm;
           if (variant === 'outlined') {
@@ -139,6 +146,7 @@ export const Chip: React.FC<ChipProps> = ({
         }
       }}
       onMouseLeave={(e) => {
+        setIsHovered(false);
         if (!disabled && onClick) {
           e.currentTarget.style.boxShadow = selected ? shadows.sm : 'none';
           if (variant === 'outlined' && !selected) {

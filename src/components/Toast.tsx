@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { colors, spacing, borderRadius, fontSize, shadows, transitions } from '../theme/theme';
+import { colors, spacing, borderRadius, fontSize, shadows, transitions, gradients, fontWeight, animations, blurs } from '../theme/theme';
+import { Icon } from './Icon';
 
 interface ToastProps {
   id: string;
@@ -8,6 +9,10 @@ interface ToastProps {
   duration?: number;
   position?: 'top' | 'bottom';
   onClose: (id: string) => void;
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
 }
 
 export const Toast: React.FC<ToastProps> = ({
@@ -16,19 +21,34 @@ export const Toast: React.FC<ToastProps> = ({
   message,
   duration = 3000,
   onClose,
+  action,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
+  const [progress, setProgress] = useState(100);
 
   useEffect(() => {
     setIsVisible(true);
     
     if (duration > 0) {
-      const timer = setTimeout(() => {
-        handleClose();
-      }, duration);
+      const startTime = Date.now();
+      const updateProgress = () => {
+        const elapsed = Date.now() - startTime;
+        const remaining = Math.max(0, 100 - (elapsed / duration) * 100);
+        setProgress(remaining);
+        
+        if (remaining > 0) {
+          requestAnimationFrame(updateProgress);
+        } else {
+          handleClose();
+        }
+      };
       
-      return () => clearTimeout(timer);
+      requestAnimationFrame(updateProgress);
+      
+      return () => {
+        // Cleanup if needed
+      };
     }
   }, [duration]);
 
@@ -39,71 +59,195 @@ export const Toast: React.FC<ToastProps> = ({
     }, 300);
   };
 
-  const typeColors = {
-    info: { bg: colors.secondary, text: 'white' },
-    success: { bg: colors.success, text: 'white' },
-    warning: { bg: colors.warning, text: colors.darkBrown },
-    error: { bg: colors.error, text: 'white' },
+  const typeConfig = {
+    info: { 
+      gradient: gradients.ocean,
+      icon: 'info',
+      emoji: '💡',
+      color: colors.info,
+    },
+    success: { 
+      gradient: gradients.forest,
+      icon: 'check_circle',
+      emoji: '✅',
+      color: colors.success,
+    },
+    warning: { 
+      gradient: gradients.warm,
+      icon: 'warning',
+      emoji: '⚠️',
+      color: colors.warning,
+    },
+    error: { 
+      gradient: gradients.sunset,
+      icon: 'error',
+      emoji: '❌',
+      color: colors.error,
+    },
   };
 
-  const currentColors = typeColors[type];
+  const currentConfig = typeConfig[type];
 
   const toastStyles: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
-    gap: spacing.sm,
-    padding: `${spacing.sm} ${spacing.md}`,
-    backgroundColor: currentColors.bg,
-    color: currentColors.text,
-    borderRadius: borderRadius.lg,
-    boxShadow: shadows.lg,
-    minWidth: '280px',
-    maxWidth: '400px',
-    fontSize: fontSize.sm,
-    transform: isVisible && !isLeaving ? 'translateY(0)' : 'translateY(-20px)',
+    gap: spacing.md,
+    padding: spacing.md,
+    background: colors.surface,
+    borderRadius: borderRadius.xl,
+    boxShadow: `${shadows.xl}, 0 0 0 2px ${currentConfig.color}20`,
+    minWidth: '320px',
+    maxWidth: '480px',
+    fontSize: fontSize.md,
+    transform: isVisible && !isLeaving 
+      ? 'translateX(0) scale(1)' 
+      : 'translateX(100%) scale(0.95)',
     opacity: isVisible && !isLeaving ? 1 : 0,
-    transition: transitions.normal,
+    transition: `all ${transitions.smooth}`,
     cursor: 'pointer',
+    position: 'relative',
+    overflow: 'hidden',
+    backdropFilter: `blur(${blurs.sm})`,
+    WebkitBackdropFilter: `blur(${blurs.sm})`,
+    border: `1px solid ${colors.gray100}`,
   };
 
-  const iconStyles: React.CSSProperties = {
+  const iconContainerStyles: React.CSSProperties = {
     flexShrink: 0,
-    width: '20px',
-    height: '20px',
+    width: '40px',
+    height: '40px',
+    borderRadius: borderRadius.round,
+    background: currentConfig.gradient,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: shadows.md,
+    animation: type === 'success' ? animations.bounce : animations.pulse,
   };
 
   const messageStyles: React.CSSProperties = {
     flex: 1,
-    lineHeight: 1.4,
+    lineHeight: 1.5,
+    color: colors.text,
+    fontWeight: fontWeight.medium,
   };
 
-  const icons = {
-    info: (
-      <svg viewBox="0 0 20 20" fill="currentColor" style={iconStyles}>
-        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-      </svg>
-    ),
-    success: (
-      <svg viewBox="0 0 20 20" fill="currentColor" style={iconStyles}>
-        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-      </svg>
-    ),
-    warning: (
-      <svg viewBox="0 0 20 20" fill="currentColor" style={iconStyles}>
-        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-      </svg>
-    ),
-    error: (
-      <svg viewBox="0 0 20 20" fill="currentColor" style={iconStyles}>
-        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-      </svg>
-    ),
+  const closeButtonStyles: React.CSSProperties = {
+    flexShrink: 0,
+    width: '28px',
+    height: '28px',
+    borderRadius: borderRadius.round,
+    border: 'none',
+    backgroundColor: colors.gray100,
+    color: colors.textLight,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    transition: transitions.fast,
+  };
+
+  const progressBarStyles: React.CSSProperties = {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    height: '3px',
+    width: `${progress}%`,
+    background: currentConfig.gradient,
+    transition: 'width 100ms linear',
+    borderRadius: borderRadius.pill,
+  };
+
+  const actionButtonStyles: React.CSSProperties = {
+    marginLeft: spacing.sm,
+    padding: `${spacing.xs} ${spacing.sm}`,
+    borderRadius: borderRadius.md,
+    border: 'none',
+    background: currentConfig.gradient,
+    color: colors.textOnPrimary,
+    fontSize: fontSize.sm,
+    fontWeight: fontWeight.semibold,
+    cursor: 'pointer',
+    transition: transitions.fast,
   };
 
   return (
-    <div style={toastStyles} onClick={handleClose} role="alert">
-      {icons[type]}
-      <span style={messageStyles}>{message}</span>
+    <div
+      style={toastStyles}
+      onClick={handleClose}
+      role="alert"
+      aria-live="polite"
+    >
+      {/* Icon Container with Emoji/Icon */}
+      <div style={iconContainerStyles}>
+        <span style={{ fontSize: '20px' }}>
+          {currentConfig.emoji}
+        </span>
+      </div>
+
+      {/* Message */}
+      <div style={messageStyles}>
+        {message}
+        {action && (
+          <button
+            style={actionButtonStyles}
+            onClick={(e) => {
+              e.stopPropagation();
+              action.onClick();
+              handleClose();
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.boxShadow = shadows.sm;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            {action.label}
+          </button>
+        )}
+      </div>
+
+      {/* Close Button */}
+      <button
+        style={closeButtonStyles}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleClose();
+        }}
+        aria-label="Close notification"
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = colors.gray200;
+          e.currentTarget.style.transform = 'scale(1.1)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = colors.gray100;
+          e.currentTarget.style.transform = 'scale(1)';
+        }}
+      >
+        <Icon name="close" size={16} />
+      </button>
+
+      {/* Progress Bar */}
+      {duration > 0 && <div style={progressBarStyles} />}
+
+      {/* Decorative blur */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '-50%',
+          right: '-20%',
+          width: '100px',
+          height: '100px',
+          background: currentConfig.gradient,
+          borderRadius: '50%',
+          filter: `blur(${blurs.xl})`,
+          opacity: 0.2,
+          pointerEvents: 'none',
+        }}
+      />
     </div>
   );
 };
@@ -114,44 +258,53 @@ interface ToastContainerProps {
     type?: 'info' | 'success' | 'warning' | 'error';
     message: string;
     duration?: number;
+    action?: {
+      label: string;
+      onClick: () => void;
+    };
   }>;
-  position?: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
-  onClose: (id: string) => void;
+  position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
+  onClose?: (id: string) => void;
 }
 
 export const ToastContainer: React.FC<ToastContainerProps> = ({
   toasts,
   position = 'top-right',
-  onClose,
+  onClose = () => {},
 }) => {
   const positionStyles: Record<string, React.CSSProperties> = {
-    'top-left': { top: spacing.lg, left: spacing.lg },
-    'top-center': { top: spacing.lg, left: '50%', transform: 'translateX(-50%)' },
-    'top-right': { top: spacing.lg, right: spacing.lg },
-    'bottom-left': { bottom: spacing.lg, left: spacing.lg },
-    'bottom-center': { bottom: spacing.lg, left: '50%', transform: 'translateX(-50%)' },
-    'bottom-right': { bottom: spacing.lg, right: spacing.lg },
+    'top-right': { top: spacing.lg, right: spacing.lg, alignItems: 'flex-end' },
+    'top-left': { top: spacing.lg, left: spacing.lg, alignItems: 'flex-start' },
+    'bottom-right': { bottom: spacing.lg, right: spacing.lg, alignItems: 'flex-end' },
+    'bottom-left': { bottom: spacing.lg, left: spacing.lg, alignItems: 'flex-start' },
+    'top-center': { top: spacing.lg, left: '50%', transform: 'translateX(-50%)', alignItems: 'center' },
+    'bottom-center': { bottom: spacing.lg, left: '50%', transform: 'translateX(-50%)', alignItems: 'center' },
   };
 
   const containerStyles: React.CSSProperties = {
     position: 'fixed',
-    ...positionStyles[position],
-    zIndex: 2000,
     display: 'flex',
-    flexDirection: position.includes('bottom') ? 'column-reverse' : 'column',
-    gap: spacing.sm,
+    flexDirection: 'column',
+    gap: spacing.md,
+    zIndex: 2000,
     pointerEvents: 'none',
-  };
-
-  const toastWrapperStyles: React.CSSProperties = {
-    pointerEvents: 'auto',
+    ...positionStyles[position],
   };
 
   return (
     <div style={containerStyles}>
-      {toasts.map((toast) => (
-        <div key={toast.id} style={toastWrapperStyles}>
-          <Toast {...toast} onClose={onClose} />
+      {toasts.map((toast, index) => (
+        <div
+          key={toast.id}
+          style={{
+            pointerEvents: 'auto',
+            animation: `slideIn 0.3s ease-out ${index * 0.05}s`,
+          }}
+        >
+          <Toast
+            {...toast}
+            onClose={onClose}
+          />
         </div>
       ))}
     </div>
