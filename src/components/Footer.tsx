@@ -74,6 +74,10 @@ export const Footer: React.FC<FooterProps> = ({
           alt="Kooka waving goodbye"
           style={{
             width: '40px',
+            height: '40px',
+            aspectRatio: '1 / 1',
+            objectFit: 'cover',
+            borderRadius: borderRadius.round,
             opacity: 0.8,
           }}
         />

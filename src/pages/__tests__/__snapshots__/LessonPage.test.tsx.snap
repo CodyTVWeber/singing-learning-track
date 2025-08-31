@@ -42,7 +42,7 @@ exports[`LessonPage > renders and matches snapshot for echo lesson 1`] = `
             <img
               alt="Kooka"
               src="/img/kooka-burra-waiving.png"
-              style="width: 32px; object-fit: contain;"
+              style="width: 32px; height: 32px; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%;"
             />
             Echo with Kooka
           </h1>

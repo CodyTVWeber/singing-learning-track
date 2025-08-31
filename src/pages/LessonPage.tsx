@@ -129,6 +129,9 @@ export const LessonPage: React.FC = () => {
               alt="Kooka celebrating"
               style={{
                 width: '150px',
+                height: '150px',
+                aspectRatio: '1 / 1',
+                objectFit: 'cover',
                 margin: '0 auto',
                 marginBottom: spacing.lg,
                 borderRadius: borderRadius.round,
@@ -507,6 +510,9 @@ export const LessonPage: React.FC = () => {
             alt="Kooka encouraging you"
                           style={{
                 width: '80px',
+                height: '80px',
+                aspectRatio: '1 / 1',
+                objectFit: 'cover',
                 marginBottom: spacing.md,
                 opacity: 0.6,
               }}

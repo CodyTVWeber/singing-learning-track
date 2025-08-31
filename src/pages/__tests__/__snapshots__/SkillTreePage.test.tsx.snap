@@ -30,7 +30,7 @@ exports[`SkillTreePage > renders and matches snapshot 1`] = `
               <img
                 alt="Kooka singing"
                 src="/img/kooka-burra-singing.png"
-                style="width: 80px; border-radius: 50%; border: 4px solid rgb(255, 255, 255); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.02);"
+                style="width: 80px; height: 80px; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%; border: 4px solid rgb(255, 255, 255); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.02);"
               />
               <div>
                 <h1

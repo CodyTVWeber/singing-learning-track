@@ -149,7 +149,10 @@ export const Header: React.FC<HeaderProps> = ({
                   alt="Kooka"
                   style={{
                     width: '32px',
-                    objectFit: 'contain',
+                    height: '32px',
+                    aspectRatio: '1 / 1',
+                    objectFit: 'cover',
+                    borderRadius: borderRadius.round,
                   }}
                 />
               )}

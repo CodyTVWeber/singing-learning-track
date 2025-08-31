@@ -162,6 +162,9 @@ export const SkillTreePage: React.FC = () => {
                   alt="Kooka singing"
                   style={{
                     width: '80px',
+                    height: '80px',
+                    aspectRatio: '1 / 1',
+                    objectFit: 'cover',
                     borderRadius: '50%',
                     border: `4px solid ${colors.surface}`,
                     boxShadow: shadows.lg,
