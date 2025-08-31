@@ -1,5 +1,9 @@
 # 🎵 Kooka Sing - Discover Your Voice with Kooka the Kookaburra
 
+<div align="center">
+  <img src="public/img/kooka-burra-singing.png" alt="Kooka the Kookaburra singing happily" width="300" style="border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);" />
+</div>
+
 > *"Join Kooka the Kookaburra on a magical journey to discover your singing voice!"*
 
 **Kooka Sing** is a delightful, mobile-first singing education app designed to make learning to sing fun, engaging, and accessible for everyone. Through the guidance of our charming mascot Kooka the Kookaburra, users embark on a progressive musical journey that builds confidence, develops vocal skills, and nurtures a love for music.
@@ -7,23 +11,39 @@
 ## 🌟 What Makes Kooka Sing Special?
 
 ### 🎯 **Progressive Learning Journey**
+<div align="center">
+  <img src="public/img/kooka-burra-flying.png" alt="Kooka flying through the skill tree" width="200" style="margin: 10px;" />
+</div>
+
 - **Skill Tree System**: Navigate through carefully crafted units that unlock progressively
 - **Four Lesson Types**: Echo, Practice, Sound, and Song lessons for comprehensive vocal development
 - **Age-Appropriate Content**: Tailored experiences for Young Explorers (under 12), Rising Stars (13-17), and Singing Enthusiasts (18+)
 
 ### 🎤 **Interactive Learning Experience**
+<div align="center">
+  <img src="public/img/kooka-burra-calling-out.png" alt="Kooka calling out during lessons" width="200" style="margin: 10px;" />
+</div>
+
 - **Echo Lessons**: Listen and repeat with real-time audio feedback
 - **Practice Sessions**: Step-by-step guided exercises with visual aids
 - **Sound Exploration**: Discover your vocal range through fun animal sounds and pitch exercises
 - **Song Learning**: Build confidence by singing along to familiar tunes
 
 ### 🎨 **Charming & Engaging Design**
+<div align="center">
+  <img src="public/img/kooka-burra-dancing.png" alt="Kooka dancing with joy" width="200" style="margin: 10px;" />
+</div>
+
 - **Kooka the Kookaburra**: Your friendly, encouraging guide throughout the journey
 - **Beautiful Animations**: Smooth transitions and delightful visual feedback
 - **Mobile-First Design**: Optimized for touch devices with responsive layouts
 - **Accessibility Focus**: Clear visual hierarchy and intuitive navigation
 
 ### 🏆 **Motivation & Progress**
+<div align="center">
+  <img src="public/img/kooka-burra-waiving.png" alt="Kooka waving to celebrate progress" width="200" style="margin: 10px;" />
+</div>
+
 - **Daily Streaks**: Build momentum with streak tracking and gentle reminders
 - **Progress Visualization**: See your growth through unit completion bars
 - **Achievement System**: Celebrate milestones and unlock new content
@@ -85,6 +105,10 @@ src/
 ```
 
 ## 🎓 Educational Philosophy
+
+<div align="center">
+  <img src="public/img/kooka-burra-breathing.png" alt="Kooka demonstrating breathing exercises" width="250" style="margin: 10px; border-radius: 15px;" />
+</div>
 
 Kooka Sing is built on the belief that everyone has a unique voice waiting to be discovered. Our approach emphasizes:
 
@@ -158,6 +182,10 @@ Please feel free to open issues or submit pull requests.
 - [ ] Performance analytics and insights
 
 ---
+
+<div align="center">
+  <img src="public/img/kooka-burra-flying-blue-sky-clouds-bg.jpg" alt="Kooka flying through blue sky with clouds" width="400" style="border-radius: 20px; margin: 20px 0;" />
+</div>
 
 **Made with ❤️ for music lovers everywhere**
 
