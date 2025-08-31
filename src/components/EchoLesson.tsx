@@ -94,13 +94,24 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
 
   const renderIntroScreen = () => (
     <Card style={{ textAlign: 'center' }}>
-      <div
-        style={{
-          fontSize: '60px',
-          marginBottom: spacing.lg,
-        }}
-      >
-        <Icon name="play" size={60} color={colors.primary} />
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: spacing.md, marginBottom: spacing.lg }}>
+        <div
+          style={{
+            fontSize: '60px',
+          }}
+        >
+          <Icon name="play" size={60} color={colors.primary} />
+        </div>
+        <img
+          src="/img/kooka-burra-singing.png"
+          alt="Kooka ready to echo"
+          style={{
+            width: '60px',
+            height: '60px',
+            objectFit: 'cover',
+            borderRadius: '50%',
+          }}
+        />
       </div>
       
       <h2

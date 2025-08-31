@@ -162,6 +162,8 @@ export const SkillTreePage: React.FC = () => {
                   alt="Kooka singing"
                   style={{
                     width: '80px',
+                    height: '80px',
+                    objectFit: 'cover',
                     borderRadius: '50%',
                     border: `4px solid ${colors.surface}`,
                     boxShadow: shadows.lg,
@@ -335,6 +337,8 @@ export const SkillTreePage: React.FC = () => {
                         style={{
                           width: '60px',
                           height: '60px',
+                          minWidth: '60px',
+                          minHeight: '60px',
                           borderRadius: borderRadius.round,
                           background: isUnitComplete ? gradients.success : gradients.primary,
                           display: 'flex',
@@ -342,6 +346,7 @@ export const SkillTreePage: React.FC = () => {
                           justifyContent: 'center',
                           fontSize: fontSize.xxl,
                           boxShadow: shadows.md,
+                          flexShrink: 0,
                         }}
                       >
                         <Icon name={isUnitComplete ? 'star' : 'play'} size={28} color={colors.textOnPrimary} />
@@ -441,6 +446,8 @@ export const SkillTreePage: React.FC = () => {
                           style={{
                             width: '50px',
                             height: '50px',
+                            minWidth: '50px',
+                            minHeight: '50px',
                             borderRadius: borderRadius.round,
                             background: isCompleted 
                               ? gradients.success 
@@ -453,6 +460,7 @@ export const SkillTreePage: React.FC = () => {
                             marginBottom: spacing.md,
                             boxShadow: isLocked ? 'none' : shadows.md,
                             border: isLocked ? `2px solid ${colors.gray300}` : 'none',
+                            flexShrink: 0,
                           }}
                         >
                           {isLocked ? (
