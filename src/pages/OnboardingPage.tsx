@@ -143,10 +143,7 @@ export const OnboardingPage: React.FC = () => {
             style={{
               fontSize: fontSize.xxxl,
               fontWeight: fontWeight.extrabold,
-              background: gradients.primary,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
+              color: colors.text,
               marginBottom: spacing.sm,
               letterSpacing: '-0.02em',
             }}

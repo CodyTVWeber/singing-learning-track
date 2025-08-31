@@ -40,10 +40,7 @@ h1, h2, h3, h4, h5, h6 {
 h1 { 
   font-size: 3rem; 
   font-weight: 800;
-  background: linear-gradient(135deg, #2C5F7C 0%, #4A90E2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #000000;
 }
 h2 { font-size: 2.25rem; }
 h3 { font-size: 1.75rem; }
@@ -101,7 +98,7 @@ img {
 
 /* Selection styling */
 ::selection {
-  background-color: rgba(74, 144, 226, 0.3);
+  background-color: rgba(0, 0, 0, 0.1);
   color: #2C3E50;
 }
 
@@ -117,13 +114,13 @@ img {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #4A90E2;
+  background: #888888;
   border-radius: 6px;
   border: 2px solid #F5EDE4;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2C5F7C;
+  background: #666666;
 }
 
 /* Animations */
@@ -250,7 +247,7 @@ img {
 /* Focus styles */
 *:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
 }
 
 *:focus:not(:focus-visible) {
@@ -259,10 +256,7 @@ img {
 
 /* Gradient text utility */
 .gradient-text {
-  background: linear-gradient(135deg, #2C5F7C 0%, #4A90E2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #000000;
 }
 
 /* Responsive utilities */
@@ -328,7 +322,7 @@ html, body {
 
 /* Improved focus styles for accessibility */
 :focus-visible {
-  outline: 3px solid #4A90E2;
+  outline: 3px solid #000000;
   outline-offset: 2px;
 }
 

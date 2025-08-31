@@ -277,10 +277,7 @@ export const SkillTreePage: React.FC = () => {
               color: colors.text,
               marginBottom: spacing.md,
               textAlign: 'center',
-              background: gradients.primary,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
+              
             }}
           >
             Your Singing Journey
