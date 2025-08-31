@@ -506,14 +506,15 @@ export const SkillTreePage: React.FC = () => {
                           }}
                         >
                           <div style={{ display: 'flex', gap: spacing.sm }}>
+                            {/* Lesson duration & points with sensible fallbacks to avoid undefined */}
                             <Chip
-                              label={`${lesson.durationMinutes} min`}
+                              label={`${(lesson as any).durationMinutes ?? (lesson.type === 'song' ? 5 : lesson.type === 'practice' ? 4 : 3)} min`}
                               size="small"
                               variant="outlined"
                               icon={<Icon name="schedule" size={14} />}
                             />
                             <Chip
-                              label={`${lesson.points} pts`}
+                              label={`${(lesson as any).points ?? lesson.level * 5} pts`}
                               size="small"
                               variant="outlined"
                               color="secondary"
