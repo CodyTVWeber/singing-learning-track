@@ -129,6 +129,8 @@ export const LessonPage: React.FC = () => {
               alt="Kooka celebrating"
               style={{
                 width: '150px',
+                height: '150px',
+                objectFit: 'cover',
                 margin: '0 auto',
                 marginBottom: spacing.lg,
                 borderRadius: borderRadius.round,
@@ -243,7 +245,6 @@ export const LessonPage: React.FC = () => {
           title={lesson.title}
           subtitle="Echo Lesson"
           variant="gradient"
-          showKookaburra
           leftAction={
             <IconButton
               icon="back"
@@ -287,19 +288,18 @@ export const LessonPage: React.FC = () => {
         background: gradients.soft,
       }}
     >
-      <Header 
-        title={lesson.title}
-        subtitle={`Step ${currentStep + 1} of ${regularContent.steps.length}`}
-        variant="gradient"
-        showKookaburra
-        leftAction={
-          <IconButton
-            icon="back"
-            onClick={() => navigate('/skill-tree')}
-            ariaLabel="Back to skill tree"
-          />
-        }
-      />
+              <Header 
+          title={lesson.title}
+          subtitle={`Step ${currentStep + 1} of ${regularContent.steps.length}`}
+          variant="gradient"
+          leftAction={
+            <IconButton
+              icon="back"
+              onClick={() => navigate('/skill-tree')}
+              ariaLabel="Back to skill tree"
+            />
+          }
+        />
 
       <Container style={{ paddingTop: spacing.xl, paddingBottom: spacing.xl }}>
         {/* Progress Bar */}
@@ -326,25 +326,29 @@ export const LessonPage: React.FC = () => {
             marginBottom: spacing.xl,
           }}
         >
-          {/* Step Title with Icon */}
+                    {/* Step Title with Icon and Kooka */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               gap: spacing.md,
               marginBottom: spacing.xl,
+              flexWrap: 'wrap',
             }}
           >
             <div
               style={{
                 width: '50px',
                 height: '50px',
+                minWidth: '50px',
+                minHeight: '50px',
                 borderRadius: borderRadius.round,
                 background: gradients.primary,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 boxShadow: shadows.md,
+                flexShrink: 0,
               }}
             >
               <Icon name={stepIconName} size={24} color={colors.textOnPrimary} />
@@ -355,10 +359,21 @@ export const LessonPage: React.FC = () => {
                 fontWeight: fontWeight.bold,
                 color: colors.text,
                 margin: 0,
+                flex: 1,
               }}
             >
               {stepTitle}
             </h2>
+            <img
+              src="/img/kooka-burra-waiving.png"
+              alt="Kooka guiding you"
+              style={{
+                width: '40px',
+                height: '40px',
+                objectFit: 'contain',
+                opacity: 0.8,
+              }}
+            />
           </div>
 
           {/* Step Content */}
