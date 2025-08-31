@@ -357,7 +357,6 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
                   name="play" 
                   size={32} 
                   color={isPaused ? colors.textLight : colors.primary}
-                  style={{ animation: !isPaused ? 'pulse 2s infinite' : 'none' }}
                 />
               </div>
               <p style={{ marginTop: spacing.sm, fontSize: fontSize.sm, color: colors.textLight }}>
@@ -461,15 +460,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
         </div>
       )}
 
-      <style>
-        {`
-          @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-          }
-        `}
-      </style>
+      {/* animations removed for simplicity */}
     </div>
   );
 };

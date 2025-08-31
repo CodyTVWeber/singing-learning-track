@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors, borderRadius, transitions } from '../theme/theme';
+import { colors, borderRadius } from '../theme/theme';
 
 interface IconProps {
   name: string;
@@ -92,7 +92,7 @@ export const Icon: React.FC<IconProps> = ({
     height: currentSize,
     color,
     cursor: onClick ? 'pointer' : 'default',
-    transition: transitions.fast,
+    transition: 'none',
     ...style,
   };
 
@@ -122,16 +122,6 @@ export const Icon: React.FC<IconProps> = ({
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
       aria-label={`${name} icon`}
-      onMouseEnter={(e) => {
-        if (onClick) {
-          e.currentTarget.style.opacity = '0.7';
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (onClick) {
-          e.currentTarget.style.opacity = '1';
-        }
-      }}
     >
       <path d={path} />
     </svg>
@@ -178,7 +168,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
     justifyContent: 'center',
     cursor: disabled ? 'not-allowed' : 'pointer',
     opacity: disabled ? 0.5 : 1,
-    transition: transitions.fast,
+    transition: 'none',
     ...style,
   };
 
@@ -189,16 +179,6 @@ export const IconButton: React.FC<IconButtonProps> = ({
       onClick={disabled ? undefined : onClick}
       disabled={disabled}
       aria-label={ariaLabel || `${icon} button`}
-      onMouseEnter={(e) => {
-        if (!disabled) {
-          e.currentTarget.style.backgroundColor = colors.featherLight;
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (!disabled) {
-          e.currentTarget.style.backgroundColor = 'transparent';
-        }
-      }}
     >
       <Icon name={icon} size={currentSize.icon} color={color} />
     </button>

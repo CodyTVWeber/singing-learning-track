@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors, spacing, borderRadius, fontSize, fontWeight, shadows, transitions, gradients } from '../theme/theme';
+import { colors, spacing, borderRadius, fontSize, fontWeight, shadows, gradients } from '../theme/theme';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'gradient';
@@ -29,7 +29,7 @@ export const Button: React.FC<ButtonProps> = ({
               size === 'large' ? fontSize.lg : 
               fontSize.md,
     fontWeight: fontWeight.semibold,
-    transition: `background-color ${transitions.fast}, transform ${transitions.fast}, box-shadow ${transitions.fast}`,
+    transition: 'none',
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -47,7 +47,6 @@ export const Button: React.FC<ButtonProps> = ({
     whiteSpace: 'nowrap',
     userSelect: 'none',
     flexDirection: iconPosition === 'right' ? 'row-reverse' : 'row',
-    zIndex: 1,
   };
 
   const variantStyles: Record<string, React.CSSProperties> = {
@@ -79,49 +78,7 @@ export const Button: React.FC<ButtonProps> = ({
     },
   };
 
-  const getHoverStyles = (): React.CSSProperties => {
-    if (props.disabled) return {};
-    
-    const baseHover = {
-      boxShadow: shadows.xl,
-    };
-    
-    switch (variant) {
-      case 'primary':
-        return { ...baseHover, backgroundColor: colors.warning };
-      case 'secondary':
-        return { ...baseHover, backgroundColor: colors.secondaryLight };
-      case 'outline':
-        return { 
-          ...baseHover, 
-          backgroundColor: colors.featherLight,
-          color: colors.text,
-          borderColor: colors.warning,
-        };
-      case 'ghost':
-        return { 
-          backgroundColor: colors.bellyCreamy,
-        };
-      case 'gradient':
-        return { 
-          ...baseHover,
-          background: gradients.sunset,
-          boxShadow: `${shadows.colored} ${colors.warning}`,
-        };
-      default:
-        return baseHover;
-    }
-  };
-  
-  const getActiveStyles = (): React.CSSProperties => {
-    if (props.disabled) return {};
-    return {
-      boxShadow: shadows.sm,
-    };
-  };
-
-  const [isHovered, setIsHovered] = React.useState(false);
-  const [isActive, setIsActive] = React.useState(false);
+  // Simplified button: no hover/active animations
 
   return (
     <button
@@ -129,44 +86,9 @@ export const Button: React.FC<ButtonProps> = ({
       style={{
         ...baseStyles,
         ...variantStyles[variant],
-        ...(isHovered ? getHoverStyles() : {}),
-        ...(isActive ? getActiveStyles() : {}),
         ...style,
       }}
-      onMouseEnter={(e) => {
-        setIsHovered(true);
-        props.onMouseEnter?.(e);
-      }}
-      onMouseLeave={(e) => {
-        setIsHovered(false);
-        setIsActive(false);
-        props.onMouseLeave?.(e);
-      }}
-      onMouseDown={(e) => {
-        setIsActive(true);
-        props.onMouseDown?.(e);
-      }}
-      onMouseUp={(e) => {
-        setIsActive(false);
-        props.onMouseUp?.(e);
-      }}
     >
-      {/* Ripple effect for gradient variant */}
-      {variant === 'gradient' && isActive && (
-        <span
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            width: '100%',
-            height: '100%',
-            transform: 'translate(-50%, -50%)',
-            borderRadius: 'inherit',
-            background: 'rgba(255, 255, 255, 0.3)',
-            animation: 'ripple 0.6s ease-out',
-          }}
-        />
-      )}
       {icon && <span style={{ display: 'flex', alignItems: 'center' }}>{icon}</span>}
       {children}
     </button>
