@@ -1,11 +1,11 @@
 import React from 'react';
-import { colors, spacing, fontSize, transitions } from '../theme/theme';
+import { colors, spacing, fontSize, transitions, gradients, fontWeight, borderRadius } from '../theme/theme';
 
 interface FooterProps {
   children?: React.ReactNode;
   fixed?: boolean;
-  backgroundColor?: string;
-  textColor?: string;
+  variant?: 'default' | 'gradient' | 'minimal' | 'playful';
+  showKookaburra?: boolean;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -13,21 +13,49 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({
   children,
   fixed = false,
-  backgroundColor = colors.primary,
-  textColor = 'white',
+  variant = 'gradient',
+  showKookaburra = true,
   className = '',
   style,
 }) => {
+  const getVariantStyles = (): React.CSSProperties => {
+    switch (variant) {
+      case 'gradient':
+        return {
+          background: gradients.primary,
+          color: colors.textOnPrimary,
+          borderTop: 'none',
+        };
+      case 'minimal':
+        return {
+          backgroundColor: colors.background,
+          color: colors.text,
+          borderTop: `1px solid ${colors.gray200}`,
+        };
+      case 'playful':
+        return {
+          background: gradients.warm,
+          color: colors.text,
+          borderTop: 'none',
+        };
+      default:
+        return {
+          backgroundColor: colors.primary,
+          color: colors.textOnPrimary,
+          borderTop: 'none',
+        };
+    }
+  };
+
   const footerStyles: React.CSSProperties = {
     position: fixed ? 'fixed' : 'relative',
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor,
-    color: textColor,
-    padding: `${spacing.lg} ${spacing.md}`,
-    transition: transitions.normal,
+    padding: `${spacing.xl} ${spacing.md}`,
+    transition: transitions.smooth,
     zIndex: 900,
+    ...getVariantStyles(),
     ...style,
   };
 
@@ -35,16 +63,93 @@ export const Footer: React.FC<FooterProps> = ({
     maxWidth: '1200px',
     margin: '0 auto',
     textAlign: 'center',
-    fontSize: fontSize.sm,
   };
+
+  const defaultContent = (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: spacing.md }}>
+      {showKookaburra && (
+        <img
+          src="/img/kooka-burra-waiving.png"
+          alt="Kooka waving goodbye"
+          style={{
+            width: '40px',
+            height: '40px',
+            opacity: 0.8,
+            animation: 'wiggle 2s ease-in-out infinite',
+          }}
+        />
+      )}
+      
+      <div>
+        <p style={{ 
+          fontSize: fontSize.md, 
+          fontWeight: fontWeight.medium,
+          marginBottom: spacing.xs,
+          opacity: 0.95,
+        }}>
+          Made with 💙 by Kooka Sing
+        </p>
+        <p style={{ 
+          fontSize: fontSize.sm,
+          opacity: 0.8,
+        }}>
+          © {new Date().getFullYear()} • Helping voices soar since today!
+        </p>
+      </div>
+      
+      <div style={{ 
+        display: 'flex', 
+        gap: spacing.md,
+        marginTop: spacing.sm,
+      }}>
+        {['🎵', '🎤', '🎶'].map((emoji, index) => (
+          <span
+            key={index}
+            style={{
+              fontSize: '20px',
+              opacity: 0.6,
+              animation: `float ${3 + index}s ease-in-out infinite`,
+              animationDelay: `${index * 0.5}s`,
+            }}
+          >
+            {emoji}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
 
   return (
     <footer className={className} style={footerStyles}>
       <div style={containerStyles}>
-        {children || (
-          <p>© {new Date().getFullYear()} Kooka Sing. All rights reserved.</p>
-        )}
+        {children || defaultContent}
       </div>
+      
+      {/* Decorative wave for playful variant */}
+      {variant === 'playful' && (
+        <svg
+          style={{
+            position: 'absolute',
+            top: '-1px',
+            left: 0,
+            width: '100%',
+            height: '40px',
+            transform: 'rotate(180deg)',
+          }}
+          viewBox="0 0 1200 40"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0,20 C150,40 350,0 600,20 C850,40 1050,0 1200,20 L1200,40 L0,40 Z"
+            fill={colors.background}
+            opacity="0.5"
+          />
+          <path
+            d="M0,25 C200,45 400,5 600,25 C800,45 1000,5 1200,25 L1200,40 L0,40 Z"
+            fill={colors.background}
+          />
+        </svg>
+      )}
     </footer>
   );
 };

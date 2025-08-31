@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useApp } from '../context/AppContext';
@@ -6,7 +6,7 @@ import type { UserProfile } from '../models/user';
 import { Button } from '../components/Button';
 import { Card } from '../components/Card';
 import { Container } from '../components/Container';
-import { colors, fontSize, fontWeight, spacing, borderRadius } from '../theme/theme';
+import { colors, fontSize, fontWeight, spacing, borderRadius, gradients, shadows, transitions, animations } from '../theme/theme';
 import { Icon } from '../components/Icon';
 
 export const OnboardingPage: React.FC = () => {
@@ -15,11 +15,20 @@ export const OnboardingPage: React.FC = () => {
   const [step, setStep] = useState(0);
   const [name, setName] = useState('');
   const [ageGroup, setAgeGroup] = useState<'kid' | 'teen' | 'adult'>('kid');
+  const [showContent, setShowContent] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setShowContent(true), 100);
+  }, [step]);
 
   const handleNameSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (name.trim()) {
-      setStep(1);
+      setShowContent(false);
+      setTimeout(() => {
+        setStep(1);
+        setShowContent(true);
+      }, 300);
     }
   };
 
@@ -38,143 +47,330 @@ export const OnboardingPage: React.FC = () => {
     navigate('/skill-tree');
   };
 
+  const ageOptions = [
+    { 
+      value: 'kid' as const, 
+      label: 'Young Explorer', 
+      subtitle: 'Under 12 years',
+      icon: '🎈',
+      color: colors.secondary
+    },
+    { 
+      value: 'teen' as const, 
+      label: 'Rising Star', 
+      subtitle: '13-17 years',
+      icon: '⭐',
+      color: colors.primary
+    },
+    { 
+      value: 'adult' as const, 
+      label: 'Singing Enthusiast', 
+      subtitle: '18+ years',
+      icon: '🎵',
+      color: colors.accent
+    },
+  ];
+
   return (
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: colors.background,
+        background: gradients.soft,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         padding: spacing.md,
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
+      {/* Background decorations */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '-10%',
+          left: '-10%',
+          width: '300px',
+          height: '300px',
+          background: gradients.ocean,
+          borderRadius: '50%',
+          filter: 'blur(80px)',
+          opacity: 0.3,
+          animation: animations.pulse,
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '-10%',
+          right: '-10%',
+          width: '350px',
+          height: '350px',
+          background: gradients.sunset,
+          borderRadius: '50%',
+          filter: 'blur(80px)',
+          opacity: 0.3,
+          animation: animations.pulse,
+          animationDelay: '1s',
+        }}
+      />
+
       <Container maxWidth="500px">
-        <div style={{ textAlign: 'center', marginBottom: spacing.xl }}>
+        <div 
+          style={{ 
+            textAlign: 'center', 
+            marginBottom: spacing.xxl,
+            opacity: showContent ? 1 : 0,
+            transform: showContent ? 'translateY(0)' : 'translateY(-20px)',
+            transition: transitions.smooth,
+          }}
+        >
           <img
             src="/img/kooka-burra-waiving.png"
-            alt="Kooka the Kookaburra"
+            alt="Kooka the Kookaburra welcoming you"
             style={{
-              width: '120px',
-              height: '120px',
+              width: '150px',
+              height: '150px',
               margin: '0 auto',
               marginBottom: spacing.lg,
+              animation: animations.float,
+              filter: `drop-shadow(${shadows.lg})`,
             }}
           />
           <h1
             style={{
-              fontSize: fontSize.xxl,
-              fontWeight: fontWeight.bold,
-              color: 'white',
+              fontSize: fontSize.xxxl,
+              fontWeight: fontWeight.extrabold,
+              background: gradients.primary,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
               marginBottom: spacing.sm,
+              letterSpacing: '-0.02em',
             }}
           >
             Welcome to Kooka Sing!
           </h1>
-          <p style={{ color: colors.textLight, fontSize: fontSize.lg }}>
-            Let's get to know each other
+          <p style={{ 
+            color: colors.textLight, 
+            fontSize: fontSize.lg,
+            fontWeight: fontWeight.medium,
+          }}>
+            {step === 0 
+              ? "Let's start your singing adventure together!" 
+              : "You're almost ready to begin!"}
           </p>
         </div>
 
-        {step === 0 ? (
-          <Card>
-            <form onSubmit={handleNameSubmit}>
-              <h2
-                style={{
-                  fontSize: fontSize.xl,
-                  fontWeight: fontWeight.semibold,
-                  marginBottom: spacing.lg,
-                  color: colors.darkBrown,
-                }}
-              >
-                What's your name?
-              </h2>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Enter your name"
-                autoFocus
-                style={{
-                  width: '100%',
-                  padding: spacing.md,
-                  fontSize: fontSize.lg,
-                  borderRadius: borderRadius.md,
-                  border: `2px solid ${colors.featherLight}`,
-                  marginBottom: spacing.lg,
-                  transition: 'border-color 300ms',
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = colors.primary;
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = colors.featherLight;
-                }}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                size="large"
-                disabled={!name.trim()}
-              >
-                Continue
-              </Button>
-            </form>
-          </Card>
-        ) : (
-          <Card>
-            <h2
-              style={{
-                fontSize: fontSize.xl,
-                fontWeight: fontWeight.semibold,
-                marginBottom: spacing.lg,
-                color: colors.darkBrown,
-              }}
-            >
-              Hi {name}! How old are you?
-            </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.md }}>
-              {[
-                { value: 'kid' as const, label: 'Under 12' },
-                { value: 'teen' as const, label: '13-17' },
-                { value: 'adult' as const, label: '18+' },
-              ].map((option) => (
-                <button
-                  key={option.value}
-                  onClick={() => setAgeGroup(option.value)}
+        <div
+          style={{
+            opacity: showContent ? 1 : 0,
+            transform: showContent ? 'scale(1)' : 'scale(0.95)',
+            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+          }}
+        >
+          {step === 0 ? (
+            <Card variant="glass" padding="xl" decorative>
+              <form onSubmit={handleNameSubmit}>
+                <h2
                   style={{
-                    padding: spacing.lg,
-                    borderRadius: borderRadius.lg,
-                    border: `2px solid ${
-                      ageGroup === option.value ? colors.primary : colors.featherLight
-                    }`,
-                    backgroundColor:
-                      ageGroup === option.value ? colors.skyLight : colors.surface,
-                    fontSize: fontSize.lg,
-                    fontWeight: fontWeight.medium,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-start',
-                    gap: spacing.md,
-                    transition: 'all 300ms',
-                    cursor: 'pointer',
+                    fontSize: fontSize.xxl,
+                    fontWeight: fontWeight.bold,
+                    marginBottom: spacing.md,
+                    color: colors.text,
+                    textAlign: 'center',
                   }}
                 >
-                  <Icon name="person" />
-                  <span>{option.label}</span>
-                </button>
-              ))}
-            </div>
-            <Button
-              onClick={handleComplete}
-              fullWidth
-              size="large"
-              style={{ marginTop: spacing.xl }}
-            >
-              Start Learning!
-            </Button>
-          </Card>
-        )}
+                  What should Kooka call you?
+                </h2>
+                <p
+                  style={{
+                    fontSize: fontSize.md,
+                    color: colors.textLight,
+                    marginBottom: spacing.xl,
+                    textAlign: 'center',
+                  }}
+                >
+                  Choose a name that makes you smile!
+                </p>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Your amazing name"
+                  autoFocus
+                  style={{
+                    width: '100%',
+                    padding: `${spacing.md} ${spacing.lg}`,
+                    fontSize: fontSize.lg,
+                    borderRadius: borderRadius.pill,
+                    border: `2px solid ${colors.gray200}`,
+                    backgroundColor: colors.surface,
+                    marginBottom: spacing.xl,
+                    transition: transitions.smooth,
+                    textAlign: 'center',
+                    fontWeight: fontWeight.medium,
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.borderColor = colors.primary;
+                    e.currentTarget.style.boxShadow = `0 0 0 4px ${colors.primaryLight}20`;
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.borderColor = colors.gray200;
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  size="large"
+                  variant="gradient"
+                  disabled={!name.trim()}
+                  icon={<span>🎯</span>}
+                  iconPosition="right"
+                >
+                  Let's Go!
+                </Button>
+              </form>
+            </Card>
+          ) : (
+            <Card variant="glass" padding="xl" decorative>
+              <h2
+                style={{
+                  fontSize: fontSize.xxl,
+                  fontWeight: fontWeight.bold,
+                  marginBottom: spacing.md,
+                  color: colors.text,
+                  textAlign: 'center',
+                }}
+              >
+                Hi {name}! 👋
+              </h2>
+              <p
+                style={{
+                  fontSize: fontSize.lg,
+                  color: colors.textLight,
+                  marginBottom: spacing.xl,
+                  textAlign: 'center',
+                }}
+              >
+                Which adventure level fits you best?
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.md }}>
+                {ageOptions.map((option, index) => (
+                  <button
+                    key={option.value}
+                    onClick={() => setAgeGroup(option.value)}
+                    style={{
+                      padding: spacing.lg,
+                      borderRadius: borderRadius.xl,
+                      border: `2px solid ${
+                        ageGroup === option.value ? option.color : colors.gray200
+                      }`,
+                      backgroundColor:
+                        ageGroup === option.value 
+                          ? `${option.color}15` 
+                          : colors.surface,
+                      fontSize: fontSize.lg,
+                      fontWeight: fontWeight.semibold,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: spacing.md,
+                      transition: transitions.smooth,
+                      cursor: 'pointer',
+                      transform: ageGroup === option.value ? 'scale(1.02)' : 'scale(1)',
+                      boxShadow: ageGroup === option.value ? shadows.md : 'none',
+                      opacity: 0,
+                      animation: `slideUp 0.4s ease-out ${index * 0.1}s forwards`,
+                    }}
+                    onMouseEnter={(e) => {
+                      if (ageGroup !== option.value) {
+                        e.currentTarget.style.transform = 'scale(1.02)';
+                        e.currentTarget.style.boxShadow = shadows.sm;
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (ageGroup !== option.value) {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md }}>
+                      <span style={{ fontSize: '2rem' }}>{option.icon}</span>
+                      <div style={{ textAlign: 'left' }}>
+                        <div style={{ color: colors.text }}>{option.label}</div>
+                        <div style={{ 
+                          fontSize: fontSize.sm, 
+                          color: colors.textLight,
+                          fontWeight: fontWeight.normal,
+                        }}>
+                          {option.subtitle}
+                        </div>
+                      </div>
+                    </div>
+                    {ageGroup === option.value && (
+                      <div
+                        style={{
+                          width: '24px',
+                          height: '24px',
+                          borderRadius: '50%',
+                          backgroundColor: option.color,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: 'white',
+                          fontWeight: fontWeight.bold,
+                        }}
+                      >
+                        ✓
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+              <Button
+                onClick={handleComplete}
+                fullWidth
+                size="large"
+                variant="gradient"
+                style={{ marginTop: spacing.xl }}
+                icon={<span>🚀</span>}
+                iconPosition="right"
+              >
+                Start My Journey!
+              </Button>
+            </Card>
+          )}
+        </div>
+
+        {/* Floating musical elements */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '15%',
+            left: '5%',
+            fontSize: '24px',
+            animation: 'float 5s ease-in-out infinite',
+            opacity: 0.3,
+          }}
+        >
+          🎤
+        </div>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '20%',
+            right: '5%',
+            fontSize: '28px',
+            animation: 'float 6s ease-in-out infinite',
+            animationDelay: '2s',
+            opacity: 0.3,
+          }}
+        >
+          🎶
+        </div>
       </Container>
     </div>
   );

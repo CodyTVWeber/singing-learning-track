@@ -1,5 +1,5 @@
-import React from 'react';
-import { colors, spacing, shadows, transitions, fontSize, fontWeight } from '../theme/theme';
+import React, { useEffect, useState } from 'react';
+import { colors, spacing, shadows, transitions, fontSize, fontWeight, gradients, blurs, borderRadius } from '../theme/theme';
 
 interface HeaderProps {
   title?: string;
@@ -8,6 +8,8 @@ interface HeaderProps {
   rightAction?: React.ReactNode;
   transparent?: boolean;
   sticky?: boolean;
+  variant?: 'default' | 'gradient' | 'glass' | 'minimal';
+  showKookaburra?: boolean;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -19,19 +21,65 @@ export const Header: React.FC<HeaderProps> = ({
   rightAction,
   transparent = false,
   sticky = true,
+  variant = 'default',
+  showKookaburra = false,
   className = '',
   style,
 }) => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    if (sticky && !transparent) {
+      const handleScroll = () => {
+        setScrolled(window.scrollY > 10);
+      };
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
+  }, [sticky, transparent]);
+
+  const getVariantStyles = (): React.CSSProperties => {
+    if (transparent) return { backgroundColor: 'transparent', boxShadow: 'none' };
+    
+    switch (variant) {
+      case 'gradient':
+        return {
+          background: gradients.primary,
+          boxShadow: scrolled ? shadows.lg : shadows.md,
+          backdropFilter: `blur(${blurs.sm})`,
+          WebkitBackdropFilter: `blur(${blurs.sm})`,
+        };
+      case 'glass':
+        return {
+          backgroundColor: scrolled ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.85)',
+          backdropFilter: `blur(${blurs.md})`,
+          WebkitBackdropFilter: `blur(${blurs.md})`,
+          boxShadow: scrolled ? shadows.md : shadows.sm,
+          borderBottom: `1px solid ${colors.gray100}`,
+        };
+      case 'minimal':
+        return {
+          backgroundColor: colors.background,
+          boxShadow: 'none',
+          borderBottom: `1px solid ${scrolled ? colors.gray200 : colors.gray100}`,
+        };
+      default:
+        return {
+          backgroundColor: colors.surface,
+          boxShadow: scrolled ? shadows.md : shadows.sm,
+        };
+    }
+  };
+
   const headerStyles: React.CSSProperties = {
     position: sticky ? 'sticky' : 'relative',
     top: 0,
     left: 0,
     right: 0,
     zIndex: 1000,
-    backgroundColor: transparent ? 'transparent' : colors.surface,
-    boxShadow: transparent ? 'none' : shadows.sm,
     padding: `${spacing.md} ${spacing.lg}`,
-    transition: transitions.normal,
+    transition: transitions.smooth,
+    ...getVariantStyles(),
     ...style,
   };
 
@@ -48,19 +96,34 @@ export const Header: React.FC<HeaderProps> = ({
   const titleSectionStyles: React.CSSProperties = {
     flex: 1,
     textAlign: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: spacing.xs,
+  };
+
+  const getTitleColor = () => {
+    if (variant === 'gradient') return colors.textOnPrimary;
+    if (variant === 'glass' || variant === 'minimal') return colors.text;
+    return colors.text;
   };
 
   const titleStyles: React.CSSProperties = {
     fontSize: fontSize.xl,
     fontWeight: fontWeight.bold,
-    color: 'white',
+    color: getTitleColor(),
     margin: 0,
+    display: 'flex',
+    alignItems: 'center',
+    gap: spacing.sm,
+    letterSpacing: '-0.02em',
   };
 
   const subtitleStyles: React.CSSProperties = {
     fontSize: fontSize.sm,
-    color: colors.textLight,
-    marginTop: spacing.xs,
+    color: variant === 'gradient' ? colors.textOnPrimary : colors.textLight,
+    margin: 0,
+    opacity: 0.9,
   };
 
   const actionStyles: React.CSSProperties = {
@@ -78,7 +141,23 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
         
         <div style={titleSectionStyles}>
-          {title && <h1 style={titleStyles} >{title}</h1>}
+          {title && (
+            <h1 style={titleStyles}>
+              {showKookaburra && (
+                <img
+                  src="/img/kooka-burra-waiving.png"
+                  alt="Kooka"
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    objectFit: 'contain',
+                    animation: scrolled ? 'wiggle 2s ease-in-out infinite' : 'none',
+                  }}
+                />
+              )}
+              {title}
+            </h1>
+          )}
           {subtitle && <p style={subtitleStyles}>{subtitle}</p>}
         </div>
         
@@ -86,6 +165,22 @@ export const Header: React.FC<HeaderProps> = ({
           {rightAction}
         </div>
       </div>
+      
+      {/* Decorative gradient line for gradient variant */}
+      {variant === 'gradient' && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '2px',
+            background: gradients.sunset,
+            opacity: scrolled ? 1 : 0.5,
+            transition: transitions.normal,
+          }}
+        />
+      )}
     </header>
   );
 };

@@ -1,10 +1,12 @@
 import React from 'react';
-import { colors, spacing, borderRadius, fontSize, fontWeight, shadows, transitions } from '../theme/theme';
+import { colors, spacing, borderRadius, fontSize, fontWeight, shadows, transitions, gradients } from '../theme/theme';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'gradient';
   size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;
+  icon?: React.ReactNode;
+  iconPosition?: 'left' | 'right';
   children: React.ReactNode;
 }
 
@@ -12,6 +14,8 @@ export const Button: React.FC<ButtonProps> = ({
   variant = 'primary', 
   size = 'medium',
   fullWidth = false,
+  icon,
+  iconPosition = 'left',
   children,
   style,
   ...props 
@@ -19,13 +23,13 @@ export const Button: React.FC<ButtonProps> = ({
   const baseStyles: React.CSSProperties = {
     padding: size === 'small' ? `${spacing.sm} ${spacing.md}` : 
              size === 'large' ? `${spacing.md} ${spacing.xl}` : 
-             `${spacing.sm} ${spacing.lg}`,
-    borderRadius: borderRadius.lg,
+             `${spacing.md} ${spacing.lg}`,
+    borderRadius: borderRadius.pill,
     fontSize: size === 'small' ? fontSize.sm : 
               size === 'large' ? fontSize.lg : 
               fontSize.md,
     fontWeight: fontWeight.semibold,
-    transition: transitions.fast,
+    transition: transitions.smooth,
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -35,32 +39,91 @@ export const Button: React.FC<ButtonProps> = ({
                size === 'large' ? '56px' : 
                '44px',
     cursor: props.disabled ? 'not-allowed' : 'pointer',
-    opacity: props.disabled ? 0.5 : 1,
+    opacity: props.disabled ? 0.6 : 1,
+    position: 'relative',
+    overflow: 'hidden',
+    border: 'none',
+    textDecoration: 'none',
+    whiteSpace: 'nowrap',
+    userSelect: 'none',
+    flexDirection: iconPosition === 'right' ? 'row-reverse' : 'row',
   };
 
   const variantStyles: Record<string, React.CSSProperties> = {
     primary: {
       backgroundColor: colors.primary,
-      color: 'white',
+      color: colors.textOnPrimary,
       boxShadow: shadows.md,
     },
     secondary: {
       backgroundColor: colors.secondary,
-      color: 'white',
+      color: colors.textOnSecondary,
       boxShadow: shadows.md,
     },
     outline: {
       backgroundColor: 'transparent',
       color: colors.primary,
       border: `2px solid ${colors.primary}`,
+      boxShadow: 'none',
+    },
+    ghost: {
+      backgroundColor: 'transparent',
+      color: colors.text,
+      boxShadow: 'none',
+    },
+    gradient: {
+      background: gradients.primary,
+      color: colors.textOnPrimary,
+      boxShadow: shadows.lg,
     },
   };
 
-  const hoverStyles: React.CSSProperties = props.disabled ? {} : {
-    filter: 'brightness(1.1)',
-    transform: 'translateY(-1px)',
-    boxShadow: shadows.lg,
+  const getHoverStyles = (): React.CSSProperties => {
+    if (props.disabled) return {};
+    
+    const baseHover = {
+      transform: 'translateY(-2px) scale(1.02)',
+      boxShadow: shadows.xl,
+    };
+    
+    switch (variant) {
+      case 'primary':
+        return { ...baseHover, backgroundColor: colors.primaryDark };
+      case 'secondary':
+        return { ...baseHover, backgroundColor: colors.secondaryDark };
+      case 'outline':
+        return { 
+          ...baseHover, 
+          backgroundColor: colors.primary,
+          color: colors.textOnPrimary,
+          borderColor: colors.primary,
+        };
+      case 'ghost':
+        return { 
+          backgroundColor: colors.gray100,
+          transform: 'translateY(-1px)',
+        };
+      case 'gradient':
+        return { 
+          ...baseHover,
+          background: gradients.ocean,
+          boxShadow: `${shadows.colored} ${colors.primaryLight}`,
+        };
+      default:
+        return baseHover;
+    }
   };
+  
+  const getActiveStyles = (): React.CSSProperties => {
+    if (props.disabled) return {};
+    return {
+      transform: 'translateY(0) scale(0.98)',
+      boxShadow: shadows.sm,
+    };
+  };
+
+  const [isHovered, setIsHovered] = React.useState(false);
+  const [isActive, setIsActive] = React.useState(false);
 
   return (
     <button
@@ -68,21 +131,45 @@ export const Button: React.FC<ButtonProps> = ({
       style={{
         ...baseStyles,
         ...variantStyles[variant],
+        ...(isHovered ? getHoverStyles() : {}),
+        ...(isActive ? getActiveStyles() : {}),
         ...style,
       }}
       onMouseEnter={(e) => {
-        if (!props.disabled) {
-          Object.assign(e.currentTarget.style, hoverStyles);
-        }
+        setIsHovered(true);
         props.onMouseEnter?.(e);
       }}
       onMouseLeave={(e) => {
-        if (!props.disabled) {
-          Object.assign(e.currentTarget.style, variantStyles[variant]);
-        }
+        setIsHovered(false);
+        setIsActive(false);
         props.onMouseLeave?.(e);
       }}
+      onMouseDown={(e) => {
+        setIsActive(true);
+        props.onMouseDown?.(e);
+      }}
+      onMouseUp={(e) => {
+        setIsActive(false);
+        props.onMouseUp?.(e);
+      }}
     >
+      {/* Ripple effect for gradient variant */}
+      {variant === 'gradient' && isActive && (
+        <span
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            width: '100%',
+            height: '100%',
+            transform: 'translate(-50%, -50%)',
+            borderRadius: 'inherit',
+            background: 'rgba(255, 255, 255, 0.3)',
+            animation: 'ripple 0.6s ease-out',
+          }}
+        />
+      )}
+      {icon && <span style={{ display: 'flex', alignItems: 'center' }}>{icon}</span>}
       {children}
     </button>
   );

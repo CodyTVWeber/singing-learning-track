@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors, spacing, borderRadius, fontSize, fontWeight, transitions } from '../theme/theme';
+import { colors, spacing, borderRadius, fontSize, fontWeight, transitions, shadows, gradients, animations } from '../theme/theme';
 
 interface BadgeProps {
   children: React.ReactNode;
@@ -41,19 +41,25 @@ export const Badge: React.FC<BadgeProps> = ({
 
   const badgeStyles: React.CSSProperties = {
     position: 'absolute',
-    minWidth: dot ? '8px' : '20px',
-    height: dot ? '8px' : '20px',
+    minWidth: dot ? '10px' : '22px',
+    height: dot ? '10px' : '22px',
     padding: dot ? 0 : `0 ${spacing.xs}`,
-    backgroundColor: colorMap[color],
-    color: 'white',
+    background: color === 'primary' ? gradients.primary : 
+                color === 'secondary' ? gradients.secondary :
+                color === 'success' ? gradients.success :
+                colorMap[color],
+    color: colors.textOnPrimary,
     borderRadius: borderRadius.round,
     fontSize: fontSize.xs,
-    fontWeight: fontWeight.semibold,
+    fontWeight: fontWeight.bold,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     border: `2px solid ${colors.surface}`,
-    zIndex: 1,
+    boxShadow: shadows.md,
+    zIndex: 10,
+    animation: dot || (count && count > 0) ? animations.pulse : 'none',
+    transition: transitions.smooth,
     ...style,
   };
 
@@ -106,12 +112,12 @@ export const StandaloneBadge: React.FC<StandaloneBadgeProps> = ({
   style,
 }) => {
   const colorMap = {
-    primary: { bg: colors.primary, text: 'white' },
-    secondary: { bg: colors.secondary, text: 'white' },
-    success: { bg: colors.success, text: 'white' },
-    warning: { bg: colors.warning, text: colors.darkBrown },
-    error: { bg: colors.error, text: 'white' },
-    default: { bg: colors.featherLight, text: colors.text },
+    primary: { bg: colors.primary, text: colors.textOnPrimary, gradient: gradients.primary },
+    secondary: { bg: colors.secondary, text: colors.textOnSecondary, gradient: gradients.secondary },
+    success: { bg: colors.success, text: colors.textOnPrimary, gradient: gradients.success },
+    warning: { bg: colors.warning, text: colors.text, gradient: gradients.warm },
+    error: { bg: colors.error, text: colors.textOnPrimary, gradient: gradients.sunset },
+    default: { bg: colors.gray200, text: colors.text, gradient: gradients.soft },
   };
 
   const currentColor = colorMap[color];
@@ -120,23 +126,28 @@ export const StandaloneBadge: React.FC<StandaloneBadgeProps> = ({
     display: 'inline-flex',
     alignItems: 'center',
     gap: spacing.xs,
-    padding: size === 'small' ? `2px ${spacing.sm}` : `${spacing.xs} ${spacing.sm}`,
-    backgroundColor: variant === 'filled' ? currentColor.bg : 'transparent',
+    padding: size === 'small' ? `${spacing.xs} ${spacing.sm}` : `${spacing.sm} ${spacing.md}`,
+    background: variant === 'filled' ? currentColor.gradient : 'transparent',
+    backgroundColor: variant === 'filled' && !currentColor.gradient ? currentColor.bg : 'transparent',
     color: variant === 'filled' ? currentColor.text : currentColor.bg,
-    border: variant === 'outlined' ? `1px solid ${currentColor.bg}` : 'none',
-    borderRadius: borderRadius.round,
+    border: variant === 'outlined' ? `2px solid ${currentColor.bg}` : 'none',
+    borderRadius: borderRadius.pill,
     fontSize: size === 'small' ? fontSize.xs : fontSize.sm,
-    fontWeight: fontWeight.medium,
+    fontWeight: fontWeight.semibold,
     lineHeight: 1,
+    boxShadow: variant === 'filled' ? shadows.sm : 'none',
+    transition: transitions.smooth,
+    cursor: onDelete ? 'pointer' : 'default',
     ...style,
   };
 
   const iconStyles: React.CSSProperties = {
-    width: size === 'small' ? '12px' : '14px',
-    height: size === 'small' ? '12px' : '14px',
+    width: size === 'small' ? '14px' : '16px',
+    height: size === 'small' ? '14px' : '16px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    fontSize: size === 'small' ? '12px' : '14px',
   };
 
   const deleteButtonStyles: React.CSSProperties = {
@@ -155,8 +166,19 @@ export const StandaloneBadge: React.FC<StandaloneBadgeProps> = ({
     opacity: 0.7,
   };
 
+  const [isHovered, setIsHovered] = React.useState(false);
+
   return (
-    <span className={className} style={badgeStyles}>
+    <span 
+      className={className} 
+      style={{
+        ...badgeStyles,
+        transform: isHovered && variant === 'filled' ? 'scale(1.05)' : 'scale(1)',
+        boxShadow: isHovered && variant === 'filled' ? shadows.md : badgeStyles.boxShadow,
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       {icon && <span style={iconStyles}>{icon}</span>}
       {label}
       {onDelete && (
@@ -166,11 +188,13 @@ export const StandaloneBadge: React.FC<StandaloneBadgeProps> = ({
           aria-label={`Remove ${label}`}
           onMouseEnter={(e) => {
             e.currentTarget.style.opacity = '1';
-            e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
+            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+            e.currentTarget.style.transform = 'scale(1.1)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.opacity = '0.7';
             e.currentTarget.style.backgroundColor = 'transparent';
+            e.currentTarget.style.transform = 'scale(1)';
           }}
         >
           <svg viewBox="0 0 14 14" fill="currentColor">
