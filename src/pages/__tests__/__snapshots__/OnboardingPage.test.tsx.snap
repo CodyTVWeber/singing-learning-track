@@ -3,55 +3,119 @@
 exports[`OnboardingPage > renders and matches snapshot 1`] = `
 <DocumentFragment>
   <div
-    style="min-height: 100vh; background-color: rgb(250, 247, 242); display: flex; flex-direction: column; justify-content: center; padding: 16px;"
+    style="min-height: 100vh; background: linear-gradient(135deg, #FAF6F2 0%, #F2E8DD 100%); display: flex; flex-direction: column; justify-content: center; padding: 16px; position: relative; overflow: hidden;"
   >
     <div
+      style="position: absolute; top: -10%; left: -10%; width: 300px; height: 300px; background: linear-gradient(135deg, #4B708B 0%, #6B8CAB 100%); border-radius: 50%; filter: blur(80px); opacity: 0.3; animation: pulse 2s ease-in-out infinite; pointer-events: none; z-index: 0;"
+    />
+    <div
+      style="position: absolute; bottom: -10%; right: -10%; width: 350px; height: 350px; background: linear-gradient(135deg, #6B5843 0%, #8B7355 50%, #D4C4B0 100%); border-radius: 50%; filter: blur(80px); opacity: 0.3; animation: pulse 2s ease-in-out infinite; animation-delay: 1s; pointer-events: none; z-index: 0;"
+    />
+    <div
       class=""
-      style="width: 100%; max-width: 500px; margin: 0px auto; padding: 16px;"
+      style="width: 100%; max-width: 500px; margin: 0px auto; padding: 16px; position: relative; z-index: 10;"
     >
       <div
-        style="text-align: center; margin-bottom: 32px;"
+        style="text-align: center; margin-bottom: 48px; opacity: 0; transform: translateY(-20px); transition: 400ms cubic-bezier(0.4, 0, 0.2, 1);"
       >
         <img
-          alt="Kooka the Kookaburra"
+          alt="Kooka the Kookaburra welcoming you"
           src="/img/kooka-burra-waiving.png"
-          style="width: 120px; height: 120px; margin: 0px auto 24px auto;"
+          style="width: 150px; margin: 0px auto 24px auto; filter: drop-shadow(0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.02));"
         />
         <h1
-          style="font-size: 32px; font-weight: 700; color: white; margin-bottom: 8px;"
+          style="font-size: 48px; font-weight: 800; color: rgb(60, 60, 60); margin-bottom: 8px; letter-spacing: -0.02em;"
         >
           Welcome to Kooka Sing!
         </h1>
         <p
-          style="color: rgb(109, 76, 65); font-size: 20px;"
+          style="color: rgb(107, 88, 67); font-size: 18px; font-weight: 500;"
         >
-          Let's get to know each other
+          Let's start your singing adventure together!
         </p>
       </div>
       <div
-        class=""
-        style="background-color: rgb(255, 255, 255); border-radius: 16px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); cursor: default; transition: all 300ms ease-in-out;"
+        style="opacity: 0; transform: scale(0.95); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);"
       >
-        <form>
-          <h2
-            style="font-size: 24px; font-weight: 600; margin-bottom: 24px; color: rgb(93, 64, 55);"
+        <div
+          class=""
+          style="border-radius: 20px; padding: 32px; cursor: default; transition: 400ms cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; background-color: rgba(255, 255, 255, 0.8); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04); border: 1px solid rgba(255, 255, 255, 0.3);"
+        >
+          <div
+            style="position: relative; z-index: 1;"
           >
-            What's your name?
-          </h2>
-          <input
-            placeholder="Enter your name"
-            style="width: 100%; padding: 16px; font-size: 20px; border-radius: 8px; border: 2px solid rgb(215, 204, 200); margin-bottom: 24px; transition: border-color 300ms; border-color: rgb(139, 105, 82);"
-            type="text"
-            value=""
+            <form>
+              <h2
+                style="font-size: 32px; font-weight: 700; margin-bottom: 16px; color: rgb(60, 60, 60); text-align: center;"
+              >
+                What should Kooka call you?
+              </h2>
+              <p
+                style="font-size: 16px; color: rgb(107, 88, 67); margin-bottom: 32px; text-align: center;"
+              >
+                Choose a name that makes you smile!
+              </p>
+              <input
+                placeholder="Your amazing name"
+                style="width: 100%; padding: 16px 24px; font-size: 18px; border-radius: 9999px; border: 2px solid rgb(238, 238, 232); background-color: rgb(255, 255, 255); margin-bottom: 32px; transition: 400ms cubic-bezier(0.4, 0, 0.2, 1); text-align: center; font-weight: 500; border-color: rgb(139, 115, 85); box-shadow: 0 0 0 4px #A68B6820;"
+                type="text"
+                value=""
+              />
+              <button
+                disabled=""
+                style="padding: 16px 32px; border-radius: 9999px; font-size: 18px; font-weight: 600; transition: background-color 200ms ease-out, transform 200ms ease-out, box-shadow 200ms ease-out; display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 56px; cursor: not-allowed; opacity: 0.6; position: relative; overflow: hidden; text-decoration: none; white-space: nowrap; user-select: none; flex-direction: row-reverse; z-index: 1; background: linear-gradient(135deg, #8B7355 0%, #A68B68 100%); color: rgb(250, 246, 242); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.02);"
+                type="submit"
+              >
+                <span
+                  style="display: flex; align-items: center;"
+                >
+                  <svg
+                    aria-label="forward icon"
+                    class=""
+                    fill="currentColor"
+                    style="width: 24px; height: 24px; color: rgb(60, 60, 60); cursor: default; transition: 200ms ease-out;"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+                    />
+                  </svg>
+                </span>
+                Let's Go!
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div
+        style="position: absolute; top: 15%; left: 5%; font-size: 24px; animation: float 5s ease-in-out infinite; opacity: 0.3; pointer-events: none; z-index: 1;"
+      >
+        <svg
+          aria-label="microphone icon"
+          class=""
+          fill="currentColor"
+          style="width: 24px; height: 24px; color: rgb(60, 60, 60); cursor: default; transition: 200ms ease-out;"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 14a3 3 0 003-3V6a3 3 0 10-6 0v5a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 0014 0h-2zm-5 7a7 7 0 01-7-7H3a9 9 0 0018 0h-2a7 7 0 01-7 7z"
           />
-          <button
-            disabled=""
-            style="padding: 16px 32px; border-radius: 16px; font-size: 20px; font-weight: 600; transition: 150ms ease-in-out; display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 56px; cursor: not-allowed; opacity: 0.5; background-color: rgb(139, 105, 82); color: white; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);"
-            type="submit"
-          >
-            Continue
-          </button>
-        </form>
+        </svg>
+      </div>
+      <div
+        style="position: absolute; bottom: 20%; right: 5%; font-size: 28px; animation: float 6s ease-in-out infinite; animation-delay: 2s; opacity: 0.3; pointer-events: none; z-index: 1;"
+      >
+        <svg
+          aria-label="play icon"
+          class=""
+          fill="currentColor"
+          style="width: 28px; height: 28px; color: rgb(60, 60, 60); cursor: default; transition: 200ms ease-out;"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M8 5v14l11-7z"
+          />
+        </svg>
       </div>
     </div>
   </div>

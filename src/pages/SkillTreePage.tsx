@@ -48,7 +48,7 @@ export const SkillTreePage: React.FC = () => {
       setToasts(prev => [...prev, {
         id: Date.now().toString(),
         type: 'warning',
-        message: '🔒 Complete previous lessons to unlock this one!',
+        message: 'Complete previous lessons to unlock this one!',
         duration: 3000
       }]);
     }
@@ -77,7 +77,7 @@ export const SkillTreePage: React.FC = () => {
         setToasts(prev => [...prev, {
           id: 'streak-reminder',
           type: 'info',
-          message: `🔥 Keep your ${user.streakCount} day streak going! Complete a lesson today!`,
+          message: `Keep your ${user.streakCount} day streak going! Complete a lesson today!`,
           duration: 5000
         }]);
         localStorage.setItem('reminderShown', todayStr);
@@ -177,7 +177,7 @@ export const SkillTreePage: React.FC = () => {
                       textShadow: '0 2px 10px rgba(0,0,0,0.2)',
                     }}
                   >
-                    Welcome back, {user.name}! 🎵
+                    Welcome back, {user.name}!
                   </h1>
                   <p style={{ 
                     fontSize: fontSize.lg, 
@@ -233,7 +233,7 @@ export const SkillTreePage: React.FC = () => {
                   {user.totalPoints}
                 </div>
                 <div style={{ fontSize: fontSize.sm, opacity: 0.9 }}>
-                  ⭐
+                  <Icon name="star" size={18} />
                 </div>
               </Card>
               
@@ -258,7 +258,7 @@ export const SkillTreePage: React.FC = () => {
                     {user.streakCount}
                   </div>
                   <div style={{ fontSize: fontSize.sm }}>
-                    🔥
+                    <Icon name="fire" size={18} />
                   </div>
                 </Card>
               )}
@@ -277,10 +277,7 @@ export const SkillTreePage: React.FC = () => {
               color: colors.text,
               marginBottom: spacing.md,
               textAlign: 'center',
-              background: gradients.primary,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
+              
             }}
           >
             Your Singing Journey
@@ -347,7 +344,7 @@ export const SkillTreePage: React.FC = () => {
                           boxShadow: shadows.md,
                         }}
                       >
-                        {isUnitComplete ? '🏆' : unit.unit === 1 ? '🎵' : unit.unit === 2 ? '🎤' : '🌟'}
+                        <Icon name={isUnitComplete ? 'star' : 'play'} size={28} color={colors.textOnPrimary} />
                       </div>
                       <div>
                         <h3
@@ -388,7 +385,7 @@ export const SkillTreePage: React.FC = () => {
                   </div>
                   
                   <Icon
-                    name={isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+                    name={isExpanded ? 'up' : 'down'}
                     size={32}
                     color={colors.textLight}
                   />
@@ -396,7 +393,7 @@ export const SkillTreePage: React.FC = () => {
 
                 {isUnitComplete && (
                   <StandaloneBadge
-                    icon="🏅"
+                    icon={<Icon name="star" size={18} color={colors.textOnPrimary} />}
                     label="Unit Complete!"
                     color="success"
                     style={{
@@ -459,11 +456,11 @@ export const SkillTreePage: React.FC = () => {
                           }}
                         >
                           {isLocked ? (
-                            <Icon name="lock" size={24} color={colors.gray600} />
+                            <Icon name="error" size={24} color={colors.gray600} />
                           ) : isCompleted ? (
-                            <Icon name="done" size={24} color={colors.text} />
+                            <Icon name="check" size={24} color={colors.text} />
                           ) : (
-                            <span style={{ fontSize: '24px' }}>🎶</span>
+                            <Icon name="play" size={24} color={colors.textOnPrimary} />
                           )}
                         </div>
 
@@ -512,7 +509,7 @@ export const SkillTreePage: React.FC = () => {
                               size="small"
                               variant="outlined"
                               color="secondary"
-                              icon={<span>⭐</span>}
+                              icon={<Icon name="star" size={14} />}
                             />
                           </div>
                           
@@ -521,6 +518,10 @@ export const SkillTreePage: React.FC = () => {
                               size="small"
                               variant={isCompleted ? 'outline' : 'primary'}
                               style={{ minWidth: '80px' }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleLessonClick(lesson);
+                              }}
                             >
                               {isCompleted ? 'Review' : 'Start'}
                             </Button>
@@ -530,7 +531,7 @@ export const SkillTreePage: React.FC = () => {
                         {/* Completed Badge */}
                         {isCompleted && (
                           <StandaloneBadge
-                            icon="✅"
+                            icon={<Icon name="check" size={14} color={colors.textOnPrimary} />}
                             label="Complete"
                             color="success"
                             size="small"
@@ -588,7 +589,7 @@ export const SkillTreePage: React.FC = () => {
               margin: '0 auto',
             }}
           >
-            Every lesson brings you closer to finding your unique voice. Keep singing, keep growing! 🌟
+            Every lesson brings you closer to finding your unique voice. Keep singing, keep growing!
           </p>
         </Card>
       </Container>

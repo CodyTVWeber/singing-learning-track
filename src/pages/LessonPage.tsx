@@ -9,7 +9,7 @@ import { Container } from '../components/Container';
 import { EchoLesson } from '../components/EchoLesson';
 import { ReferenceAudio } from '../components/ReferenceAudio';
 import { PitchPractice } from '../components/PitchPractice';
-import { Icon } from '../components/Icon';
+import { Icon, IconButton } from '../components/Icon';
 import { Header } from '../components/Header';
 import { Progress } from '../components/Progress';
 import { colors, fontSize, fontWeight, spacing, gradients, shadows, transitions, animations, borderRadius } from '../theme/theme';
@@ -112,9 +112,12 @@ export const LessonPage: React.FC = () => {
                 animation: `float ${4 + i}s ease-in-out infinite`,
                 animationDelay: `${i * 0.5}s`,
                 opacity: 0.3,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
-              {['🎵', '🎶', '🎤', '⭐', '🎯', '✨'][i]}
+              <Icon name={i % 2 === 0 ? 'play' : 'star'} />
             </div>
           ))}
         </div>
@@ -215,7 +218,7 @@ export const LessonPage: React.FC = () => {
               size="large" 
               fullWidth
               variant="gradient"
-              icon={<span>🎯</span>}
+              icon={<Icon name="forward" />}
               iconPosition="right"
             >
               Continue Your Journey
@@ -242,14 +245,11 @@ export const LessonPage: React.FC = () => {
           variant="gradient"
           showKookaburra
           leftAction={
-            <Button
-              variant="ghost"
+            <IconButton
+              icon="back"
               onClick={() => navigate('/skill-tree')}
-              icon={<Icon name="arrow_back" />}
-              style={{ color: colors.text }}
-            >
-              Back
-            </Button>
+              ariaLabel="Back to skill tree"
+            />
           }
         />
         <Container style={{ paddingTop: spacing.xl, paddingBottom: spacing.xl }}>
@@ -265,8 +265,20 @@ export const LessonPage: React.FC = () => {
 
   // Regular lesson
   const regularContent = content as LessonContent;
-  const currentStepContent = regularContent.steps[currentStep];
+  const currentStepContent = (regularContent as any).steps[currentStep] as any;
   const progress = ((currentStep + 1) / regularContent.steps.length) * 100;
+
+  const isStringStep = typeof currentStepContent === 'string';
+  const stepTitle = isStringStep
+    ? `Step ${currentStep + 1}`
+    : (currentStepContent?.title || `Step ${currentStep + 1}`);
+  const stepBody: React.ReactNode = isStringStep
+    ? (currentStepContent as string)
+    : (currentStepContent?.content || '');
+  const stepAudioUrl: string | undefined = !isStringStep ? currentStepContent?.audioUrl : undefined;
+  const stepPracticeType: string | undefined = !isStringStep ? currentStepContent?.practiceType : undefined;
+  const stepTips: string[] | undefined = !isStringStep ? currentStepContent?.tips : undefined;
+  const stepIconName = currentStep === 0 ? 'info' : currentStep === 1 ? 'play' : 'star';
 
   return (
     <div
@@ -281,14 +293,11 @@ export const LessonPage: React.FC = () => {
         variant="gradient"
         showKookaburra
         leftAction={
-          <Button
-            variant="ghost"
+          <IconButton
+            icon="back"
             onClick={() => navigate('/skill-tree')}
-            icon={<Icon name="arrow_back" />}
-            style={{ color: colors.textOnPrimary }}
-          >
-            Back
-          </Button>
+            ariaLabel="Back to skill tree"
+          />
         }
       />
 
@@ -338,9 +347,7 @@ export const LessonPage: React.FC = () => {
                 boxShadow: shadows.md,
               }}
             >
-              <span style={{ fontSize: '24px' }}>
-                {currentStep === 0 ? '📚' : currentStep === 1 ? '🎵' : '🎤'}
-              </span>
+              <Icon name={stepIconName} size={24} color={colors.textOnPrimary} />
             </div>
             <h2
               style={{
@@ -350,7 +357,7 @@ export const LessonPage: React.FC = () => {
                 margin: 0,
               }}
             >
-              {currentStepContent.title}
+              {stepTitle}
             </h2>
           </div>
 
@@ -363,11 +370,11 @@ export const LessonPage: React.FC = () => {
               marginBottom: spacing.xl,
             }}
           >
-            {currentStepContent.content}
+            {stepBody}
           </div>
 
           {/* Additional Components */}
-          {currentStepContent.audioUrl && (
+          {stepAudioUrl && (
             <div style={{ marginBottom: spacing.xl }}>
               <Card variant="glass" style={{ padding: spacing.lg }}>
                 <h3
@@ -378,14 +385,17 @@ export const LessonPage: React.FC = () => {
                     color: colors.text,
                   }}
                 >
-                  🎧 Listen and Learn
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: spacing.xs }}>
+                    <Icon name="play" size={18} />
+                    Listen and Learn
+                  </span>
                 </h3>
-                <ReferenceAudio audioUrl={currentStepContent.audioUrl} />
+                <ReferenceAudio audioUrl={stepAudioUrl} />
               </Card>
             </div>
           )}
 
-          {currentStepContent.practiceType === 'pitch' && (
+          {stepPracticeType === 'pitch' && (
             <div style={{ marginBottom: spacing.xl }}>
               <Card variant="glass" style={{ padding: spacing.lg }}>
                 <h3
@@ -396,10 +406,13 @@ export const LessonPage: React.FC = () => {
                     color: colors.text,
                   }}
                 >
-                  🎯 Pitch Practice
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: spacing.xs }}>
+                    <Icon name="star" size={18} />
+                    Pitch Practice
+                  </span>
                 </h3>
                 <PitchPractice
-                  targetNote={currentStepContent.targetNote || 'C4'}
+                  targetNote={(!isStringStep && currentStepContent?.targetNote) || 'C4'}
                   onComplete={() => {}}
                 />
               </Card>
@@ -407,7 +420,7 @@ export const LessonPage: React.FC = () => {
           )}
 
           {/* Tips Section */}
-          {currentStepContent.tips && currentStepContent.tips.length > 0 && (
+          {Array.isArray(stepTips) && stepTips.length > 0 && (
             <Card 
               variant="gradient" 
               style={{ 
@@ -426,7 +439,7 @@ export const LessonPage: React.FC = () => {
                   gap: spacing.sm,
                 }}
               >
-                <span>💡</span> Kooka's Tips
+                <Icon name="info" size={18} /> Kooka's Tips
               </h3>
               <ul
                 style={{
@@ -435,7 +448,7 @@ export const LessonPage: React.FC = () => {
                   color: colors.text,
                 }}
               >
-                {currentStepContent.tips.map((tip, index) => (
+                {stepTips.map((tip, index) => (
                   <li
                     key={index}
                     style={{
@@ -465,7 +478,7 @@ export const LessonPage: React.FC = () => {
             disabled={currentStep === 0}
             variant="outline"
             size="large"
-            icon={<Icon name="arrow_back" />}
+            icon={<Icon name="back" />}
           >
             Previous
           </Button>
@@ -474,7 +487,7 @@ export const LessonPage: React.FC = () => {
             onClick={handleNext}
             size="large"
             variant="gradient"
-            icon={<Icon name={currentStep === regularContent.steps.length - 1 ? 'done' : 'arrow_forward'} />}
+            icon={<Icon name={currentStep === regularContent.steps.length - 1 ? 'check' : 'forward'} />}
             iconPosition="right"
           >
             {currentStep === regularContent.steps.length - 1 ? 'Complete Lesson' : 'Next Step'}

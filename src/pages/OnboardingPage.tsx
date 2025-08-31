@@ -143,10 +143,7 @@ export const OnboardingPage: React.FC = () => {
             style={{
               fontSize: fontSize.xxxl,
               fontWeight: fontWeight.extrabold,
-              background: gradients.primary,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
+              color: colors.text,
               marginBottom: spacing.sm,
               letterSpacing: '-0.02em',
             }}
@@ -228,7 +225,7 @@ export const OnboardingPage: React.FC = () => {
                   size="large"
                   variant="gradient"
                   disabled={!name.trim()}
-                  icon={<span>🎯</span>}
+                  icon={<Icon name="forward" />}
                   iconPosition="right"
                 >
                   Let's Go!
@@ -246,7 +243,7 @@ export const OnboardingPage: React.FC = () => {
                   textAlign: 'center',
                 }}
               >
-                Hi {name}! 👋
+                Hi {name}!
               </h2>
               <p
                 style={{
@@ -289,7 +286,7 @@ export const OnboardingPage: React.FC = () => {
 
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md }}>
-                      <span style={{ fontSize: '2rem' }}>{option.icon}</span>
+                      <Icon name={option.value === 'kid' ? 'starOutline' : option.value === 'teen' ? 'star' : 'play'} size={28} color={option.color} />
                       <div style={{ textAlign: 'left' }}>
                         <div style={{ color: colors.text }}>{option.label}</div>
                         <div style={{ 
@@ -327,7 +324,7 @@ export const OnboardingPage: React.FC = () => {
                 size="large"
                 variant="gradient"
                 style={{ marginTop: spacing.xl }}
-                icon={<span>🚀</span>}
+                icon={<Icon name="play" />}
                 iconPosition="right"
               >
                 Start My Journey!
@@ -349,7 +346,7 @@ export const OnboardingPage: React.FC = () => {
             zIndex: 1,
           }}
         >
-          🎤
+          <Icon name="microphone" size={24} color={colors.text} />
         </div>
         <div
           style={{
@@ -364,7 +361,7 @@ export const OnboardingPage: React.FC = () => {
             zIndex: 1,
           }}
         >
-          🎶
+          <Icon name="play" size={28} color={colors.text} />
         </div>
       </Container>
     </div>

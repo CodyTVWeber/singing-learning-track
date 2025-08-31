@@ -316,61 +316,6 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
         flexDirection: 'column',
       }}
     >
-      {/* Header */}
-      <div
-        style={{
-          backgroundColor: colors.primary,
-          color: 'white',
-          padding: spacing.lg,
-          display: 'flex',
-          alignItems: 'center',
-          gap: spacing.md,
-        }}
-      >
-        <button
-          onClick={handleBackToSkillTree}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'white',
-            cursor: 'pointer',
-            padding: spacing.sm,
-          }}
-        >
-          <Icon name="back" color="white" />
-        </button>
-        <h1
-          style={{
-            fontSize: fontSize.xl,
-            fontWeight: fontWeight.semibold,
-            flex: 1,
-          }}
-        >
-          Echo with Kooka
-        </h1>
-      </div>
-
-      {/* Progress Bar */}
-      <div
-        style={{
-          height: '8px',
-          backgroundColor: colors.featherLight,
-          position: 'relative',
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            height: '100%',
-            backgroundColor: colors.secondary,
-            width: `${getProgressPercentage()}%`,
-            transition: 'width 300ms ease-out',
-          }}
-        />
-      </div>
-
       {/* Content */}
       <div
         style={{
