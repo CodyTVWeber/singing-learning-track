@@ -4,20 +4,14 @@ import { useApp } from '../context/AppContext';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { colors, fontSize, fontWeight, spacing, gradients, shadows, animations } from '../theme/theme';
 import { analytics } from '../services/analytics';
+import { KookaImage } from '../components/KookaImage';
 
 export const SplashPage: React.FC = () => {
   const navigate = useNavigate();
   const { user, isLoading } = useApp();
   const [showContent, setShowContent] = useState(false);
   
-  // Randomize kooka image for variety
-  const kookaImages = [
-    '/img/kooka-burra-waiving.png',
-    '/img/kooka-burra-singing.png',
-    '/img/kooka-burra-dancing.png',
-    '/img/kooka-burra-flying.png',
-  ];
-  const [kookaImage] = useState(() => kookaImages[Math.floor(Math.random() * kookaImages.length)]);
+  // Kooka image handled by KookaImage component (randomized internally by default)
 
   useEffect(() => {
     // Track app open on initial mount
@@ -54,23 +48,6 @@ export const SplashPage: React.FC = () => {
       }}
     >
       {/* Background decoration */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '10%',
-          right: '5%',
-          width: '200px',
-          height: '200px',
-          backgroundImage: 'url(/img/kooka-burra-flying-blue-sky-clouds-bg.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderRadius: '50%',
-          filter: 'blur(2px)',
-          opacity: 0.15,
-          animation: animations.pulse,
-          pointerEvents: 'none',
-        }}
-      />
       <div
         style={{
           position: 'absolute',
@@ -112,23 +89,11 @@ export const SplashPage: React.FC = () => {
           zIndex: 1,
         }}
       >
-        <img
-          src={kookaImage}
-          alt="Kooka the Kookaburra greeting you"
-                      style={{
-              width: '400px',
-              marginBottom: spacing.xl,
-              filter: `drop-shadow(${shadows.xl})`,
-              transform: 'rotate(-3deg)',
-              transition: 'transform 0.3s ease',
-              cursor: 'pointer',
-            }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'rotate(0deg) scale(1.05)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'rotate(-3deg) scale(1)';
-          }}
+        <KookaImage
+          alt="Kooka the Kookaburra waving hello"
+          size={280}
+          hover={false}
+          style={{ marginBottom: spacing.xxxl, transform: 'rotate(-5deg)' }}
         />
         
         <h1

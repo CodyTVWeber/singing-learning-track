@@ -4,15 +4,14 @@ import { useApp } from '../context/AppContext';
 import { getAllUnits, isLessonUnlocked } from '../data/units';
 import { Card } from '../components/Card';
 import { Container } from '../components/Container';
-import { colors, fontSize, fontWeight, spacing, borderRadius, shadows, gradients, transitions, blurs } from '../theme/theme';
+import { colors, fontSize, fontWeight, spacing, shadows, gradients } from '../theme/theme';
 import type { Lesson } from '../models/lesson';
 import { analytics } from '../services/analytics';
-import { Icon } from '../components/Icon';
-import { Chip } from '../components/Chip';
-import { StandaloneBadge } from '../components/Badge';
 import { ToastContainer } from '../components/Toast';
 import { Progress } from '../components/Progress';
-import { Button } from '../components/Button';
+import { StatCard } from '../components/StatCard';
+import { UnitCard } from '../components/UnitCard';
+import { LessonCard } from '../components/LessonCard';
 
 export const SkillTreePage: React.FC = () => {
   const navigate = useNavigate();
@@ -244,54 +243,9 @@ export const SkillTreePage: React.FC = () => {
                 flexWrap: 'wrap',
               }}
             >
-              {/* Stats Cards */}
-              <Card
-                variant="glass"
-                style={{
-                  padding: spacing.lg,
-                  textAlign: 'center',
-                  minWidth: '120px',
-                  background: 'rgba(255, 255, 255, 0.8)',
-                  backdropFilter: `blur(${blurs.md})`,
-                  WebkitBackdropFilter: `blur(${blurs.md})`,
-                  border: '1px solid rgba(255, 255, 255, 0.5)',
-                }}
-              >
-                <div style={{ fontSize: fontSize.xs, opacity: 0.9, marginBottom: spacing.xs }}>
-                  Points Earned
-                </div>
-                <div style={{ fontSize: fontSize.xxl, fontWeight: fontWeight.bold }}>
-                  {user.totalPoints}
-                </div>
-                <div style={{ fontSize: fontSize.sm, opacity: 0.9 }}>
-                  <Icon name="star" size={18} />
-                </div>
-              </Card>
-              
-              {/* Streak Card */}
+              <StatCard label="Points Earned" value={user.totalPoints} accent="primary" />
               {typeof user.streakCount === 'number' && user.streakCount > 0 && (
-                <Card
-                  variant="glass"
-                  style={{
-                    padding: spacing.lg,
-                    textAlign: 'center',
-                    minWidth: '120px',
-                    background: 'rgba(255, 255, 255, 0.15)',
-                    backdropFilter: `blur(${blurs.md})`,
-                    WebkitBackdropFilter: `blur(${blurs.md})`,
-                    border: '1px solid rgba(255, 255, 255, 0.3)',
-                  }}
-                >
-                  <div style={{ fontSize: fontSize.xs, opacity: 0.9, marginBottom: spacing.xs }}>
-                    Daily Streak
-                  </div>
-                  <div style={{ fontSize: fontSize.xxl, fontWeight: fontWeight.bold }}>
-                    {user.streakCount}
-                  </div>
-                  <div style={{ fontSize: fontSize.sm }}>
-                    <Icon name="fire" size={18} />
-                  </div>
-                </Card>
+                <StatCard label="Daily Streak" value={user.streakCount} accent="success" />
               )}
             </div>
           </div>
@@ -340,141 +294,17 @@ export const SkillTreePage: React.FC = () => {
                 animation: `slideUp 0.5s ease-out ${unitIndex * 0.1}s forwards`,
               }}
             >
-              <Card
-                variant={isUnitComplete ? 'gradient' : 'elevated'}
-                decorative
-                style={{
-                  marginBottom: spacing.lg,
-                  cursor: 'pointer',
-                  transition: transitions.smooth,
-                  transform: isExpanded ? 'scale(1.02)' : 'scale(1)',
-                }}
-                onClick={() => setSelectedUnit(isExpanded ? null : unit.unit)}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    flexWrap: 'wrap',
-                    gap: spacing.md,
-                  }}
-                >
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md }}>
-                      <div
-                        style={{
-                          width: '80px',
-                          height: '80px',
-                          minWidth: '80px',
-                          minHeight: '80px',
-                          borderRadius: borderRadius.round,
-                          background: 'rgba(255, 255, 255, 0.9)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          boxShadow: shadows.lg,
-                          flexShrink: 0,
-                          overflow: 'hidden',
-                          position: 'relative',
-                          transform: 'scale(1)',
-                          transition: 'transform 0.3s ease',
-                          cursor: 'pointer',
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.transform = 'scale(1.1)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.transform = 'scale(1)';
-                        }}
-                      >
-                        <img
-                          src={getUnitKookaImage(unit.unit, isUnitComplete)}
-                          alt={`Kooka for Unit ${unit.unit}`}
-                          style={{
-                            width: '70px',
-                            objectFit: 'cover',
-                            borderRadius: borderRadius.lg,
-                          }}
-                        />
-                        {isUnitComplete && (
-                          <div
-                            style={{
-                              position: 'absolute',
-                              top: '-5px',
-                              right: '-5px',
-                              width: '24px',
-                              height: '24px',
-                              borderRadius: '50%',
-                              background: gradients.forest,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              boxShadow: shadows.md,
-                            }}
-                          >
-                            <Icon name="star" size={14} color={colors.textOnPrimary} />
-                          </div>
-                        )}
-                      </div>
-                      <div>
-                        <h3
-                          style={{
-                            fontSize: fontSize.xxl,
-                            fontWeight: fontWeight.bold,
-                            color: colors.text,
-                            marginBottom: spacing.xs,
-                          }}
-                        >
-                          Unit {unit.unit}: {unit.title}
-                        </h3>
-                        <p
-                          style={{
-                            fontSize: fontSize.md,
-                            color: colors.textLight,
-                            margin: 0,
-                          }}
-                        >
-                          {unit.description}
-                        </p>
-                      </div>
-                    </div>
-                    
-                    {/* Unit Progress */}
-                    {unitProg && (
-                      <div style={{ marginTop: spacing.md, maxWidth: '400px' }}>
-                        <Progress
-                          value={unitProg.done}
-                          max={unitProg.total}
-                          label={`${unitProg.done} of ${unitProg.total} lessons completed`}
-                          showValue
-                          color={isUnitComplete ? 'success' : 'primary'}
-                          size="small"
-                        />
-                      </div>
-                    )}
-                  </div>
-                  
-                  <Icon
-                    name={isExpanded ? 'up' : 'down'}
-                    size={32}
-                    color={colors.textLight}
-                  />
-                </div>
-
-                {isUnitComplete && (
-                  <StandaloneBadge
-                    icon={<Icon name="star" size={18} color={colors.textOnPrimary} />}
-                    label="Unit Complete!"
-                    color="success"
-                    style={{
-                      position: 'absolute',
-                      top: '-10px',
-                      right: '20px',
-                    }}
-                  />
-                )}
-              </Card>
+              <UnitCard
+                unitNumber={unit.unit}
+                title={unit.title}
+                description={unit.description}
+                imageSrc={getUnitKookaImage(unit.unit, isUnitComplete)}
+                progressDone={unitProg ? unitProg.done : 0}
+                progressTotal={unitProg ? unitProg.total : 0}
+                isExpanded={isExpanded}
+                isComplete={Boolean(isUnitComplete)}
+                onToggle={() => setSelectedUnit(isExpanded ? null : unit.unit)}
+              />
 
               {/* Lessons Grid */}
               <div
@@ -508,133 +338,28 @@ export const SkillTreePage: React.FC = () => {
                   const status = getLessonStatus(lesson);
                   const isLocked = status === 'locked';
                   const isCompleted = status === 'completed';
-                  
+
+                  const duration = durationMinutes ?? (lesson.type === 'song' ? 5 : lesson.type === 'practice' ? 4 : 3);
+                  const pts = points ?? lesson.level * 5;
+
                   return (
-                    <Card
+                    <div
                       key={lesson.id}
-                      variant={isCompleted ? 'gradient' : isLocked ? 'default' : 'elevated'}
-                      onClick={() => handleLessonClick(lesson)}
                       style={{
-                        opacity: isLocked ? 0.85 : 1,
                         transform: isExpanded ? 'translateY(0)' : 'translateY(-20px)',
                         transition: `all 0.3s ease-out ${lessonIndex * 0.05}s`,
-                        backgroundColor: isLocked ? colors.gray100 : undefined,
-                        border: isLocked ? `2px solid ${colors.gray300}` : undefined,
                       }}
                     >
-                      <div style={{ position: 'relative' }}>
-                        {/* Lesson Icon */}
-                        <div
-                          style={{
-                            width: '50px',
-                            height: '50px',
-                            minWidth: '50px',
-                            minHeight: '50px',
-                            borderRadius: borderRadius.round,
-                            background: isCompleted 
-                              ? gradients.forest 
-                              : isLocked 
-                                ? colors.gray200 
-                                : gradients.sunset,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginBottom: spacing.md,
-                            boxShadow: isLocked ? 'none' : shadows.md,
-                            border: isLocked ? `2px solid ${colors.gray300}` : 'none',
-                            flexShrink: 0,
-                          }}
-                        >
-                          {isLocked ? (
-                            <Icon name="error" size={24} color={colors.gray600} />
-                          ) : isCompleted ? (
-                            <Icon name="check" size={24} color={colors.text} />
-                          ) : (
-                            <Icon name="play" size={24} color={colors.textOnPrimary} />
-                          )}
-                        </div>
-
-                        {/* Lesson Content */}
-                        <h4
-                          style={{
-                            fontSize: fontSize.lg,
-                            fontWeight: fontWeight.semibold,
-                            color: colors.text,
-                            marginBottom: spacing.sm,
-                          }}
-                        >
-                          {lesson.title}
-                        </h4>
-                        
-                        <p
-                          style={{
-                            fontSize: fontSize.sm,
-                            color: colors.textLight,
-                            marginBottom: spacing.md,
-                            minHeight: '40px',
-                          }}
-                        >
-                          {shortDescription}
-                        </p>
-
-                        {/* Lesson Details */}
-                        <div
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            gap: spacing.sm,
-                            flexWrap: 'wrap',
-                          }}
-                        >
-                          <div style={{ display: 'flex', gap: spacing.sm }}>
-                            {/* Lesson duration & points with sensible fallbacks to avoid undefined */}
-                            <Chip
-                              label={`${durationMinutes ?? (lesson.type === 'song' ? 5 : lesson.type === 'practice' ? 4 : 3)} min`}
-                              size="small"
-                              variant="outlined"
-                              icon={<Icon name="schedule" size={14} />}
-                            />
-                            <Chip
-                              label={`${points ?? lesson.level * 5} pts`}
-                              size="small"
-                              variant="outlined"
-                              color="secondary"
-                              icon={<Icon name="star" size={14} />}
-                            />
-                          </div>
-                          
-                          {!isLocked && (
-                            <Button
-                              size="small"
-                              variant={isCompleted ? 'outline' : 'primary'}
-                              style={{ minWidth: '80px' }}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleLessonClick(lesson);
-                              }}
-                            >
-                              {isCompleted ? 'Review' : 'Start'}
-                            </Button>
-                          )}
-                        </div>
-
-                        {/* Completed Badge */}
-                        {isCompleted && (
-                          <StandaloneBadge
-                            icon={<Icon name="check" size={14} color={colors.textOnPrimary} />}
-                            label="Complete"
-                            color="success"
-                            size="small"
-                            style={{
-                              position: 'absolute',
-                              top: '-8px',
-                              right: '-8px',
-                            }}
-                          />
-                        )}
-                      </div>
-                    </Card>
+                      <LessonCard
+                        title={lesson.title}
+                        description={shortDescription}
+                        status={status as any}
+                        durationMinutes={duration}
+                        points={pts}
+                        onClick={() => handleLessonClick(lesson)}
+                        onStart={() => handleLessonClick(lesson)}
+                      />
+                    </div>
                   );
                 })}
               </div>
