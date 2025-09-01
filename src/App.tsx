@@ -6,6 +6,7 @@ import { OnboardingPage } from './pages/OnboardingPage';
 import { SkillTreePage } from './pages/SkillTreePage';
 import { LessonPage } from './pages/LessonPage';
 import { ProfileSelectPage } from './pages/ProfileSelectPage';
+import { SkillAssessmentPage } from './pages/SkillAssessmentPage';
 import { DevNavigation } from './components/DevNavigation';
 import './theme/globalStyles.css';
 import { InstallPrompt } from './components/InstallPrompt';
@@ -24,6 +25,7 @@ function App() {
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/skill-tree" element={<AuthenticatedLayout><SkillTreePage /></AuthenticatedLayout>} />
           <Route path="/lesson/:lessonId" element={<AuthenticatedLayout><LessonPage /></AuthenticatedLayout>} />
+          <Route path="/skill-assessment" element={<AuthenticatedLayout><SkillAssessmentPage /></AuthenticatedLayout>} />
           <Route path="/showcase" element={<ComponentShowcase />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
