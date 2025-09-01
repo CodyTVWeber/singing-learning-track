@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { Icon } from './Icon';
-import { colors, shadows, spacing, gradients, fontSize, borderRadius } from '../theme/theme';
+import { colors, shadows, spacing, gradients } from '../theme/theme';
 
 interface FloatingLogoutButtonProps {
   position?: 'top-right' | 'bottom-right' | 'top-left' | 'bottom-left';
@@ -37,21 +37,6 @@ export const FloatingLogoutButton: React.FC<FloatingLogoutButtonProps> = ({ posi
     border: 'none',
   };
 
-  const labelStyles: React.CSSProperties = {
-    position: 'absolute',
-    bottom: '70px',
-    right: isLeft ? undefined : '0',
-    left: isLeft ? '0' : undefined,
-    transform: isLeft ? 'translateX(0)' : 'translateX(0)',
-    backgroundColor: colors.text,
-    color: 'white',
-    padding: `${spacing.xs} ${spacing.sm}`,
-    borderRadius: borderRadius.sm,
-    fontSize: fontSize.sm,
-    whiteSpace: 'nowrap',
-    boxShadow: shadows.md,
-  };
-
   const handleClick = async () => {
     await logout();
     navigate('/');
@@ -59,7 +44,6 @@ export const FloatingLogoutButton: React.FC<FloatingLogoutButtonProps> = ({ posi
 
   return (
     <div style={containerStyles}>
-      <div style={labelStyles}>Logout</div>
       <button onClick={handleClick} aria-label="Log out" style={buttonStyles}>
         <Icon name="logout" size={22} color={colors.textOnSecondary} />
       </button>
