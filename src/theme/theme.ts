@@ -61,6 +61,7 @@ export const colors = {
 } as const;
 
 export const spacing = {
+  xxxs: '1px',
   xxs: '2px',
   xs: '4px',
   sm: '8px',

@@ -264,13 +264,35 @@ img {
   .hide-mobile {
     display: none !important;
   }
-  
+
   .mobile-text-center {
     text-align: center !important;
   }
-  
+
   .mobile-full-width {
     width: 100% !important;
+  }
+
+  .progress-row-mobile {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .progress-row-mobile > div:first-child {
+    max-width: 100% !important;
+    margin-bottom: 16px !important;
+  }
+
+  .progress-row-mobile > div:nth-child(2),
+  .progress-row-mobile > div:nth-child(3) {
+    min-width: auto !important;
+    align-self: center !important;
+    margin-top: 0 !important;
+    margin-bottom: 16px !important;
+  }
+
+  .progress-row-mobile > div:last-child {
+    margin-bottom: 0 !important;
   }
 }
 

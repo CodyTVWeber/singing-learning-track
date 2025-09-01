@@ -5,6 +5,7 @@ interface ProgressProps {
   value: number;
   max?: number;
   label?: string;
+  title?: string;
   showValue?: boolean;
   size?: 'small' | 'medium' | 'large';
   variant?: 'linear' | 'circular';
@@ -21,6 +22,7 @@ export const Progress: React.FC<ProgressProps> = ({
   value,
   max = 100,
   label,
+  title,
   showValue = false,
   size = 'medium',
   variant = 'linear',
@@ -233,6 +235,17 @@ export const Progress: React.FC<ProgressProps> = ({
 
   return (
     <div className={className} style={{ ...containerStyles, ...style }}>
+      {title && (
+        <div style={{
+          fontSize: fontSize.xl,
+          fontWeight: fontWeight.semibold,
+          color: colors.text,
+          opacity: 0.8,
+          textAlign: 'left'
+        }}>
+          {title}
+        </div>
+      )}
       {(label || showValue) && (
         <div style={labelContainerStyles}>
           {label && <span style={labelStyles}>{label}</span>}
