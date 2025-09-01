@@ -46,19 +46,45 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       // Prefer active profile if present
       const activeProfile = await getActiveProfile();
       if (activeProfile) {
+        // Load progress data first to calculate points and streak
+        const userProgress = await getProgress(activeProfile.id);
+        setProgress(userProgress);
+
+        // Calculate total points from completed lessons with scores
+        const totalPoints = userProgress
+          .filter(p => p.completed)
+          .reduce((sum, p) => sum + p.score, 0);
+
+        // Calculate current streak (simplified - could be enhanced)
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        const hasCompletedToday = userProgress.some(p =>
+          p.completed &&
+          p.completedDate.toDateString() === today.toDateString()
+        );
+
+        const hasCompletedYesterday = userProgress.some(p =>
+          p.completed &&
+          p.completedDate.toDateString() === yesterday.toDateString()
+        );
+
+        // Simple streak calculation - enhance as needed
+        const streakCount = hasCompletedToday && hasCompletedYesterday ? 2 :
+                           hasCompletedToday ? 1 : 0;
+
         const syntheticUser: UserProfile = {
           id: activeProfile.id,
           name: activeProfile.name,
           ageGroup: activeProfile.ageGroup,
           currentLevel: 1,
-          totalPoints: 0,
-          streakCount: 0,
-          lastStreakDate: null,
+          totalPoints: totalPoints,
+          streakCount: streakCount,
+          lastStreakDate: hasCompletedToday ? today.toISOString().split('T')[0] : null,
         };
         setUserState(syntheticUser);
         setProfileCompletedLessons(activeProfile.completedLessons ?? []);
-        const userProgress = await getProgress(activeProfile.id);
-        setProgress(userProgress);
       } else {
         const loadedUser = await getUser();
         if (loadedUser) {
