@@ -5,18 +5,20 @@ import { Icon } from './Icon';
 import { colors, shadows, spacing, gradients } from '../theme/theme';
 
 interface FloatingLogoutButtonProps {
-  position?: 'top-right' | 'bottom-right';
+  position?: 'top-right' | 'bottom-right' | 'top-left' | 'bottom-left';
 }
 
-export const FloatingLogoutButton: React.FC<FloatingLogoutButtonProps> = ({ position = 'bottom-right' }) => {
+export const FloatingLogoutButton: React.FC<FloatingLogoutButtonProps> = ({ position = 'top-left' }) => {
   const navigate = useNavigate();
   const { logout } = useApp();
 
-  const isTop = position === 'top-right';
+  const isTop = position === 'top-right' || position === 'top-left';
+  const isLeft = position === 'top-left' || position === 'bottom-left';
 
   const buttonStyles: React.CSSProperties = {
     position: 'fixed',
-    right: spacing.xl,
+    right: isLeft ? undefined : spacing.xl,
+    left: isLeft ? spacing.xl : undefined,
     bottom: isTop ? undefined : spacing.xl,
     top: isTop ? spacing.xl : undefined,
     width: '56px',
@@ -29,7 +31,7 @@ export const FloatingLogoutButton: React.FC<FloatingLogoutButtonProps> = ({ posi
     boxShadow: shadows.xl,
     cursor: 'pointer',
     border: 'none',
-    zIndex: 2000,
+    zIndex: 10000,
   };
 
   const handleClick = async () => {
