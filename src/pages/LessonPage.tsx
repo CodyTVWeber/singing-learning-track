@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { getLessonById } from '../data/units';
 import type { LessonContent, EchoLessonContent, LessonStep } from '../models/lesson';
+import { findLessonDescriptorByIdFromLegacy } from '../units/registryFromLegacy';
 import { Button } from '../components/Button';
 import { Card } from '../components/Card';
 import { Container } from '../components/Container';
@@ -41,18 +42,20 @@ export const LessonPage: React.FC = () => {
 
   const typedSteps: LessonStep[] | null = useMemo(() => {
     if (!lesson) return null;
+    // Prefer new typed steps on the lesson if present
     if (Array.isArray((lesson as any).steps) && (lesson as any).steps.length > 0) {
       return (lesson as any).steps as LessonStep[];
     }
+    // Fallback: derive steps from the legacy JSON using a registry composed from sampleLessons
+    const legacyDescriptor = findLessonDescriptorByIdFromLegacy(lesson.id);
+    if (legacyDescriptor && Array.isArray(legacyDescriptor.steps)) {
+      return legacyDescriptor.steps as LessonStep[];
+    }
+    // Final fallback: minimal transform from raw lesson.content
     if (!isEchoLesson && legacyContent && Array.isArray((legacyContent as any).steps)) {
       const lc = legacyContent as LessonContent;
-      const steps: LessonStep[] = [];
-      for (const s of lc.steps) {
-        steps.push({ type: 'text', content: String(s) } as any);
-      }
-      if ((legacyContent as any).audio) {
-        steps.push({ type: 'audio', audioId: (legacyContent as any).audio } as any);
-      }
+      const steps: LessonStep[] = lc.steps.map((s) => ({ type: 'text', content: String(s) } as LessonStep));
+      if ((legacyContent as any).audio) steps.push({ type: 'audio', audioId: (legacyContent as any).audio } as LessonStep);
       return steps;
     }
     return null;
