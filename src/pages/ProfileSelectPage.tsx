@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
-import { getProfiles, setActiveProfileId, saveProfile } from '../storage/profilesStore';
+import { getProfiles, setActiveProfileId } from '../storage/profilesStore';
 import type { Profile } from '../models/profile';
 import { Container } from '../components/Container';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
-import { colors, fontSize, fontWeight, spacing, gradients, shadows, borderRadius } from '../theme/theme';
+import { colors, fontSize, fontWeight, spacing, gradients, shadows, borderRadius, animations } from '../theme/theme';
+import { analytics } from '../services/analytics';
 
 export const ProfileSelectPage: React.FC = () => {
   const navigate = useNavigate();
   const [profiles, setProfiles] = useState<Profile[]>([]);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [ageGroup, setAgeGroup] = useState<'kid' | 'teen' | 'adult'>('kid');
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    analytics.trackEvent('login_screen_shown');
     (async () => {
       const all = await getProfiles();
       setProfiles(all);
@@ -28,27 +26,7 @@ export const ProfileSelectPage: React.FC = () => {
     navigate('/skill-tree');
   };
 
-  const handleCreate = async () => {
-    const trimmed = name.trim();
-    const trimmedEmail = email.trim().toLowerCase();
-    if (!trimmed || !trimmedEmail) {
-      setError('Please enter a name and email');
-      return;
-    }
-    const profile: Profile = {
-      id: uuidv4(),
-      name: trimmed,
-      ageGroup,
-      email: trimmedEmail,
-      completedLessons: [],
-    };
-    try {
-      await saveProfile(profile);
-    } catch (e: any) {
-      setError(e?.message || 'Could not create profile');
-      return;
-    }
-    // Redirect to onboarding to complete setup flow instead of direct login
+  const handleCreate = () => {
     navigate('/onboarding');
   };
 
@@ -57,25 +35,114 @@ export const ProfileSelectPage: React.FC = () => {
       style={{
         minHeight: '100vh',
         background: gradients.soft,
-        padding: spacing.lg,
+        position: 'relative',
+        overflow: 'hidden',
+        paddingBottom: spacing.xxl,
       }}
     >
-      <Container maxWidth="640px">
-        <h1
-          style={{
-            fontSize: fontSize.xxxl,
-            fontWeight: fontWeight.extrabold,
-            color: colors.text,
-            textAlign: 'center',
-            marginBottom: spacing.xl,
-          }}
-        >
-          Choose Your Profile
-        </h1>
+      {/* Background decorations from splash */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '10%',
+          right: '5%',
+          width: '200px',
+          height: '200px',
+          backgroundImage: 'url(/img/kooka-burra-flying-blue-sky-clouds-bg.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          borderRadius: '50%',
+          filter: 'blur(2px)',
+          opacity: 0.15,
+          animation: animations.pulse,
+          pointerEvents: 'none',
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          top: '-20%',
+          right: '-10%',
+          width: '400px',
+          height: '400px',
+          background: gradients.wing,
+          borderRadius: '50%',
+          filter: 'blur(100px)',
+          opacity: 0.3,
+          animation: animations.pulse,
+          pointerEvents: 'none',
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '-20%',
+          left: '-10%',
+          width: '400px',
+          height: '400px',
+          background: gradients.feather,
+          borderRadius: '50%',
+          filter: 'blur(100px)',
+          opacity: 0.3,
+          animation: animations.pulse,
+          animationDelay: '1s',
+          pointerEvents: 'none',
+        }}
+      />
+
+      <Container>
+        <div style={{ textAlign: 'center', marginTop: spacing.xl }}>
+          <img
+            src="/img/kooka-burra-waiving.png"
+            alt="Kooka greeting you"
+            style={{
+              width: '280px',
+              margin: '0 auto',
+              filter: `drop-shadow(${shadows.xl})`,
+            }}
+          />
+          <h1
+            style={{
+              fontSize: fontSize.huge,
+              fontWeight: fontWeight.extrabold,
+              background: gradients.primary,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              marginBottom: spacing.sm,
+              textAlign: 'center',
+              letterSpacing: '-0.03em',
+            }}
+          >
+            Kooka Sing
+          </h1>
+          <p
+            style={{
+              fontSize: fontSize.lg,
+              color: colors.textLight,
+              marginBottom: spacing.xl,
+              textAlign: 'center',
+              maxWidth: '500px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+            }}
+          >
+            Welcome! Choose your account to continue, or create a new one to begin your singing journey.
+          </p>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: spacing.md, marginBottom: spacing.xl }}>
+            <Button variant="gradient" onClick={handleCreate}>Create New Account</Button>
+          </div>
+        </div>
 
         {profiles.length > 0 && (
           <Card variant="elevated" style={{ marginBottom: spacing.xl }}>
-            <div style={{ display: 'grid', gap: spacing.md }}>
+            <div style={{
+              display: 'grid',
+              gap: spacing.md,
+              maxHeight: '50vh',
+              overflowY: 'auto',
+              paddingRight: spacing.sm,
+            }}>
               {profiles.map((p) => (
                 <button
                   key={p.id}
@@ -103,53 +170,6 @@ export const ProfileSelectPage: React.FC = () => {
             </div>
           </Card>
         )}
-
-        <Card variant="glass">
-          <h2 style={{ fontSize: fontSize.xl, marginBottom: spacing.md }}>Create New Profile</h2>
-          <div style={{ display: 'grid', gap: spacing.md }}>
-            {error && (
-              <div style={{ color: colors.error, fontSize: fontSize.sm }}>{error}</div>
-            )}
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter name"
-              style={{
-                padding: spacing.md,
-                borderRadius: borderRadius.md,
-                border: '1px solid rgba(0,0,0,0.1)',
-              }}
-            />
-            <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter email"
-              inputMode="email"
-              style={{
-                padding: spacing.md,
-                borderRadius: borderRadius.md,
-                border: '1px solid rgba(0,0,0,0.1)',
-              }}
-            />
-            <div style={{ display: 'flex', gap: spacing.sm }}>
-              {(['kid', 'teen', 'adult'] as const).map((group) => (
-                <label key={group} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <input
-                    type="radio"
-                    name="ageGroup"
-                    value={group}
-                    checked={ageGroup === group}
-                    onChange={() => setAgeGroup(group)}
-                  />
-                  <span style={{ textTransform: 'capitalize' }}>{group}</span>
-                </label>
-              ))}
-            </div>
-            <Button onClick={handleCreate} disabled={!name.trim() || !email.trim()}>
-              Create and Continue
-            </Button>
-          </div>
-        </Card>
       </Container>
     </div>
   );
