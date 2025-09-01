@@ -1,18 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { getLessonById } from '../data/units';
-import type { LessonContent, EchoLessonContent } from '../models/lesson';
+import type { LessonContent, EchoLessonContent, LessonStep } from '../models/lesson';
+import { findLessonDescriptorByIdFromLegacy } from '../units/registryFromLegacy';
 import { Button } from '../components/Button';
 import { Card } from '../components/Card';
 import { Container } from '../components/Container';
 import { EchoLesson } from '../components/EchoLesson';
-import { ReferenceAudio } from '../components/ReferenceAudio';
-import { PitchPractice } from '../components/PitchPractice';
+import { StepText } from '../components/lessonSteps/StepText';
+import { StepAudio } from '../components/lessonSteps/StepAudio';
+import { StepTips } from '../components/lessonSteps/StepTips';
+import { StepPitchPractice } from '../components/lessonSteps/StepPitchPractice';
+import { StepEcho } from '../components/lessonSteps/StepEcho';
+import { StepRecording } from '../components/lessonSteps/StepRecording';
+import { StepClapBeat } from '../components/lessonSteps/StepClapBeat';
 import { Icon, IconButton } from '../components/Icon';
 import { Header } from '../components/Header';
 import { Progress } from '../components/Progress';
-import { colors, fontSize, fontWeight, spacing, gradients, shadows, transitions, borderRadius } from '../theme/theme';
+import { colors, fontSize, fontWeight, spacing, gradients, shadows, transitions } from '../theme/theme';
 
 export const LessonPage: React.FC = () => {
   const { lessonId } = useParams<{ lessonId: string }>();
@@ -24,8 +30,36 @@ export const LessonPage: React.FC = () => {
   const [completionScore, setCompletionScore] = useState(0);
   
   const lesson = lessonId ? getLessonById(lessonId) : null;
-  const content = lesson ? JSON.parse(lesson.content) : null;
   const isEchoLesson = lesson?.type === 'echo';
+  const legacyContent = useMemo(() => {
+    if (!lesson || !lesson.content) return null;
+    try {
+      return JSON.parse(lesson.content);
+    } catch {
+      return null;
+    }
+  }, [lesson]);
+
+  const typedSteps: LessonStep[] | null = useMemo(() => {
+    if (!lesson) return null;
+    // Prefer new typed steps on the lesson if present
+    if (Array.isArray((lesson as any).steps) && (lesson as any).steps.length > 0) {
+      return (lesson as any).steps as LessonStep[];
+    }
+    // Fallback: derive steps from the legacy JSON using a registry composed from sampleLessons
+    const legacyDescriptor = findLessonDescriptorByIdFromLegacy(lesson.id);
+    if (legacyDescriptor && Array.isArray(legacyDescriptor.steps)) {
+      return legacyDescriptor.steps as LessonStep[];
+    }
+    // Final fallback: minimal transform from raw lesson.content
+    if (!isEchoLesson && legacyContent && Array.isArray((legacyContent as any).steps)) {
+      const lc = legacyContent as LessonContent;
+      const steps: LessonStep[] = lc.steps.map((s) => ({ type: 'text', content: String(s) } as LessonStep));
+      if ((legacyContent as any).audio) steps.push({ type: 'audio', audioId: (legacyContent as any).audio } as LessonStep);
+      return steps;
+    }
+    return null;
+  }, [lesson, legacyContent, isEchoLesson]);
 
   useEffect(() => {
     if (!lesson || !user) {
@@ -35,12 +69,10 @@ export const LessonPage: React.FC = () => {
     }
   }, [lesson, user, navigate]);
 
-  if (!lesson || !content || !user) {
-    return null;
-  }
+  if (!lesson || !user) return null;
 
   const handleNext = () => {
-    if (currentStep < regularContent.steps.length - 1) {
+    if (typedSteps && currentStep < (typedSteps.length - 1)) {
       setShowContent(false);
       setTimeout(() => {
         setCurrentStep(currentStep + 1);
@@ -237,9 +269,9 @@ export const LessonPage: React.FC = () => {
     );
   }
 
-  // Handle Echo Lessons differently
-  if (isEchoLesson && content) {
-    const echoContent = content as EchoLessonContent;
+  // Handle legacy Echo Lessons differently when no typed steps are provided
+  if (!typedSteps && isEchoLesson && legacyContent) {
+    const echoContent = legacyContent as EchoLessonContent;
     return (
       <div
         style={{
@@ -271,22 +303,12 @@ export const LessonPage: React.FC = () => {
     );
   }
 
-  // Regular lesson
-  const regularContent = content as LessonContent;
-  const currentStepContent = (regularContent as any).steps[currentStep] as any;
-  const progress = ((currentStep + 1) / regularContent.steps.length) * 100;
-
-  const isStringStep = typeof currentStepContent === 'string';
-  const stepTitle = isStringStep
-    ? `Step ${currentStep + 1}`
-    : (currentStepContent?.title || `Step ${currentStep + 1}`);
-  const stepBody: React.ReactNode = isStringStep
-    ? (currentStepContent as string)
-    : (currentStepContent?.content || '');
-  const stepAudioUrl: string | undefined = !isStringStep ? currentStepContent?.audioUrl : undefined;
-  const stepPracticeType: string | undefined = !isStringStep ? currentStepContent?.practiceType : undefined;
-  const stepTips: string[] | undefined = !isStringStep ? currentStepContent?.tips : undefined;
-  const stepIconName = currentStep === 0 ? 'info' : currentStep === 1 ? 'play' : 'star';
+  // Typed or transformed legacy lesson
+  const steps: LessonStep[] = typedSteps ?? [];
+  const totalSteps = steps.length;
+  const progress = totalSteps > 0 ? ((currentStep + 1) / totalSteps) * 100 : 0;
+  const current = steps[currentStep] as LessonStep | undefined;
+  // const stepIconName = currentStep === 0 ? 'info' : currentStep === 1 ? 'play' : 'star';
 
   return (
     <div
@@ -297,7 +319,7 @@ export const LessonPage: React.FC = () => {
     >
               <Header 
           title={lesson.title}
-          subtitle={`Step ${currentStep + 1} of ${regularContent.steps.length}`}
+          subtitle={totalSteps > 0 ? `Step ${currentStep + 1} of ${totalSteps}` : undefined}
           variant="gradient"
           leftAction={
             <IconButton
@@ -324,9 +346,7 @@ export const LessonPage: React.FC = () => {
         </div>
 
         {/* Step Content */}
-        <Card 
-          variant="elevated" 
-          decorative
+        <div 
           style={{
             opacity: showContent ? 1 : 0,
             transform: showContent ? 'scale(1)' : 'scale(0.95)',
@@ -334,164 +354,34 @@ export const LessonPage: React.FC = () => {
             marginBottom: spacing.xl,
           }}
         >
-                    {/* Step Title with Icon and Kooka */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: spacing.md,
-              marginBottom: spacing.xl,
-              flexWrap: 'wrap',
-            }}
-          >
-            <div
-              style={{
-                width: '50px',
-                height: '50px',
-                minWidth: '50px',
-                minHeight: '50px',
-                borderRadius: borderRadius.round,
-                background: gradients.primary,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: shadows.md,
-                flexShrink: 0,
-              }}
-            >
-              <Icon name={stepIconName} size={24} color={colors.textOnPrimary} />
-            </div>
-            <h2
-              style={{
-                fontSize: fontSize.xxl,
-                fontWeight: fontWeight.bold,
-                color: colors.text,
-                margin: 0,
-                flex: 1,
-              }}
-            >
-              {stepTitle}
-            </h2>
-            <img
-              src="/img/kooka-burra-calling-out.png"
-              alt="Kooka guiding you"
-              style={{
-                width: '60px',
-                transform: 'scale(1)',
-                transition: 'transform 0.3s ease',
-                cursor: 'pointer',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.2) rotate(5deg)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
+          {current && current.type === 'text' && (
+            <StepText title={current.title} content={(current as any).content} />
+          )}
+          {current && current.type === 'audio' && (
+            <StepAudio title={current.title} audioId={(current as any).audioId} description={(current as any).description} />
+          )}
+          {current && current.type === 'tips' && (
+            <StepTips title={current.title} tips={(current as any).tips} />
+          )}
+          {current && current.type === 'pitchPractice' && (
+            <StepPitchPractice title={current.title} audioId={(current as any).audioId} targetHz={(current as any).targetHz} />
+          )}
+          {current && current.type === 'recording' && (
+            <StepRecording title={current.title} promptText={(current as any).promptText} maxDurationSec={(current as any).maxDurationSec} />
+          )}
+          {current && current.type === 'clapBeat' && (
+            <StepClapBeat title={current.title} pattern={(current as any).pattern} />
+          )}
+          {current && current.type === 'echo' && (
+            <StepEcho
+              promptText={(current as any).promptText}
+              promptAudio={(current as any).promptAudio}
+              onComplete={async (score) => {
+                await handleEchoComplete(score, '');
               }}
             />
-          </div>
-
-          {/* Step Content */}
-          <div
-            style={{
-              fontSize: fontSize.lg,
-              color: colors.text,
-              lineHeight: 1.8,
-              marginBottom: spacing.xl,
-            }}
-          >
-            {stepBody}
-          </div>
-
-          {/* Additional Components */}
-          {stepAudioUrl && (
-            <div style={{ marginBottom: spacing.xl }}>
-              <Card variant="glass" style={{ padding: spacing.lg }}>
-                <h3
-                  style={{
-                    fontSize: fontSize.lg,
-                    fontWeight: fontWeight.semibold,
-                    marginBottom: spacing.md,
-                    color: colors.text,
-                  }}
-                >
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: spacing.xs }}>
-                    <Icon name="play" size={18} />
-                    Listen and Learn
-                  </span>
-                </h3>
-                <ReferenceAudio audioId={stepAudioUrl} />
-              </Card>
-            </div>
           )}
-
-          {stepPracticeType === 'pitch' && (
-            <div style={{ marginBottom: spacing.xl }}>
-              <Card variant="glass" style={{ padding: spacing.lg }}>
-                <h3
-                  style={{
-                    fontSize: fontSize.lg,
-                    fontWeight: fontWeight.semibold,
-                    marginBottom: spacing.md,
-                    color: colors.text,
-                  }}
-                >
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: spacing.xs }}>
-                    <Icon name="star" size={18} />
-                    Pitch Practice
-                  </span>
-                </h3>
-                <PitchPractice
-                  audioId={(!isStringStep && currentStepContent?.audioId) || undefined}
-                  targetHz={(!isStringStep && currentStepContent?.targetHz) || undefined}
-                />
-              </Card>
-            </div>
-          )}
-
-          {/* Tips Section */}
-          {Array.isArray(stepTips) && stepTips.length > 0 && (
-            <Card 
-              variant="gradient" 
-              style={{ 
-                background: gradients.warm,
-                marginBottom: spacing.xl,
-              }}
-            >
-              <h3
-                style={{
-                  fontSize: fontSize.lg,
-                  fontWeight: fontWeight.semibold,
-                  marginBottom: spacing.md,
-                  color: colors.text,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: spacing.sm,
-                }}
-              >
-                <Icon name="info" size={18} /> Kooka's Tips
-              </h3>
-              <ul
-                style={{
-                  margin: 0,
-                  paddingLeft: spacing.lg,
-                  color: colors.text,
-                }}
-              >
-                {stepTips.map((tip, index) => (
-                  <li
-                    key={index}
-                    style={{
-                      marginBottom: spacing.sm,
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {tip}
-                  </li>
-                ))}
-              </ul>
-            </Card>
-          )}
-        </Card>
+        </div>
 
         {/* Navigation Buttons */}
         <div
@@ -502,25 +392,29 @@ export const LessonPage: React.FC = () => {
             flexWrap: 'wrap',
           }}
         >
-          <Button
-            onClick={handlePrevious}
-            disabled={currentStep === 0}
-            variant="outline"
-            size="large"
-            icon={<Icon name="back" />}
-          >
-            Previous
-          </Button>
+          {(!current || current.type !== 'echo') && (
+            <Button
+              onClick={handlePrevious}
+              disabled={currentStep === 0}
+              variant="outline"
+              size="large"
+              icon={<Icon name="back" />}
+            >
+              Previous
+            </Button>
+          )}
           
-          <Button
-            onClick={handleNext}
-            size="large"
-            variant="gradient"
-            icon={<Icon name={currentStep === regularContent.steps.length - 1 ? 'check' : 'forward'} />}
-            iconPosition="right"
-          >
-            {currentStep === regularContent.steps.length - 1 ? 'Complete Lesson' : 'Next Step'}
-          </Button>
+          {(!current || current.type !== 'echo') && (
+            <Button
+              onClick={handleNext}
+              size="large"
+              variant="gradient"
+              icon={<Icon name={currentStep === totalSteps - 1 ? 'check' : 'forward'} />}
+              iconPosition="right"
+            >
+              {currentStep === totalSteps - 1 ? 'Complete Lesson' : 'Next Step'}
+            </Button>
+          )}
         </div>
 
         {/* Motivational Kooka */}

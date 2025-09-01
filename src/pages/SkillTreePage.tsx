@@ -344,14 +344,19 @@ export const SkillTreePage: React.FC = () => {
                   let durationMinutes = (lesson as any).durationMinutes as number | undefined;
                   let points = (lesson as any).points as number | undefined;
                   let shortDescription = (lesson as any).shortDescription as string | undefined;
-                  try {
-                    const parsed = JSON.parse(lesson.content) as any;
-                    const stepsCount = Array.isArray(parsed?.steps) ? parsed.steps.length : undefined;
-                    if (durationMinutes == null && stepsCount != null) {
-                      durationMinutes = Math.max(1, stepsCount);
+                  // Prefer typed steps length if present
+                  const typedSteps = (lesson as any).steps as any[] | undefined;
+                  let stepsCount: number | undefined = Array.isArray(typedSteps) ? typedSteps.length : undefined;
+                  if (stepsCount == null && (lesson as any).content) {
+                    try {
+                      const parsed = JSON.parse((lesson as any).content) as any;
+                      stepsCount = Array.isArray(parsed?.steps) ? parsed.steps.length : undefined;
+                    } catch (_) {
+                      // ignore JSON parse errors; fallbacks will remain undefined
                     }
-                  } catch (_) {
-                    // ignore JSON parse errors; fallbacks will remain undefined
+                  }
+                  if (durationMinutes == null && stepsCount != null) {
+                    durationMinutes = Math.max(1, stepsCount);
                   }
                   if (durationMinutes == null) durationMinutes = 3;
                   if (points == null) points = 10;
