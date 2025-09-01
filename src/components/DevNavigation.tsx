@@ -22,8 +22,9 @@ export const DevNavigation: React.FC = () => {
 
   const containerStyles: React.CSSProperties = {
     position: 'fixed',
-    bottom: spacing.lg,
+    top: '50%',
     right: spacing.lg,
+    transform: 'translateY(-50%)',
     zIndex: 9999,
   };
 
@@ -45,8 +46,9 @@ export const DevNavigation: React.FC = () => {
 
   const menuStyles: React.CSSProperties = {
     position: 'absolute',
-    bottom: '70px',
-    right: 0,
+    top: '50%',
+    right: '70px',
+    transform: isOpen ? 'translateY(-50%)' : 'translateY(-40%)',
     backgroundColor: colors.surface,
     borderRadius: borderRadius.md,
     boxShadow: shadows.xl,
@@ -54,7 +56,6 @@ export const DevNavigation: React.FC = () => {
     minWidth: '200px',
     opacity: isOpen ? 1 : 0,
     visibility: isOpen ? 'visible' : 'hidden',
-    transform: isOpen ? 'translateY(0)' : 'translateY(10px)',
     transition: transitions.fast,
   };
 
@@ -73,8 +74,9 @@ export const DevNavigation: React.FC = () => {
 
   const labelStyles: React.CSSProperties = {
     position: 'absolute',
-    bottom: '70px',
-    right: '60px',
+    top: '50%',
+    right: '70px',
+    transform: 'translateY(-50%)',
     backgroundColor: colors.text,
     color: 'white',
     padding: `${spacing.xs} ${spacing.sm}`,

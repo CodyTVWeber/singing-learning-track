@@ -8,7 +8,7 @@ interface AuthenticatedLayoutProps {
   logoutPosition?: 'top-right' | 'bottom-right' | 'top-left' | 'bottom-left';
 }
 
-export const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({ children, logoutPosition = 'top-left' }) => {
+export const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({ children, logoutPosition = 'bottom-right' }) => {
   const { user, isLoading } = useApp();
 
   if (isLoading) {
