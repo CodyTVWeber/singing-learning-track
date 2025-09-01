@@ -258,6 +258,7 @@ export const LessonPage: React.FC = () => {
               ariaLabel="Back to skill tree"
             />
           }
+          
         />
         <Container style={{ paddingTop: spacing.xl, paddingBottom: spacing.xl }}>
           <EchoLesson
@@ -305,6 +306,7 @@ export const LessonPage: React.FC = () => {
               ariaLabel="Back to skill tree"
             />
           }
+          
         />
 
       <Container style={{ paddingTop: spacing.xl, paddingBottom: spacing.xl }}>

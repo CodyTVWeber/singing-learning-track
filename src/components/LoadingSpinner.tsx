@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors, gradients, animations } from '../theme/theme';
+import { colors, gradients, animations, shadows } from '../theme/theme';
 
 interface LoadingSpinnerProps {
   size?: 'small' | 'medium' | 'large';

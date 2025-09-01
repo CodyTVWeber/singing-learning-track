@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors, spacing, fontSize, transitions, gradients, fontWeight } from '../theme/theme';
+import { colors, spacing, fontSize, transitions, gradients, fontWeight, shadows } from '../theme/theme';
 import { Icon } from './Icon';
 
 interface FooterProps {

@@ -282,7 +282,7 @@ export const SkillTreePage: React.FC = () => {
 
         {units.map((unit, unitIndex) => {
           const unitProg = unitProgress.find(u => u.unit === unit.unit);
-          const isUnitComplete = unitProg && unitProg.done === unitProg.total;
+          const isUnitComplete = unitProg ? unitProg.done === unitProg.total : false;
           const isExpanded = selectedUnit === unit.unit;
           
           return (
