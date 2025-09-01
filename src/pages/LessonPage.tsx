@@ -17,7 +17,7 @@ import { colors, fontSize, fontWeight, spacing, gradients, shadows, transitions,
 export const LessonPage: React.FC = () => {
   const { lessonId } = useParams<{ lessonId: string }>();
   const navigate = useNavigate();
-  const { user, updateProgress } = useApp();
+  const { user, updateProgress, logout } = useApp();
   const [currentStep, setCurrentStep] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [showContent, setShowContent] = useState(false);
@@ -258,6 +258,13 @@ export const LessonPage: React.FC = () => {
               ariaLabel="Back to skill tree"
             />
           }
+          rightAction={
+            <IconButton
+              icon="logout"
+              onClick={async () => { await logout(); navigate('/'); }}
+              ariaLabel="Log out"
+            />
+          }
         />
         <Container style={{ paddingTop: spacing.xl, paddingBottom: spacing.xl }}>
           <EchoLesson
@@ -303,6 +310,13 @@ export const LessonPage: React.FC = () => {
               icon="back"
               onClick={() => navigate('/skill-tree')}
               ariaLabel="Back to skill tree"
+            />
+          }
+          rightAction={
+            <IconButton
+              icon="logout"
+              onClick={async () => { await logout(); navigate('/'); }}
+              ariaLabel="Log out"
             />
           }
         />

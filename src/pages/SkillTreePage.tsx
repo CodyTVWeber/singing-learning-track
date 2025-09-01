@@ -7,7 +7,7 @@ import { Container } from '../components/Container';
 import { colors, fontSize, fontWeight, spacing, borderRadius, shadows, gradients, transitions, blurs } from '../theme/theme';
 import type { Lesson } from '../models/lesson';
 import { analytics } from '../services/analytics';
-import { Icon } from '../components/Icon';
+import { Icon, IconButton } from '../components/Icon';
 import { Chip } from '../components/Chip';
 import { StandaloneBadge } from '../components/Badge';
 import { ToastContainer } from '../components/Toast';
@@ -17,6 +17,7 @@ import { Button } from '../components/Button';
 export const SkillTreePage: React.FC = () => {
   const navigate = useNavigate();
   const { user, getCompletedLessonIds } = useApp();
+  const { logout } = useApp();
   const units = getAllUnits();
   const completedLessonIds = getCompletedLessonIds();
   const [toasts, setToasts] = useState<Array<{ id: string; type?: 'info' | 'success' | 'warning' | 'error'; message: string; duration?: number }>>([]);
@@ -170,6 +171,9 @@ export const SkillTreePage: React.FC = () => {
               zIndex: 1,
             }}
           >
+            <div style={{ position: 'absolute', top: 0, right: 0 }}>
+              <IconButton icon="logout" ariaLabel="Log out" onClick={async () => { await logout(); navigate('/'); }} />
+            </div>
             <div style={{ flex: 1, minWidth: '300px' }}>
               {/* Centered Kooka Image */}
               <div style={{ textAlign: 'center', marginBottom: spacing.xl }}>

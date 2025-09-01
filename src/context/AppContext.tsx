@@ -4,7 +4,7 @@ import type { UserProfile } from '../models/user';
 import type { LessonProgress } from '../models/progress';
 import { getUser, saveUser as saveUserToStorage } from '../storage/userStore';
 import { getProgress, saveProgress as saveProgressToStorage } from '../storage/progressStore';
-import { getActiveProfile, addCompletedLesson } from '../storage/profilesStore';
+import { getActiveProfile, addCompletedLesson, clearActiveProfile } from '../storage/profilesStore';
 import { analytics } from '../services/analytics';
 
 interface AppContextType {
@@ -14,6 +14,7 @@ interface AppContextType {
   setUser: (user: UserProfile) => Promise<void>;
   updateProgress: (progress: LessonProgress) => Promise<void>;
   getCompletedLessonIds: () => string[];
+  logout: () => Promise<void>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -178,6 +179,15 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       .map(p => p.lessonId);
   };
 
+  const logout = async () => {
+    try {
+      await clearActiveProfile();
+    } catch (_e) {}
+    setUserState(null);
+    setProgress([]);
+    setProfileCompletedLessons([]);
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -187,6 +197,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         setUser,
         updateProgress,
         getCompletedLessonIds,
+        logout,
       }}
     >
       {children}

@@ -48,8 +48,8 @@ export const ProfileSelectPage: React.FC = () => {
       setError(e?.message || 'Could not create profile');
       return;
     }
-    await setActiveProfileId(profile.id);
-    navigate('/skill-tree');
+    // Redirect to onboarding to complete setup flow instead of direct login
+    navigate('/onboarding');
   };
 
   return (
@@ -97,9 +97,7 @@ export const ProfileSelectPage: React.FC = () => {
                     <div style={{ fontSize: fontSize.sm, color: colors.textLight }}>{p.email || 'no email'}</div>
                     <div style={{ fontSize: fontSize.sm, color: colors.textLight }}>{p.ageGroup}</div>
                   </div>
-                  <div style={{ fontSize: fontSize.sm, color: colors.textMuted }}>
-                    {p.completedLessons.length} lessons completed
-                  </div>
+                  <div style={{ fontSize: fontSize.sm, color: colors.textMuted }}>{p.completedLessons.length} lessons completed</div>
                 </button>
               ))}
             </div>

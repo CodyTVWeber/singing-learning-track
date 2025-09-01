@@ -1,7 +1,7 @@
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
-import { SplashPage } from './pages/SplashPage';
+// import { SplashPage } from './pages/SplashPage';
 import { OnboardingPage } from './pages/OnboardingPage';
 import { ProfileSelectPage } from './pages/ProfileSelectPage';
 import { SkillTreePage } from './pages/SkillTreePage';
@@ -19,7 +19,7 @@ function App() {
     <AppProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<SplashPage />} />
+          <Route path="/" element={<ProfileSelectPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/profiles" element={<ProfileSelectPage />} />
           <Route path="/skill-tree" element={<SkillTreePage />} />

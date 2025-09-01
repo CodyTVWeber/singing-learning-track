@@ -71,6 +71,10 @@ export async function setActiveProfileId(id: string): Promise<void> {
   localStorage.setItem(ACTIVE_PROFILE_ID_KEY, id);
 }
 
+export async function clearActiveProfile(): Promise<void> {
+  localStorage.removeItem(ACTIVE_PROFILE_ID_KEY);
+}
+
 export async function getActiveProfile(): Promise<Profile | null> {
   const activeId = await getActiveProfileId();
   if (!activeId) return null;
