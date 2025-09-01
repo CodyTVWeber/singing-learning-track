@@ -13,11 +13,12 @@ import { Icon, IconButton } from '../components/Icon';
 import { Header } from '../components/Header';
 import { Progress } from '../components/Progress';
 import { colors, fontSize, fontWeight, spacing, gradients, shadows, transitions, borderRadius } from '../theme/theme';
+import { FloatingLogoutButton } from '../components/FloatingLogoutButton';
 
 export const LessonPage: React.FC = () => {
   const { lessonId } = useParams<{ lessonId: string }>();
   const navigate = useNavigate();
-  const { user, updateProgress, logout } = useApp();
+  const { user, updateProgress } = useApp();
   const [currentStep, setCurrentStep] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [showContent, setShowContent] = useState(false);
@@ -258,13 +259,7 @@ export const LessonPage: React.FC = () => {
               ariaLabel="Back to skill tree"
             />
           }
-          rightAction={
-            <IconButton
-              icon="logout"
-              onClick={async () => { await logout(); navigate('/'); }}
-              ariaLabel="Log out"
-            />
-          }
+          
         />
         <Container style={{ paddingTop: spacing.xl, paddingBottom: spacing.xl }}>
           <EchoLesson
@@ -273,6 +268,7 @@ export const LessonPage: React.FC = () => {
             onComplete={handleEchoComplete}
           />
         </Container>
+        <FloatingLogoutButton />
       </div>
     );
   }
@@ -312,13 +308,7 @@ export const LessonPage: React.FC = () => {
               ariaLabel="Back to skill tree"
             />
           }
-          rightAction={
-            <IconButton
-              icon="logout"
-              onClick={async () => { await logout(); navigate('/'); }}
-              ariaLabel="Log out"
-            />
-          }
+          
         />
 
       <Container style={{ paddingTop: spacing.xl, paddingBottom: spacing.xl }}>
@@ -572,6 +562,7 @@ export const LessonPage: React.FC = () => {
           </p>
         </div>
       </Container>
+      <FloatingLogoutButton />
     </div>
   );
 };
