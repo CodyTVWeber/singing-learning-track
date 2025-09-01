@@ -13,7 +13,6 @@ import { Icon, IconButton } from '../components/Icon';
 import { Header } from '../components/Header';
 import { Progress } from '../components/Progress';
 import { colors, fontSize, fontWeight, spacing, gradients, shadows, transitions, borderRadius } from '../theme/theme';
-import { FloatingLogoutButton } from '../components/FloatingLogoutButton';
 
 export const LessonPage: React.FC = () => {
   const { lessonId } = useParams<{ lessonId: string }>();
@@ -268,7 +267,6 @@ export const LessonPage: React.FC = () => {
             onComplete={handleEchoComplete}
           />
         </Container>
-        <FloatingLogoutButton />
       </div>
     );
   }
@@ -562,7 +560,6 @@ export const LessonPage: React.FC = () => {
           </p>
         </div>
       </Container>
-      <FloatingLogoutButton />
     </div>
   );
 };

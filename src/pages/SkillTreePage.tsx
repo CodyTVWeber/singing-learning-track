@@ -13,7 +13,6 @@ import { StandaloneBadge } from '../components/Badge';
 import { ToastContainer } from '../components/Toast';
 import { Progress } from '../components/Progress';
 import { Button } from '../components/Button';
-import { FloatingLogoutButton } from '../components/FloatingLogoutButton';
 
 export const SkillTreePage: React.FC = () => {
   const navigate = useNavigate();
@@ -697,7 +696,6 @@ export const SkillTreePage: React.FC = () => {
       </Container>
 
       <ToastContainer toasts={toasts} />
-      <FloatingLogoutButton />
     </div>
   );
 };
