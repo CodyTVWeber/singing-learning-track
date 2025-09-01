@@ -234,7 +234,7 @@ export const SkillTreePage: React.FC = () => {
                   <div style={{
                     flex: '1 1 300px',
                     minWidth: '200px',
-                    maxWidth: 'calc(100% - 320px)',
+                    maxWidth: user.streakCount > 0 ? 'calc(100% - 320px)' : 'calc(100% - 160px)',
                     order: 1
                   }}>
                     <Progress
@@ -250,12 +250,11 @@ export const SkillTreePage: React.FC = () => {
                   <div style={{
                     flex: '0 0 auto',
                     order: 2,
-                    minWidth: '140px',
                     marginTop: '8px'
                   }}>
                     <StatCard label="Points Earned" value={user.totalPoints} accent="primary" />
                   </div>
-                  {typeof user.streakCount === 'number' && user.streakCount > 0 && (
+                  {user.streakCount > 0 && (
                     <div style={{
                       flex: '0 0 auto',
                       order: 3,
