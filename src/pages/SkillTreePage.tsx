@@ -26,14 +26,14 @@ export const SkillTreePage: React.FC = () => {
     if (isComplete) {
       return '/img/kooka-burra-dancing.png'; // Celebration for completed units
     }
-    
+
     const kookaOptions = [
       '/img/kooka-burra-singing.png',
       '/img/kooka-burra-calling-out.png',
       '/img/kooka-burra-flying.png',
       '/img/kooka-burra-waiving.png',
     ];
-    
+
     // Use unit number to consistently assign same image to same unit
     return kookaOptions[unitNumber % kookaOptions.length];
   };
@@ -82,7 +82,7 @@ export const SkillTreePage: React.FC = () => {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-    
+
     const hasCompletedToday = user.lastStreakDate === todayStr;
     const hasSeen = localStorage.getItem('reminderShown') === todayStr;
 
@@ -156,7 +156,7 @@ export const SkillTreePage: React.FC = () => {
             animationDelay: '1s',
           }}
         />
-        
+
         <Container>
           <div
             style={{
@@ -192,7 +192,7 @@ export const SkillTreePage: React.FC = () => {
                   }}
                 />
               </div>
-              
+
               {/* Centered Text Content */}
               <div style={{ textAlign: 'center', marginBottom: spacing.lg }}>
                 <h1
@@ -206,8 +206,8 @@ export const SkillTreePage: React.FC = () => {
                 >
                   Welcome back, {user.name}!
                 </h1>
-                <p style={{ 
-                  fontSize: fontSize.lg, 
+                <p style={{
+                  fontSize: fontSize.lg,
                   color: colors.textLight,
                   fontWeight: fontWeight.medium,
                   opacity: 0.75,
@@ -218,36 +218,58 @@ export const SkillTreePage: React.FC = () => {
                   Your voice is getting stronger every day!
                 </p>
               </div>
-              
+
               {/* Overall Progress */}
-              <div style={{ marginTop: spacing.lg }}>
-                <div style={{ marginBottom: spacing.sm, fontSize: fontSize.sm, opacity: 0.9 }}>
-                  Journey Progress
+              <div style={{ marginTop: spacing.lg, width: '100%' }}>
+                <div
+                  className="progress-row-mobile"
+                  style={{
+                    display: 'flex',
+                    gap: spacing.md,
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    marginBottom: spacing.lg,
+                  }}
+                >
+                  <div style={{
+                    flex: '1 1 300px',
+                    minWidth: '200px',
+                    maxWidth: 'calc(100% - 320px)',
+                    order: 1
+                  }}>
+                    <Progress
+                      value={overallProgress}
+                      max={100}
+                      size="large"
+                      color="success"
+                      animated
+                      title="Journey Progress"
+                      label={`${completedLessonIds.length} of ${totalLessons} lessons`}
+                    />
+                  </div>
+                  <div style={{
+                    flex: '0 0 auto',
+                    order: 2,
+                    minWidth: '140px',
+                    marginTop: '8px'
+                  }}>
+                    <StatCard label="Points Earned" value={user.totalPoints} accent="primary" />
+                  </div>
+                  {typeof user.streakCount === 'number' && user.streakCount > 0 && (
+                    <div style={{
+                      flex: '0 0 auto',
+                      order: 3,
+                      minWidth: '140px',
+                      marginTop: '8px'
+                    }}>
+                      <StatCard label="Daily Streak" value={user.streakCount} accent="success" />
+                    </div>
+                  )}
                 </div>
-                <Progress
-                  value={overallProgress}
-                  max={100}
-                  size="large"
-                  color="success"
-                  animated
-                  label={`${completedLessonIds.length} of ${totalLessons} lessons`}
-                />
               </div>
             </div>
-            
-            <div
-              style={{
-                display: 'flex',
-                gap: spacing.md,
-                alignItems: 'center',
-                flexWrap: 'wrap',
-              }}
-            >
-              <StatCard label="Points Earned" value={user.totalPoints} accent="primary" />
-              {typeof user.streakCount === 'number' && user.streakCount > 0 && (
-                <StatCard label="Daily Streak" value={user.streakCount} accent="success" />
-              )}
-            </div>
+
+
           </div>
         </Container>
       </div>
@@ -262,7 +284,7 @@ export const SkillTreePage: React.FC = () => {
               color: colors.text,
               marginBottom: spacing.md,
               textAlign: 'center',
-              
+
             }}
           >
             Your Singing Journey
@@ -284,11 +306,11 @@ export const SkillTreePage: React.FC = () => {
           const unitProg = unitProgress.find(u => u.unit === unit.unit);
           const isUnitComplete = unitProg ? unitProg.done === unitProg.total : false;
           const isExpanded = selectedUnit === unit.unit;
-          
+
           return (
-            <div 
-              key={unit.unit} 
-              style={{ 
+            <div
+              key={unit.unit}
+              style={{
                 marginBottom: spacing.xxl,
                 opacity: 0,
                 animation: `slideUp 0.5s ease-out ${unitIndex * 0.1}s forwards`,
@@ -336,8 +358,6 @@ export const SkillTreePage: React.FC = () => {
                   if (points == null) points = 10;
                   if (!shortDescription) shortDescription = lesson.description;
                   const status = getLessonStatus(lesson);
-                  const isLocked = status === 'locked';
-                  const isCompleted = status === 'completed';
 
                   const duration = durationMinutes ?? (lesson.type === 'song' ? 5 : lesson.type === 'practice' ? 4 : 3);
                   const pts = points ?? lesson.level * 5;
@@ -380,15 +400,15 @@ export const SkillTreePage: React.FC = () => {
           <img
             src="/img/kooka-burra-dancing.png"
             alt="Kooka dancing with excitement"
-                          style={{
-                width: '180px',
-                margin: '0 auto',
-                marginBottom: spacing.xl,
-                filter: `drop-shadow(${shadows.xl})`,
-                transform: 'scale(1)',
-                transition: 'transform 0.4s ease',
-                cursor: 'pointer',
-              }}
+            style={{
+              width: '180px',
+              margin: '0 auto',
+              marginBottom: spacing.xl,
+              filter: `drop-shadow(${shadows.xl})`,
+              transform: 'scale(1)',
+              transition: 'transform 0.4s ease',
+              cursor: 'pointer',
+            }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'scale(1.15) rotate(-3deg)';
             }}
