@@ -32,6 +32,11 @@ export const sampleLessons: Lesson[] = [
       visual: "kooka-belly-animation",
       audio: "breath-guide"
     }),
+    steps: [
+      { type: 'text', title: 'Warm Up', content: 'Put one hand on your belly. Stand tall and relaxed.' },
+      { type: 'text', title: 'Big Belly, Small Belly', content: 'Breathe in through your nose so your belly gets big. Breathe out so it gets small.' },
+      { type: 'tips', tips: ['Keep shoulders soft', 'Imagine filling a balloon in your tummy', 'Smile and relax'] },
+    ],
     imageUrl: 'kooka-flying',
     unlocked: false,
     prerequisite: 'echo-introduction',
@@ -83,6 +88,11 @@ export const sampleLessons: Lesson[] = [
       visual: "clapping-animation",
       audio: "rhythm-patterns"
     }),
+    steps: [
+      { type: 'text', title: 'Feel the Pulse', content: 'Clap 4 steady beats. 1-2-3-4.' },
+      { type: 'clapBeat', title: 'Try This Pattern', pattern: 'ta ta ti-ti ta' },
+      { type: 'tips', tips: ['Clap softly and evenly', 'Count out loud if it helps', 'Keep a happy steady tempo'] },
+    ],
     imageUrl: 'rhythm-practice',
     unlocked: false,
     prerequisite: 'kooka-laugh',
