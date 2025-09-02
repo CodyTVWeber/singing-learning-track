@@ -4,6 +4,8 @@ import { useApp } from '../context/AppContext';
 import { getAllUnits, isLessonUnlocked } from '../data/units';
 import { Card } from '../components/Card';
 import { Container } from '../components/Container';
+import { Button } from '../components/Button';
+import { Icon } from '../components/Icon';
 import { colors, fontSize, fontWeight, spacing, shadows, gradients } from '../theme/theme';
 import type { Lesson } from '../models/lesson';
 import { analytics } from '../services/analytics';
@@ -217,6 +219,19 @@ export const SkillTreePage: React.FC = () => {
                 }}>
                   Your voice is getting stronger every day!
                 </p>
+              </div>
+
+              {/* New Skill Assessment Button */}
+              <div style={{ textAlign: 'center', marginTop: spacing.lg, marginBottom: spacing.lg }}>
+                <Button 
+                  onClick={() => navigate('/skill-assessment')} 
+                  variant="gradient"
+                  size="large"
+                  icon={<Icon name="star" />}
+                  iconPosition="right"
+                >
+                  Try New Skill Assessment
+                </Button>
               </div>
 
               {/* Overall Progress */}
