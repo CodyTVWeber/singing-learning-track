@@ -6,6 +6,8 @@ import { EchoStep } from './EchoStep';
 import { ClapTheBeatStep } from './ClapTheBeatStep';
 import { BreathingExerciseStep } from './BreathingExerciseStep';
 import { TheoryStep } from './TheoryStep';
+import { VocalExerciseStep } from './VocalExerciseStep';
+import { PitchPracticeStep } from './PitchPracticeStep';
 import { Card } from '../Card';
 import { colors, fontSize, spacing } from '../../theme/theme';
 
@@ -33,6 +35,12 @@ export const LessonStepRenderer: React.FC<LessonStepRendererProps> = ({ step, on
     
     case 'theory':
       return <TheoryStep step={step} onComplete={onComplete} />;
+    
+    case 'vocal-exercise':
+      return <VocalExerciseStep step={step} onComplete={onComplete} />;
+    
+    case 'pitch-practice':
+      return <PitchPracticeStep step={step} onComplete={onComplete} />;
     
     // Placeholder for unimplemented step types
     default:
@@ -70,3 +78,5 @@ export { EchoStep } from './EchoStep';
 export { ClapTheBeatStep } from './ClapTheBeatStep';
 export { BreathingExerciseStep } from './BreathingExerciseStep';
 export { TheoryStep } from './TheoryStep';
+export { VocalExerciseStep } from './VocalExerciseStep';
+export { PitchPracticeStep } from './PitchPracticeStep';

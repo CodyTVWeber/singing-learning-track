@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { Unit1StartSinging } from '../components/Units/Unit1/Unit1StartSinging';
+import { Unit2BreathControl } from '../components/Units/Unit2/Unit2BreathControl';
 // Import other units as they're created
-// import { Unit2BreathControl } from '../components/Units/Unit2/Unit2BreathControl';
 // import { Unit3PitchArticulation } from '../components/Units/Unit3/Unit3PitchArticulation';
 // ... etc
 
@@ -41,17 +41,17 @@ const units: UnitInfo[] = [
     imageUrl: '/img/kooka-burra-singing.png',
     color: '#4ECDC4'
   },
+  {
+    id: 'unit-2',
+    number: 2,
+    title: 'Breath Control & Dynamics',
+    description: 'Master breathing techniques and volume control',
+    totalLessons: 6,
+    component: Unit2BreathControl,
+    imageUrl: '/img/breathing-pulse.png',
+    color: '#FF6B6B'
+  },
   // Add more units as they're created
-  // {
-  //   id: 'unit-2',
-  //   number: 2,
-  //   title: 'Breath Control & Dynamics',
-  //   description: 'Master breathing techniques and volume control',
-  //   totalLessons: 6,
-  //   component: Unit2BreathControl,
-  //   imageUrl: '/img/breathing-pulse.png',
-  //   color: '#FF6B6B'
-  // },
 ];
 
 export const NewSkillTreePage: React.FC = () => {
@@ -105,6 +105,15 @@ export const NewSkillTreePage: React.FC = () => {
           'rhythm-clap',
           'animal-sounds',
           'echo-game'
+        ];
+      case 'unit-2':
+        return [
+          'u2-breath-book-lift',
+          'u2-pulse-breath',
+          'u2-dynamics-lion-mouse',
+          'u2-posture-check',
+          'u2-song-you-are-my-sunshine',
+          'u2-echo-hello-sunshine'
         ];
       // Add more cases as units are created
       default:
