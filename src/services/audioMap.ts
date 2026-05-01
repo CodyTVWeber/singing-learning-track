@@ -68,6 +68,14 @@ export function resolveAudioId(audioId?: string | null): ResolvedAudio | null {
     return { type: 'sequence', sequence: [{ frequency: 220.0, durationMs: 5000 }], volume: 0.15 };
   }
 
+  if (audioId === 'metronome-60bpm') {
+    const beats = [];
+    for(let i=0; i<8; i++) {
+       beats.push({ frequency: 800, durationMs: 50, gapMs: 950 });
+    }
+    return { type: 'sequence', sequence: beats, volume: 0.2 };
+  }
+
   // Echo prompts fallback
   if (audioId.includes('echo') || audioId.includes('prompt')) {
     return { type: 'file', src: '/audio/echo_prompt.mp3' };
