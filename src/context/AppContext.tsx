@@ -12,6 +12,7 @@ interface AppContextType {
   progress: LessonProgress[];
   isLoading: boolean;
   setUser: (user: UserProfile) => Promise<void>;
+  reloadUser: () => Promise<void>;
   updateProgress: (progress: LessonProgress) => Promise<void>;
   getCompletedLessonIds: () => string[];
   logout: () => Promise<void>;
@@ -40,6 +41,11 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   useEffect(() => {
     loadUserData();
   }, []);
+
+  const reloadUser = async () => {
+    setIsLoading(true);
+    await loadUserData();
+  };
 
   const loadUserData = async () => {
     try {
@@ -221,6 +227,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         progress,
         isLoading,
         setUser,
+        reloadUser,
         updateProgress,
         getCompletedLessonIds,
         logout,

@@ -16,6 +16,7 @@ vi.mock('../../context/AppContext', () => {
         streakCount: 1,
         lastStreakDate: null,
       },
+      isLoading: false,
       getCompletedLessonIds: () => [],
     }),
   };

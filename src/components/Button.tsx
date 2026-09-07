@@ -18,6 +18,7 @@ export const Button: React.FC<ButtonProps> = ({
   iconPosition = 'left',
   children,
   style,
+  type = 'button',
   ...props 
 }) => {
   const baseStyles: React.CSSProperties = {
@@ -82,6 +83,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
+      type={type}
       {...props}
       style={{
         ...baseStyles,

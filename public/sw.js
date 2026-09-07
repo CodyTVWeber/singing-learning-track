@@ -1,5 +1,8 @@
+importScripts('/sw-navigation.js');
+
 const CACHE_NAME = 'kooka-cache-v1';
 const OFFLINE_URL = '/offline.html';
+const APP_SHELL_URL = '/';
 const PRECACHE_URLS = [
   '/',
   OFFLINE_URL,
@@ -25,9 +28,25 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+function handleNavigationRequest(request) {
+  return fetch(request)
+    .then((response) => {
+      if (response && response.ok) {
+        return response;
+      }
+      return serveAppShell(CACHE_NAME, OFFLINE_URL, APP_SHELL_URL);
+    })
+    .catch(() => serveAppShell(CACHE_NAME, OFFLINE_URL, APP_SHELL_URL));
+}
+
 self.addEventListener('fetch', (event) => {
   const request = event.request;
   if (request.method !== 'GET') return;
+
+  if (isNavigationRequest(request)) {
+    event.respondWith(handleNavigationRequest(request));
+    return;
+  }
 
   event.respondWith(
     caches.match(request).then((cached) => {
@@ -43,4 +62,3 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
-

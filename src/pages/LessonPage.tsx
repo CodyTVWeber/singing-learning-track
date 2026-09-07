@@ -17,7 +17,7 @@ import { colors, fontSize, fontWeight, spacing, gradients, shadows, transitions,
 export const LessonPage: React.FC = () => {
   const { lessonId } = useParams<{ lessonId: string }>();
   const navigate = useNavigate();
-  const { user, updateProgress } = useApp();
+  const { user, isLoading, updateProgress } = useApp();
   const [currentStep, setCurrentStep] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [showContent, setShowContent] = useState(false);
@@ -28,14 +28,19 @@ export const LessonPage: React.FC = () => {
   const isEchoLesson = lesson?.type === 'echo';
 
   useEffect(() => {
-    if (!lesson || !user) {
-      navigate('/skill-tree');
-    } else {
+    if (isLoading) return;
+
+    if (!lesson) {
+      navigate('/skill-tree', { replace: true });
+      return;
+    }
+
+    if (user) {
       setTimeout(() => setShowContent(true), 100);
     }
-  }, [lesson, user, navigate]);
+  }, [lesson, user, isLoading, navigate]);
 
-  if (!lesson || !content || !user) {
+  if (isLoading || !lesson || !content || !user) {
     return null;
   }
 

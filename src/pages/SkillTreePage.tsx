@@ -15,7 +15,7 @@ import { LessonCard } from '../components/LessonCard';
 
 export const SkillTreePage: React.FC = () => {
   const navigate = useNavigate();
-  const { user, getCompletedLessonIds } = useApp();
+  const { user, isLoading, getCompletedLessonIds } = useApp();
   const units = getAllUnits();
   const completedLessonIds = getCompletedLessonIds();
   const [toasts, setToasts] = useState<Array<{ id: string; type?: 'info' | 'success' | 'warning' | 'error'; message: string; duration?: number }>>([]);
@@ -37,12 +37,6 @@ export const SkillTreePage: React.FC = () => {
     // Use unit number to consistently assign same image to same unit
     return kookaOptions[unitNumber % kookaOptions.length];
   };
-
-  useEffect(() => {
-    if (!user) {
-      navigate('/onboarding', { replace: true });
-    }
-  }, [user, navigate]);
 
   const getLessonStatus = (lesson: Lesson) => {
     if (completedLessonIds.includes(lesson.id)) {
@@ -108,7 +102,7 @@ export const SkillTreePage: React.FC = () => {
     });
   }, [units, completedLessonIds]);
 
-  if (!user) return null;
+  if (isLoading || !user) return null;
 
   const totalLessons = units.reduce((sum, unit) => sum + unit.lessons.length, 0);
   const overallProgress = (completedLessonIds.length / totalLessons) * 100;

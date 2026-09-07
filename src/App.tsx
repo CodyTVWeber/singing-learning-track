@@ -25,7 +25,7 @@ function App() {
           <Route path="/skill-tree" element={<AuthenticatedLayout><SkillTreePage /></AuthenticatedLayout>} />
           <Route path="/lesson/:lessonId" element={<AuthenticatedLayout><LessonPage /></AuthenticatedLayout>} />
           <Route path="/showcase" element={<ComponentShowcase />} />
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <DevNavigation />
         <InstallPrompt />

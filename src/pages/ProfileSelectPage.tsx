@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useApp } from '../context/AppContext';
 import { getProfiles, setActiveProfileId } from '../storage/profilesStore';
 import type { Profile } from '../models/profile';
 import { Container } from '../components/Container';
@@ -10,6 +11,7 @@ import { analytics } from '../services/analytics';
 
 export const ProfileSelectPage: React.FC = () => {
   const navigate = useNavigate();
+  const { reloadUser } = useApp();
   const [profiles, setProfiles] = useState<Profile[]>([]);
   // const [error, setError] = useState<string | null>(null);
 
@@ -23,6 +25,7 @@ export const ProfileSelectPage: React.FC = () => {
 
   const handleSelect = async (id: string) => {
     await setActiveProfileId(id);
+    await reloadUser();
     navigate('/skill-tree');
   };
 
