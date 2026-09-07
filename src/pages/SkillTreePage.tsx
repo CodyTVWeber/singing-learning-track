@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { getAllUnits, isLessonUnlocked } from '../data/units';
 import { Card } from '../components/Card';
+import { Button } from '../components/Button';
+import { Icon } from '../components/Icon';
 import { Container } from '../components/Container';
 import { colors, fontSize, fontWeight, spacing, shadows, gradients } from '../theme/theme';
 import type { Lesson } from '../models/lesson';
@@ -264,6 +266,17 @@ export const SkillTreePage: React.FC = () => {
                       <StatCard label="Daily Streak" value={user.streakCount} accent="success" />
                     </div>
                   )}
+                </div>
+                <div style={{ textAlign: 'center', marginTop: spacing.md }}>
+                  <Button
+                    onClick={() => navigate('/sing')}
+                    variant="gradient"
+                    size="large"
+                    icon={<Icon name="play" />}
+                    style={{ minHeight: 44 }}
+                  >
+                    Sing Along
+                  </Button>
                 </div>
               </div>
             </div>

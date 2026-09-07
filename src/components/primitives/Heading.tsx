@@ -35,7 +35,7 @@ export const Heading: React.FC<HeadingProps> = ({
   style,
   ...rest
 }) => {
-  const Tag = (`h${level}`) as keyof JSX.IntrinsicElements;
+  const tagName = `h${level}` as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   const fontSizeKey = size ?? levelToSize[level];
 
   const styles: React.CSSProperties = {
@@ -55,11 +55,7 @@ export const Heading: React.FC<HeadingProps> = ({
     ...style,
   };
 
-  return (
-    <Tag style={styles} {...rest}>
-      {children}
-    </Tag>
-  );
+  return React.createElement(tagName, { style: styles, ...rest }, children);
 };
 
 export default Heading;

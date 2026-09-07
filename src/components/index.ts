@@ -61,6 +61,9 @@ export { Button } from './Button';
 export { Card } from './Card';
 export { Container } from './Container';
 export { LoadingSpinner } from './LoadingSpinner';
+export { NoteHighway, ratingColor } from './NoteHighway';
+export { SongScoreCard } from './SongScoreCard';
+export { SongPerformance } from './SongPerformance';
 
 // Development Components
 export { DevNavigation } from './DevNavigation';

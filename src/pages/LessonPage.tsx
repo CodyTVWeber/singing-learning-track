@@ -2,16 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { getLessonById } from '../data/units';
-import type { LessonContent, EchoLessonContent } from '../models/lesson';
+import type { LessonContent, EchoLessonContent, SongLessonContent } from '../models/lesson';
 import { Button } from '../components/Button';
 import { Card } from '../components/Card';
 import { Container } from '../components/Container';
 import { EchoLesson } from '../components/EchoLesson';
+import { SongPerformance } from '../components/SongPerformance';
 import { ReferenceAudio } from '../components/ReferenceAudio';
 import { PitchPractice } from '../components/PitchPractice';
 import { Icon, IconButton } from '../components/Icon';
 import { Header } from '../components/Header';
 import { Progress } from '../components/Progress';
+import { getSongChartById } from '../data/songCharts';
 import { colors, fontSize, fontWeight, spacing, gradients, shadows, transitions, borderRadius } from '../theme/theme';
 
 export const LessonPage: React.FC = () => {
@@ -76,6 +78,12 @@ export const LessonPage: React.FC = () => {
 
   const handleEchoComplete = async (score: number, _audioUrl: string) => {
     // Award 10 base points plus performance score
+    const raw = 10 + score * 0.9;
+    const totalScore = Number.isFinite(raw) ? Math.max(0, Math.min(100, Math.floor(raw))) : 0;
+    await handleComplete(totalScore);
+  };
+
+  const handleSongComplete = async (score: number) => {
     const raw = 10 + score * 0.9;
     const totalScore = Number.isFinite(raw) ? Math.max(0, Math.min(100, Math.floor(raw))) : 0;
     await handleComplete(totalScore);
@@ -269,6 +277,43 @@ export const LessonPage: React.FC = () => {
         </Container>
       </div>
     );
+  }
+
+  // Song lesson with vocal scoring chart
+  if (lesson.type === 'song' && content) {
+    const songContent = content as SongLessonContent;
+    const songChart = songContent.chartId ? getSongChartById(songContent.chartId) : undefined;
+
+    if (songChart) {
+      return (
+        <div
+          style={{
+            minHeight: '100vh',
+            background: gradients.soft,
+          }}
+        >
+          <Header
+            title={lesson.title}
+            subtitle="Song Performance"
+            variant="gradient"
+            leftAction={
+              <IconButton
+                icon="back"
+                onClick={() => navigate('/skill-tree')}
+                ariaLabel="Back to skill tree"
+              />
+            }
+          />
+          <Container style={{ paddingTop: spacing.xl, paddingBottom: spacing.xl }}>
+            <SongPerformance
+              chart={songChart}
+              onComplete={handleSongComplete}
+              allowCustomChart
+            />
+          </Container>
+        </div>
+      );
+    }
   }
 
   // Regular lesson

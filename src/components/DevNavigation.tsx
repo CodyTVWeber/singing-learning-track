@@ -17,6 +17,7 @@ export const DevNavigation: React.FC = () => {
     { path: '/', label: 'Home' },
     { path: '/onboarding', label: 'Onboarding' },
     { path: '/skill-tree', label: 'Skill Tree' },
+    { path: '/sing', label: 'Sing Along' },
     { path: '/showcase', label: 'Component Showcase' },
   ];
 

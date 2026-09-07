@@ -12,6 +12,7 @@ import { InstallPrompt } from './components/InstallPrompt';
 import { setLocale } from './i18n';
 import { AuthenticatedLayout } from './layouts/AuthenticatedLayout';
 import { ComponentShowcase } from './pages/ComponentShowcase';
+import { SingAlongPage } from './pages/SingAlongPage';
 
 function App() {
   // Initialize locale (later can be user preference)
@@ -23,6 +24,7 @@ function App() {
           <Route path="/" element={<ProfileSelectPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/skill-tree" element={<AuthenticatedLayout><SkillTreePage /></AuthenticatedLayout>} />
+          <Route path="/sing" element={<AuthenticatedLayout><SingAlongPage /></AuthenticatedLayout>} />
           <Route path="/lesson/:lessonId" element={<AuthenticatedLayout><LessonPage /></AuthenticatedLayout>} />
           <Route path="/showcase" element={<ComponentShowcase />} />
           <Route path="*" element={<Navigate to="/" />} />
