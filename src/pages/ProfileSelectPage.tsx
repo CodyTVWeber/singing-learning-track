@@ -7,6 +7,7 @@ import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { colors, fontSize, fontWeight, spacing, gradients, shadows, borderRadius, animations } from '../theme/theme';
 import { analytics } from '../services/analytics';
+import { publicUrl } from '../services/publicUrl';
 
 export const ProfileSelectPage: React.FC = () => {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ export const ProfileSelectPage: React.FC = () => {
           right: '5%',
           width: '200px',
           height: '200px',
-          backgroundImage: 'url(/img/kooka-burra-flying-blue-sky-clouds-bg.jpg)',
+          backgroundImage: `url(${publicUrl('/img/kooka-burra-flying-blue-sky-clouds-bg.jpg')})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           borderRadius: '50%',
@@ -93,7 +94,7 @@ export const ProfileSelectPage: React.FC = () => {
       <Container>
         <div style={{ textAlign: 'center', marginTop: spacing.xl }}>
           <img
-            src="/img/kooka-burra-waiving.png"
+            src={publicUrl('/img/kooka-burra-waiving.png')}
             alt="Kooka greeting you"
             style={{
               width: '280px',

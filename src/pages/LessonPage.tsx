@@ -15,6 +15,7 @@ import { Header } from '../components/Header';
 import { Progress } from '../components/Progress';
 import { getSongChartById } from '../data/songCharts';
 import { colors, fontSize, fontWeight, spacing, gradients, shadows, transitions, borderRadius } from '../theme/theme';
+import { publicUrl } from '../services/publicUrl';
 
 export const LessonPage: React.FC = () => {
   const { lessonId } = useParams<{ lessonId: string }>();
@@ -133,7 +134,7 @@ export const LessonPage: React.FC = () => {
         <Container maxWidth="500px" style={{ position: 'relative', zIndex: 1 }}>
           <Card variant="glass" decorative style={{ textAlign: 'center', padding: spacing.xxl }}>
             <img
-              src="/img/kooka-burra-dancing.png"
+              src={publicUrl('/img/kooka-burra-dancing.png')}
               alt="Kooka celebrating"
               style={{
                 width: '220px',
@@ -418,7 +419,7 @@ export const LessonPage: React.FC = () => {
               {stepTitle}
             </h2>
             <img
-              src="/img/kooka-burra-calling-out.png"
+              src={publicUrl('/img/kooka-burra-calling-out.png')}
               alt="Kooka guiding you"
               style={{
                 width: '60px',
@@ -577,7 +578,7 @@ export const LessonPage: React.FC = () => {
           }}
         >
           <img
-            src="/img/kooka-burra-breathing.png"
+            src={publicUrl('/img/kooka-burra-breathing.png')}
             alt="Kooka encouraging you"
                           style={{
                 width: '140px',

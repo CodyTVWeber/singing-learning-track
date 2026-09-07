@@ -1,6 +1,7 @@
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
+import { routerBasename } from './services/publicUrl';
 // import { SplashPage } from './pages/SplashPage';
 import { OnboardingPage } from './pages/OnboardingPage';
 import { SkillTreePage } from './pages/SkillTreePage';
@@ -19,7 +20,7 @@ function App() {
   setLocale('en');
   return (
     <AppProvider>
-      <Router>
+      <Router basename={routerBasename()}>
         <Routes>
           <Route path="/" element={<ProfileSelectPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />

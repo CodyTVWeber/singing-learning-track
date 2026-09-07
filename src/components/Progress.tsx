@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { colors, spacing, borderRadius, fontSize, fontWeight, transitions, gradients, shadows } from '../theme/theme';
+import { publicUrl } from '../services/publicUrl';
 
 interface ProgressProps {
   value: number;
@@ -295,7 +296,7 @@ export const Progress: React.FC<ProgressProps> = ({
             }}
           >
             <img
-              src="/img/kooka-burra-dancing.png"
+              src={publicUrl('/img/kooka-burra-dancing.png')}
               alt="Kooka celebrating completion"
               style={{
                 width: '100%',

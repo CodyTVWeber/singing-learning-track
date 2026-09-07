@@ -1,5 +1,6 @@
 import React from 'react';
 import { colors, gradients, animations, shadows } from '../theme/theme';
+import { publicUrl } from '../services/publicUrl';
 
 interface LoadingSpinnerProps {
   size?: 'small' | 'medium' | 'large';
@@ -89,7 +90,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
         }}
       >
         <img
-          src={kookaImage}
+          src={publicUrl(kookaImage)}
           alt="Kooka loading"
           style={{
             width: spinnerSize,

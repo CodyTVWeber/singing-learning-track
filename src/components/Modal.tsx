@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { colors, spacing, borderRadius, fontSize, fontWeight, shadows, transitions, gradients, blurs } from '../theme/theme';
 import { Icon } from './Icon';
+import { publicUrl } from '../services/publicUrl';
 
 interface ModalProps {
   isOpen: boolean;
@@ -246,7 +247,7 @@ export const Modal: React.FC<ModalProps> = ({
             <h2 id="modal-title" style={titleStyles}>
               {showKookaburra && (
                 <img
-                  src={kookaImage}
+                  src={publicUrl(kookaImage)}
                   alt="Kooka"
                   style={{
                     width: '48px',

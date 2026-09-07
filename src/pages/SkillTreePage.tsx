@@ -9,6 +9,7 @@ import { Container } from '../components/Container';
 import { colors, fontSize, fontWeight, spacing, shadows, gradients } from '../theme/theme';
 import type { Lesson } from '../models/lesson';
 import { analytics } from '../services/analytics';
+import { publicUrl } from '../services/publicUrl';
 import { ToastContainer } from '../components/Toast';
 import { Progress } from '../components/Progress';
 import { StatCard } from '../components/StatCard';
@@ -26,7 +27,7 @@ export const SkillTreePage: React.FC = () => {
   // Get appropriate kooka image for each unit
   const getUnitKookaImage = (unitNumber: number, isComplete: boolean) => {
     if (isComplete) {
-      return '/img/kooka-burra-dancing.png'; // Celebration for completed units
+      return publicUrl('/img/kooka-burra-dancing.png'); // Celebration for completed units
     }
 
     const kookaOptions = [
@@ -37,7 +38,7 @@ export const SkillTreePage: React.FC = () => {
     ];
 
     // Use unit number to consistently assign same image to same unit
-    return kookaOptions[unitNumber % kookaOptions.length];
+    return publicUrl(kookaOptions[unitNumber % kookaOptions.length]);
   };
 
   useEffect(() => {
@@ -175,7 +176,7 @@ export const SkillTreePage: React.FC = () => {
               {/* Centered Kooka Image */}
               <div style={{ textAlign: 'center', marginBottom: spacing.xl }}>
                 <img
-                  src="/img/kooka-burra-flying.png"
+                  src={publicUrl('/img/kooka-burra-flying.png')}
                   alt="Kooka flying high"
                   style={{
                     width: '280px',
@@ -410,7 +411,7 @@ export const SkillTreePage: React.FC = () => {
           }}
         >
           <img
-            src="/img/kooka-burra-dancing.png"
+            src={publicUrl('/img/kooka-burra-dancing.png')}
             alt="Kooka dancing with excitement"
             style={{
               width: '180px',
