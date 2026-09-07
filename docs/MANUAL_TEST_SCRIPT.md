@@ -130,6 +130,31 @@ Check that the following events were tracked in order:
 
 ---
 
+## Song Performance (Vocal Scoring)
+
+### Free-play Sing Along
+- [ ] From the skill tree hero, tap **Sing Along** (or navigate to `/sing`)
+- [ ] Verify chart picker shows **Twinkle Twinkle Little Star** and **Happy Birthday**
+- [ ] Select **Twinkle Twinkle Little Star**
+- [ ] Tap **Start Singing** and grant microphone permission when prompted
+- [ ] Watch the 3-2-1 countdown, then the note highway with playhead line
+- [ ] Sing along; verify live detected note name and cents feedback update
+- [ ] Let the song finish (or tap **Stop**) and verify score card with overall %, hit counts, and timeline
+- [ ] Tap **Try Again** to reset
+- [ ] Use **Load MIDI or chart** to import a `.mid` or `.json` chart; verify the UI switches to the loaded song
+
+### Curriculum song lesson
+- [ ] Open the **Kooka Laugh Song** lesson (Unit 1) or **Song: Twinkle (bright tone)**
+- [ ] Confirm scored **Song Performance** UI appears (not only step checklist)
+- [ ] Complete a performance and tap **Save score**
+- [ ] Verify lesson completion screen with score and progress saved on skill tree
+
+### Analytics (console in dev)
+- [ ] `song_performance_started` with `chartId`
+- [ ] `song_performance_completed` with `overall`, `notesHit`, `notesTotal`
+
+---
+
 ## Daily Streak Scenarios
 
 ### A. First Day Streak Start

@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { shadows } from '../theme/theme';
+import { publicUrl } from '../services/publicUrl';
 
 interface KookaImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src?: string;
@@ -29,7 +30,7 @@ export const KookaImage: React.FC<KookaImageProps> = ({
 
   return (
     <img
-      src={chosenSrc}
+      src={publicUrl(chosenSrc)}
       alt={rest.alt || 'Kooka the Kookaburra'}
       {...rest}
       style={{

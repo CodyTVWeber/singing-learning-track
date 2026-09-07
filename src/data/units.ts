@@ -64,7 +64,8 @@ export const sampleLessons: Lesson[] = [
     content: JSON.stringify({
       steps: ["Watch Kooka sing", "Tap the rhythm", "Copy the laugh", "Sing together!"],
       visual: "kooka-song-video",
-      audio: "kookaburra-song"
+      audio: "kookaburra-song",
+      chartId: "kooka-laugh"
     }),
     imageUrl: 'kooka-singing',
     unlocked: false,
@@ -510,7 +511,8 @@ export const sampleLessons: Lesson[] = [
         'Perform the first verse'
       ],
       visual: 'twinkle-bright',
-      audio: 'twinkle-bright-tone'
+      audio: 'twinkle-bright-tone',
+      chartId: 'twinkle'
     }),
     imageUrl: 'song-twinkle',
     unlocked: false,
@@ -1250,7 +1252,8 @@ export const sampleLessons: Lesson[] = [
         'Perform for someone special'
       ],
       visual: 'happy-birthday',
-      audio: 'happy-birthday-simple'
+      audio: 'happy-birthday-simple',
+      chartId: 'happy-birthday'
     }),
     imageUrl: 'song-happy-birthday',
     unlocked: false,

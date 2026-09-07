@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { colors, spacing, borderRadius, fontSize, fontWeight, shadows } from '../theme/theme';
 import { analytics } from '../services/analytics';
+import { publicUrl } from '../services/publicUrl';
 
 type BeforeInstallPromptEvent = any;
 
@@ -84,7 +85,7 @@ export const InstallPrompt: React.FC = () => {
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md }}>
         <img 
-          src="/img/kooka-burra-calling-out.png" 
+          src={publicUrl('/img/kooka-burra-calling-out.png')} 
           alt="Kooka" 
           style={{ 
             width: 56,

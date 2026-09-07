@@ -1,6 +1,7 @@
 import React from 'react';
 import { colors, spacing, fontSize, transitions, gradients, fontWeight, shadows } from '../theme/theme';
 import { Icon } from './Icon';
+import { publicUrl } from '../services/publicUrl';
 
 interface FooterProps {
   children?: React.ReactNode;
@@ -77,7 +78,7 @@ export const Footer: React.FC<FooterProps> = ({
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: spacing.md }}>
       {showKookaburra && (
         <img
-          src={kookaImage}
+          src={publicUrl(kookaImage)}
           alt="Kooka saying goodbye"
           style={{
             width: '64px',

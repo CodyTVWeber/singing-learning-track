@@ -2,17 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { getLessonById } from '../data/units';
-import type { LessonContent, EchoLessonContent } from '../models/lesson';
+import type { LessonContent, EchoLessonContent, SongLessonContent } from '../models/lesson';
 import { Button } from '../components/Button';
 import { Card } from '../components/Card';
 import { Container } from '../components/Container';
 import { EchoLesson } from '../components/EchoLesson';
+import { SongPerformance } from '../components/SongPerformance';
 import { ReferenceAudio } from '../components/ReferenceAudio';
 import { PitchPractice } from '../components/PitchPractice';
 import { Icon, IconButton } from '../components/Icon';
 import { Header } from '../components/Header';
 import { Progress } from '../components/Progress';
+import { getSongChartById } from '../data/songCharts';
 import { colors, fontSize, fontWeight, spacing, gradients, shadows, transitions, borderRadius } from '../theme/theme';
+import { publicUrl } from '../services/publicUrl';
 
 export const LessonPage: React.FC = () => {
   const { lessonId } = useParams<{ lessonId: string }>();
@@ -81,6 +84,12 @@ export const LessonPage: React.FC = () => {
     await handleComplete(totalScore);
   };
 
+  const handleSongComplete = async (score: number) => {
+    const raw = 10 + score * 0.9;
+    const totalScore = Number.isFinite(raw) ? Math.max(0, Math.min(100, Math.floor(raw))) : 0;
+    await handleComplete(totalScore);
+  };
+
   const handleBackToSkillTree = () => {
     navigate('/skill-tree');
   };
@@ -125,7 +134,7 @@ export const LessonPage: React.FC = () => {
         <Container maxWidth="500px" style={{ position: 'relative', zIndex: 1 }}>
           <Card variant="glass" decorative style={{ textAlign: 'center', padding: spacing.xxl }}>
             <img
-              src="/img/kooka-burra-dancing.png"
+              src={publicUrl('/img/kooka-burra-dancing.png')}
               alt="Kooka celebrating"
               style={{
                 width: '220px',
@@ -271,6 +280,43 @@ export const LessonPage: React.FC = () => {
     );
   }
 
+  // Song lesson with vocal scoring chart
+  if (lesson.type === 'song' && content) {
+    const songContent = content as SongLessonContent;
+    const songChart = songContent.chartId ? getSongChartById(songContent.chartId) : undefined;
+
+    if (songChart) {
+      return (
+        <div
+          style={{
+            minHeight: '100vh',
+            background: gradients.soft,
+          }}
+        >
+          <Header
+            title={lesson.title}
+            subtitle="Song Performance"
+            variant="gradient"
+            leftAction={
+              <IconButton
+                icon="back"
+                onClick={() => navigate('/skill-tree')}
+                ariaLabel="Back to skill tree"
+              />
+            }
+          />
+          <Container style={{ paddingTop: spacing.xl, paddingBottom: spacing.xl }}>
+            <SongPerformance
+              chart={songChart}
+              onComplete={handleSongComplete}
+              allowCustomChart
+            />
+          </Container>
+        </div>
+      );
+    }
+  }
+
   // Regular lesson
   const regularContent = content as LessonContent;
   const currentStepContent = (regularContent as any).steps[currentStep] as any;
@@ -373,7 +419,7 @@ export const LessonPage: React.FC = () => {
               {stepTitle}
             </h2>
             <img
-              src="/img/kooka-burra-calling-out.png"
+              src={publicUrl('/img/kooka-burra-calling-out.png')}
               alt="Kooka guiding you"
               style={{
                 width: '60px',
@@ -532,7 +578,7 @@ export const LessonPage: React.FC = () => {
           }}
         >
           <img
-            src="/img/kooka-burra-breathing.png"
+            src={publicUrl('/img/kooka-burra-breathing.png')}
             alt="Kooka encouraging you"
                           style={{
                 width: '140px',

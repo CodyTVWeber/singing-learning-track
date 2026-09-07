@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { colors, spacing, shadows, transitions, fontSize, fontWeight, gradients, blurs } from '../theme/theme';
+import { publicUrl } from '../services/publicUrl';
 
 interface HeaderProps {
   title?: string;
@@ -154,7 +155,7 @@ export const Header: React.FC<HeaderProps> = ({
             <h1 style={titleStyles}>
               {showKookaburra && (
                 <img
-                  src={kookaImage}
+                  src={publicUrl(kookaImage)}
                   alt="Kooka"
                   style={{
                     width: '48px',

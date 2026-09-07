@@ -9,6 +9,7 @@ import { Card } from '../components/Card';
 import { Container } from '../components/Container';
 import { colors, fontSize, fontWeight, spacing, borderRadius, gradients, shadows, transitions, animations } from '../theme/theme';
 import { Icon } from '../components/Icon';
+import { publicUrl } from '../services/publicUrl';
 
 export const OnboardingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -147,7 +148,7 @@ export const OnboardingPage: React.FC = () => {
           }}
         >
           <img
-            src="/img/kooka-burra-waiving.png"
+            src={publicUrl('/img/kooka-burra-waiving.png')}
             alt="Kooka the Kookaburra welcoming you"
             style={{
               width: '250px',
@@ -402,7 +403,7 @@ export const OnboardingPage: React.FC = () => {
           }}
         >
           <img
-            src="/img/kooka-burra-flying.png"
+            src={publicUrl('/img/kooka-burra-flying.png')}
             alt="Floating Kooka"
             style={{
               width: '60px',
@@ -424,7 +425,7 @@ export const OnboardingPage: React.FC = () => {
           }}
         >
           <img
-            src="/img/kooka-burra-singing.png"
+            src={publicUrl('/img/kooka-burra-singing.png')}
             alt="Floating Kooka"
             style={{
               width: '50px',

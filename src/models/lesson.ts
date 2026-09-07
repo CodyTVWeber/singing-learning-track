@@ -24,3 +24,11 @@ export interface EchoLessonContent {
   minVolumeThreshold: number;
   targetDuration: number;
 }
+
+export interface SongLessonContent {
+  steps?: string[];
+  visual?: string;
+  audio?: string;
+  chartId?: string;
+  promptText?: string;
+}

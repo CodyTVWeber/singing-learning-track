@@ -5,7 +5,7 @@ type SpacingKey = keyof typeof spacing;
 type RadiusKey = keyof typeof borderRadius;
 type ShadowKey = keyof typeof shadows;
 
-type ElementTag = keyof JSX.IntrinsicElements;
+type ElementTag = keyof React.JSX.IntrinsicElements;
 
 interface BoxProps extends React.HTMLAttributes<HTMLElement> {
   as?: ElementTag;

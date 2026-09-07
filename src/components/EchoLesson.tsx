@@ -8,6 +8,7 @@ import { AudioPlayer } from './AudioPlayer';
 import { AudioRecorder } from './AudioRecorder';
 import { Icon } from './Icon';
 import { analytics } from '../services/analytics';
+import { publicUrl } from '../services/publicUrl';
 
 interface EchoLessonProps {
   promptAudio: string;
@@ -103,7 +104,7 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
           <Icon name="play" size={60} color={colors.primary} />
         </div>
         <img
-          src="/img/kooka-burra-dancing.png"
+          src={publicUrl('/img/kooka-burra-dancing.png')}
           alt="Kooka ready to echo"
           style={{
             width: '80px',
@@ -186,7 +187,7 @@ export const EchoLesson: React.FC<EchoLessonProps> = ({
 
       <div style={{ marginBottom: spacing.lg }}>
         <AudioPlayer 
-          src={promptAudio} 
+          src={publicUrl(promptAudio)} 
           variant="simple"
           onPlay={handleAudioPlay}
         />

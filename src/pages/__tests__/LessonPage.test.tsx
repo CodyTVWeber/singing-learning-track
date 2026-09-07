@@ -1,6 +1,6 @@
 import React from 'react';
 import { vi } from 'vitest';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { LessonPage } from '../LessonPage';
 
@@ -31,6 +31,20 @@ describe('LessonPage', () => {
       </MemoryRouter>
     );
     expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('renders song performance UI for chart-backed song lesson', () => {
+    render(
+      <MemoryRouter initialEntries={['/lesson/kooka-laugh']}>
+        <Routes>
+          <Route path="/lesson/:lessonId" element={<LessonPage />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    expect(screen.getByRole('button', { name: /start singing/i })).toBeInTheDocument();
+    expect(screen.getByText(/sing the notes as they reach the line/i)).toBeInTheDocument();
+    expect(screen.getAllByText('Kooka Laugh Song').length).toBeGreaterThanOrEqual(1);
+    expect(screen.queryByText('Twinkle Twinkle Little Star')).not.toBeInTheDocument();
   });
 });
 

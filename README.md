@@ -76,6 +76,18 @@ npm run build
 npm run preview
 ```
 
+## GitHub Pages
+
+The app deploys to GitHub Pages from `main` via `.github/workflows/github-pages.yml`.
+
+**One-time repo setup:** GitHub → Settings → Pages → **Source: GitHub Actions**.
+
+After that, each push to `main` publishes the site at:
+
+https://codytvweber.github.io/singing-learning-track/
+
+The production build sets Vite `base` to the repo name, copies `index.html` to `404.html` so React Router paths work, and prefixes public assets (`/img`, `/audio`, the service worker) so they load under that base path. You can also run the **Deploy GitHub Pages** workflow manually from the Actions tab.
+
 ## 🏗️ Architecture & Technology
 
 ### **Frontend Stack**

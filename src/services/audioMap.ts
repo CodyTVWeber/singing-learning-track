@@ -1,4 +1,5 @@
 import type { ResolvedAudio } from './tone';
+import { publicUrl } from './publicUrl';
 
 /**
  * Resolve lesson content `audio` identifiers to playable sources.
@@ -18,7 +19,7 @@ export function resolveAudioId(audioId?: string | null): ResolvedAudio | null {
   };
 
   if (audioId in fileMap) {
-    return { type: 'file', src: fileMap[audioId] };
+    return { type: 'file', src: publicUrl(fileMap[audioId]) };
   }
 
   // Common tone sequences
@@ -70,7 +71,7 @@ export function resolveAudioId(audioId?: string | null): ResolvedAudio | null {
 
   // Echo prompts fallback
   if (audioId.includes('echo') || audioId.includes('prompt')) {
-    return { type: 'file', src: '/audio/echo_prompt.mp3' };
+    return { type: 'file', src: publicUrl('/audio/echo_prompt.mp3') };
   }
 
   return null;
