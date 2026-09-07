@@ -1,8 +1,9 @@
 import type { SongChart } from '../models/songChart';
 import { twinkleChart } from './charts/twinkle';
 import { happyBirthdayChart } from './charts/happy-birthday';
+import { kookaLaughChart } from './charts/kooka-laugh';
 
-export const bundledSongCharts: SongChart[] = [twinkleChart, happyBirthdayChart];
+export const bundledSongCharts: SongChart[] = [kookaLaughChart, twinkleChart, happyBirthdayChart];
 
 const chartsById = new Map(bundledSongCharts.map((chart) => [chart.id, chart]));
 

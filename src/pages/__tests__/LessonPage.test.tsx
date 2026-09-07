@@ -43,6 +43,8 @@ describe('LessonPage', () => {
     );
     expect(screen.getByRole('button', { name: /start singing/i })).toBeInTheDocument();
     expect(screen.getByText(/sing the notes as they reach the line/i)).toBeInTheDocument();
+    expect(screen.getAllByText('Kooka Laugh Song').length).toBeGreaterThanOrEqual(1);
+    expect(screen.queryByText('Twinkle Twinkle Little Star')).not.toBeInTheDocument();
   });
 });
 

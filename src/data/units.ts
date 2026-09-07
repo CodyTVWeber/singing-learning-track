@@ -65,7 +65,7 @@ export const sampleLessons: Lesson[] = [
       steps: ["Watch Kooka sing", "Tap the rhythm", "Copy the laugh", "Sing together!"],
       visual: "kooka-song-video",
       audio: "kookaburra-song",
-      chartId: "twinkle"
+      chartId: "kooka-laugh"
     }),
     imageUrl: 'kooka-singing',
     unlocked: false,
