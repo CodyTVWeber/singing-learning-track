@@ -117,6 +117,15 @@ function extractTopVoiceMelody(notes: ParsedNoteEvent[]): MelodyNote[] {
     }));
 }
 
+function upsertTempo(tempoMap: TempoChange[], tick: number, microsecondsPerQuarter: number): void {
+  const existing = tempoMap.find((change) => change.tick === tick);
+  if (existing) {
+    existing.microsecondsPerQuarter = microsecondsPerQuarter;
+  } else {
+    tempoMap.push({ tick, microsecondsPerQuarter });
+  }
+}
+
 function scanTrackTempo(
   data: Uint8Array,
   offset: number,
@@ -145,9 +154,7 @@ function scanTrackTempo(
 
       if (metaType === 0x51 && metaLen.value === 3) {
         const uspq = (data[pos] << 16) + (data[pos + 1] << 8) + data[pos + 2];
-        if (!tempoMap.some((change) => change.tick === tick)) {
-          tempoMap.push({ tick, microsecondsPerQuarter: uspq });
-        }
+        upsertTempo(tempoMap, tick, uspq);
       }
 
       pos += metaLen.value;

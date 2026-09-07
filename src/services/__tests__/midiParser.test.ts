@@ -63,6 +63,20 @@ describe('parseMidiToChart', () => {
   it('throws on invalid bytes', () => {
     expect(() => parseMidiToChart(new Uint8Array([1, 2, 3]))).toThrow(/Invalid MIDI/);
   });
+
+  it('applies Set Tempo at tick 0 from the file (60 BPM)', () => {
+    const bytes = buildMinimalMidi({
+      tempoUsec: 1_000_000,
+      ticksPerQuarter: 480,
+      notes: [{ midi: 60, startTick: 0, durationTicks: 480 }],
+    });
+
+    const chart = parseMidiToChart(bytes);
+    expect(chart.notes[0].durationMs).toBeGreaterThanOrEqual(950);
+    expect(chart.notes[0].durationMs).toBeLessThanOrEqual(1050);
+    expect(chart.bpm).toBeGreaterThanOrEqual(58);
+    expect(chart.bpm).toBeLessThanOrEqual(62);
+  });
 });
 
 describe('parseSongChartJson', () => {
