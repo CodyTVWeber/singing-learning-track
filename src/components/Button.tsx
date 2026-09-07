@@ -83,8 +83,8 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
-      type={type}
       {...props}
+      type={type}
       style={{
         ...baseStyles,
         ...variantStyles[variant],

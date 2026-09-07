@@ -59,5 +59,18 @@ describe('LessonPage', () => {
 
     expect(mockNavigate).not.toHaveBeenCalled();
   });
+
+  it('navigates to /skill-tree with replace for an unknown lessonId', () => {
+    render(
+      <MemoryRouter initialEntries={['/lesson/unknown-lesson-id']}>
+        <Routes>
+          <Route path="/lesson/:lessonId" element={<LessonPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    expect(mockNavigate).toHaveBeenCalledWith('/skill-tree', { replace: true });
+    expect(mockNavigate).not.toHaveBeenCalledWith('/', expect.anything());
+  });
 });
 

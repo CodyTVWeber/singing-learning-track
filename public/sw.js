@@ -1,6 +1,4 @@
-importScripts('/sw-navigation.js');
-
-const CACHE_NAME = 'kooka-cache-v1';
+const CACHE_NAME = 'kooka-cache-v2';
 const OFFLINE_URL = '/offline.html';
 const APP_SHELL_URL = '/';
 const PRECACHE_URLS = [
@@ -15,6 +13,49 @@ const PRECACHE_URLS = [
   '/img/kooka-burra-breathing.png',
   '/audio/echo_prompt.mp3',
 ];
+
+function isNavigationRequest(request) {
+  return request.mode === 'navigate' || request.destination === 'document';
+}
+
+function shouldUseNetworkNavigationResponse(response, requestUrl) {
+  if (!response || !response.ok) {
+    return false;
+  }
+
+  if (response.redirected) {
+    return false;
+  }
+
+  try {
+    const requestPath = new URL(requestUrl).pathname;
+    const responsePath = new URL(response.url).pathname;
+    return requestPath === responsePath;
+  } catch {
+    return false;
+  }
+}
+
+function serveAppShell(cacheName, offlineUrl, shellUrl) {
+  return caches.open(cacheName).then((cache) =>
+    cache.match(shellUrl).then((shell) => {
+      const source = shell ? Promise.resolve(shell) : cache.match(offlineUrl);
+      return source.then((cached) => {
+        if (!cached) {
+          return cached;
+        }
+
+        return cached.text().then(
+          (body) =>
+            new Response(body, {
+              status: 200,
+              headers: { 'Content-Type': 'text/html' },
+            })
+        );
+      });
+    })
+  );
+}
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -31,7 +72,7 @@ self.addEventListener('activate', (event) => {
 function handleNavigationRequest(request) {
   return fetch(request)
     .then((response) => {
-      if (response && response.ok) {
+      if (shouldUseNetworkNavigationResponse(response, request.url)) {
         return response;
       }
       return serveAppShell(CACHE_NAME, OFFLINE_URL, APP_SHELL_URL);
