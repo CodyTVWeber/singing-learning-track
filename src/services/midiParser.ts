@@ -59,48 +59,130 @@ function ticksToMs(tick: number, tempoMap: TempoChange[], ticksPerQuarter: numbe
   return ms;
 }
 
-function mergeOverlappingNotes(notes: ParsedNoteEvent[]): MelodyNote[] {
-  if (notes.length === 0) return [];
-
-  const sorted = [...notes].sort((a, b) => a.startMs - b.startMs || b.midi - a.midi);
-  const merged: Array<{ startMs: number; endMs: number; midi: number }> = [];
-
-  for (const note of sorted) {
+/** Skyline / top-voice extraction: highest sounding pitch per time slice. */
+function extractTopVoiceMelody(notes: ParsedNoteEvent[]): MelodyNote[] {
+  const intervals: Array<{ startMs: number; endMs: number; midi: number }> = [];
+  for (const note of notes) {
     const endMs = note.endMs ?? note.startMs + 250;
     if (endMs - note.startMs < 50) continue;
+    intervals.push({ startMs: note.startMs, endMs, midi: note.midi });
+  }
 
-    let placed = false;
-    for (const segment of merged) {
-      const overlapStart = Math.max(segment.startMs, note.startMs);
-      const overlapEnd = Math.min(segment.endMs, endMs);
-      if (overlapStart < overlapEnd) {
-        if (note.midi > segment.midi) {
-          segment.midi = note.midi;
+  if (intervals.length === 0) return [];
+
+  const timestamps = new Set<number>();
+  for (const interval of intervals) {
+    timestamps.add(interval.startMs);
+    timestamps.add(interval.endMs);
+  }
+  const sortedTimes = [...timestamps].sort((a, b) => a - b);
+
+  const slices: Array<{ startMs: number; endMs: number; midi: number }> = [];
+  for (let i = 0; i < sortedTimes.length - 1; i += 1) {
+    const startMs = sortedTimes[i];
+    const endMs = sortedTimes[i + 1];
+    if (endMs - startMs < 50) continue;
+
+    let highestMidi: number | null = null;
+    for (const interval of intervals) {
+      if (interval.startMs < endMs && interval.endMs > startMs) {
+        if (highestMidi == null || interval.midi > highestMidi) {
+          highestMidi = interval.midi;
         }
-        segment.startMs = Math.min(segment.startMs, note.startMs);
-        segment.endMs = Math.max(segment.endMs, endMs);
-        placed = true;
-        break;
       }
     }
 
-    if (!placed) {
-      merged.push({ startMs: note.startMs, endMs, midi: note.midi });
+    if (highestMidi != null) {
+      slices.push({ startMs, endMs, midi: highestMidi });
+    }
+  }
+
+  const merged: Array<{ startMs: number; endMs: number; midi: number }> = [];
+  for (const slice of slices) {
+    const last = merged[merged.length - 1];
+    if (last && last.midi === slice.midi && last.endMs === slice.startMs) {
+      last.endMs = slice.endMs;
+    } else {
+      merged.push({ ...slice });
     }
   }
 
   return merged
-    .filter((n) => n.endMs - n.startMs >= 50)
-    .map((n, index) => ({
+    .filter((slice) => slice.endMs - slice.startMs >= 50)
+    .map((slice, index) => ({
       id: `midi-${index}`,
-      midi: n.midi,
-      startMs: Math.round(n.startMs),
-      durationMs: Math.max(50, Math.round(n.endMs - n.startMs)),
-    }))
-    .sort((a, b) => a.startMs - b.startMs);
+      midi: slice.midi,
+      startMs: Math.round(slice.startMs),
+      durationMs: Math.max(50, Math.round(slice.endMs - slice.startMs)),
+    }));
 }
 
-function parseTrack(
+function scanTrackTempo(
+  data: Uint8Array,
+  offset: number,
+  length: number,
+  tempoMap: TempoChange[],
+): void {
+  const end = offset + length;
+  let pos = offset;
+  let tick = 0;
+  let runningStatus = 0;
+
+  while (pos < end) {
+    const delta = readVariableLength(data, pos);
+    tick += delta.value;
+    pos = delta.nextOffset;
+
+    if (pos >= end) break;
+    let status = data[pos];
+
+    if (status === 0xff) {
+      pos += 1;
+      const metaType = data[pos];
+      pos += 1;
+      const metaLen = readVariableLength(data, pos);
+      pos = metaLen.nextOffset;
+
+      if (metaType === 0x51 && metaLen.value === 3) {
+        const uspq = (data[pos] << 16) + (data[pos + 1] << 8) + data[pos + 2];
+        if (!tempoMap.some((change) => change.tick === tick)) {
+          tempoMap.push({ tick, microsecondsPerQuarter: uspq });
+        }
+      }
+
+      pos += metaLen.value;
+      continue;
+    }
+
+    if (status === 0xf0 || status === 0xf7) {
+      pos += 1;
+      const sysexLen = readVariableLength(data, pos);
+      pos = sysexLen.nextOffset + sysexLen.value;
+      continue;
+    }
+
+    if (status < 0x80) {
+      if (runningStatus === 0) {
+        throw new Error('Invalid MIDI: unexpected running status');
+      }
+      status = runningStatus;
+    } else {
+      runningStatus = status;
+      pos += 1;
+    }
+
+    const command = status & 0xf0;
+    if (command === 0xc0 || command === 0xd0) {
+      pos += 1;
+    } else if (command === 0xe0 || command === 0x80 || command === 0x90 || command === 0xa0 || command === 0xb0) {
+      pos += 2;
+    } else {
+      pos += 2;
+    }
+  }
+}
+
+function parseTrackNotes(
   data: Uint8Array,
   offset: number,
   length: number,
@@ -127,22 +209,15 @@ function parseTrack(
 
     if (status === 0xff) {
       pos += 1;
-      const metaType = data[pos];
-      pos += 1;
+      pos += 1; // meta type
       const metaLen = readVariableLength(data, pos);
       pos = metaLen.nextOffset;
-
-      if (metaType === 0x51 && metaLen.value === 3) {
-        const uspq =
-          (data[pos] << 16) + (data[pos + 1] << 8) + data[pos + 2];
-        tempoMap.push({ tick, microsecondsPerQuarter: uspq });
-      }
-
       pos += metaLen.value;
       continue;
     }
 
     if (status === 0xf0 || status === 0xf7) {
+      pos += 1;
       const sysexLen = readVariableLength(data, pos);
       pos = sysexLen.nextOffset + sysexLen.value;
       continue;
@@ -167,6 +242,7 @@ function parseTrack(
       pos += 2;
 
       if (velocity === 0) {
+        if (channel === 9) continue;
         const key = `${channel}-${note}`;
         const active = activeNotes.get(key);
         if (active) {
@@ -249,10 +325,8 @@ export function parseMidiToChart(
   }
 
   const ticksPerQuarter = division;
+  const trackChunks: Array<{ offset: number; length: number }> = [];
   let offset = 8 + headerLength;
-  const tempoMap: TempoChange[] = [{ tick: 0, microsecondsPerQuarter: 500_000 }];
-  const allNotes: ParsedNoteEvent[] = [];
-  let lastEventMs = 0;
 
   for (let t = 0; t < numTracks; t += 1) {
     if (offset + 8 > bytes.length) {
@@ -267,23 +341,25 @@ export function parseMidiToChart(
 
     const trackLength = readUint32(bytes, offset + 4);
     offset += 8;
-
-    const trackTempoMap = [...tempoMap];
-    const parsed = parseTrack(bytes, offset, trackLength, ticksPerQuarter, trackTempoMap);
-    allNotes.push(...parsed.notes);
-    lastEventMs = Math.max(lastEventMs, parsed.lastEventMs);
-
-    for (const change of trackTempoMap) {
-      if (change.tick > 0 && !tempoMap.some((c) => c.tick === change.tick)) {
-        tempoMap.push(change);
-      }
-    }
-
+    trackChunks.push({ offset, length: trackLength });
     offset += trackLength;
   }
 
+  const tempoMap: TempoChange[] = [{ tick: 0, microsecondsPerQuarter: 500_000 }];
+  for (const track of trackChunks) {
+    scanTrackTempo(bytes, track.offset, track.length, tempoMap);
+  }
   tempoMap.sort((a, b) => a.tick - b.tick);
-  const melodyNotes = mergeOverlappingNotes(allNotes);
+
+  const allNotes: ParsedNoteEvent[] = [];
+  let lastEventMs = 0;
+  for (const track of trackChunks) {
+    const parsed = parseTrackNotes(bytes, track.offset, track.length, ticksPerQuarter, tempoMap);
+    allNotes.push(...parsed.notes);
+    lastEventMs = Math.max(lastEventMs, parsed.lastEventMs);
+  }
+
+  const melodyNotes = extractTopVoiceMelody(allNotes);
   const lastNoteEnd = melodyNotes.reduce(
     (max, note) => Math.max(max, note.startMs + note.durationMs),
     0,
@@ -392,18 +468,28 @@ export function buildMinimalMidi(options: {
   pushVarLen(0);
   trackEvents.push(0xff, 0x51, 0x03, (tempoUsec >> 16) & 0xff, (tempoUsec >> 8) & 0xff, tempoUsec & 0xff);
 
-  const sortedNotes = [...options.notes].sort((a, b) => a.startTick - b.startTick);
-  for (const note of sortedNotes) {
+  type MidiEvent = { tick: number; kind: 'on' | 'off'; channel: number; midi: number };
+  const events: MidiEvent[] = [];
+  for (const note of options.notes) {
     const channel = note.channel ?? 0;
-    if (channel === 9) continue;
+    events.push({ tick: note.startTick, kind: 'on', channel, midi: note.midi });
+    events.push({
+      tick: note.startTick + note.durationTicks,
+      kind: 'off',
+      channel,
+      midi: note.midi,
+    });
+  }
+  events.sort((a, b) => a.tick - b.tick || (a.kind === 'on' ? -1 : 1));
 
-    pushVarLen(note.startTick - lastTick);
-    trackEvents.push(0x90 | channel, note.midi & 0x7f, 0x64);
-    lastTick = note.startTick;
-
-    pushVarLen(note.durationTicks);
-    trackEvents.push(0x80 | channel, note.midi & 0x7f, 0x00);
-    lastTick = note.startTick + note.durationTicks;
+  for (const event of events) {
+    pushVarLen(event.tick - lastTick);
+    if (event.kind === 'on') {
+      trackEvents.push(0x90 | event.channel, event.midi & 0x7f, 0x64);
+    } else {
+      trackEvents.push(0x80 | event.channel, event.midi & 0x7f, 0x00);
+    }
+    lastTick = event.tick;
   }
 
   pushVarLen(0);

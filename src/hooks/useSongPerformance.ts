@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { resolveAudioId } from '../services/audioMap';
-import { detectPitchAutocorrelation } from '../services/pitch';
+import { analytics } from '../services/analytics';
 import {
+  detectPitchAutocorrelation,
   centsOff,
   frequencyToMidiNote,
   midiNoteToFrequency,
-  midiNoteToName,
 } from '../services/pitch';
 import {
   expectedMidiAt,
@@ -20,6 +20,10 @@ import type {
 
 export type SongPerformanceStatus = 'idle' | 'countdown' | 'singing' | 'finished' | 'error';
 
+const UI_THROTTLE_MS = 70;
+const TIME_THROTTLE_MS = 40;
+const LIVE_SCORE_THROTTLE_MS = 200;
+
 export interface UseSongPerformanceResult {
   status: SongPerformanceStatus;
   countdown: number;
@@ -29,6 +33,7 @@ export interface UseSongPerformanceResult {
   liveConfidence: number;
   liveCents: number | null;
   liveRating: NoteRating | null;
+  liveScore: SongScore | null;
   score: SongScore | null;
   error: string | null;
   start: () => Promise<void>;
@@ -54,6 +59,7 @@ export function useSongPerformance(chart: SongChart): UseSongPerformanceResult {
   const [liveConfidence, setLiveConfidence] = useState(0);
   const [liveCents, setLiveCents] = useState<number | null>(null);
   const [liveRating, setLiveRating] = useState<NoteRating | null>(null);
+  const [liveScore, setLiveScore] = useState<SongScore | null>(null);
   const [score, setScore] = useState<SongScore | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -69,6 +75,10 @@ export function useSongPerformance(chart: SongChart): UseSongPerformanceResult {
   const performanceStartRef = useRef(0);
   const samplesRef = useRef<PitchSample[]>([]);
   const statusRef = useRef(status);
+  const lastUiUpdateRef = useRef(0);
+  const lastTimeUpdateRef = useRef(0);
+  const lastScoreUpdateRef = useRef(0);
+  const analyticsFiredRef = useRef(false);
   statusRef.current = status;
 
   const cleanup = useCallback(() => {
@@ -98,7 +108,9 @@ export function useSongPerformance(chart: SongChart): UseSongPerformanceResult {
     if (statusRef.current === 'finished') return;
     cleanup();
     const result = scoreSong(chartRef.current, samplesRef.current);
+    setSamples([...samplesRef.current]);
     setScore(result);
+    setLiveScore(result);
     setStatus('finished');
     statusRef.current = 'finished';
   }, [cleanup]);
@@ -114,7 +126,11 @@ export function useSongPerformance(chart: SongChart): UseSongPerformanceResult {
       clock = performance.now() - performanceStartRef.current;
     }
 
-    setCurrentTimeMs(clock);
+    const now = performance.now();
+    if (now - lastTimeUpdateRef.current >= TIME_THROTTLE_MS) {
+      lastTimeUpdateRef.current = now;
+      setCurrentTimeMs(clock);
+    }
 
     const analyser = analyserRef.current;
     const ctx = audioContextRef.current;
@@ -131,23 +147,30 @@ export function useSongPerformance(chart: SongChart): UseSongPerformanceResult {
       }
 
       const { frequencyHz, confidence } = detectPitchAutocorrelation(buffer, ctx.sampleRate);
-      const sample: PitchSample = { timeMs: clock, frequencyHz, confidence };
-      samplesRef.current = [...samplesRef.current, sample];
-      setSamples(samplesRef.current);
-      setLiveHz(frequencyHz);
-      setLiveConfidence(confidence);
+      samplesRef.current.push({ timeMs: clock, frequencyHz, confidence });
 
-      const expectedMidi = expectedMidiAt(activeChart, clock);
-      if (frequencyHz != null && confidence >= 0.25 && expectedMidi != null) {
-        const sungMidi = frequencyToMidiNote(frequencyHz);
-        const targetRef = expectedMidi + 12 * Math.round((sungMidi - expectedMidi) / 12);
-        const targetHz = midiNoteToFrequency(targetRef);
-        const cents = centsOff(frequencyHz, targetHz);
-        setLiveCents(cents);
-        setLiveRating(liveRatingFromCents(cents));
-      } else {
-        setLiveCents(null);
-        setLiveRating(null);
+      if (now - lastScoreUpdateRef.current >= LIVE_SCORE_THROTTLE_MS) {
+        lastScoreUpdateRef.current = now;
+        setLiveScore(scoreSong(activeChart, samplesRef.current));
+      }
+
+      if (now - lastUiUpdateRef.current >= UI_THROTTLE_MS) {
+        lastUiUpdateRef.current = now;
+        setLiveHz(frequencyHz);
+        setLiveConfidence(confidence);
+
+        const expectedMidi = expectedMidiAt(activeChart, clock);
+        if (frequencyHz != null && confidence >= 0.25 && expectedMidi != null) {
+          const sungMidi = frequencyToMidiNote(frequencyHz);
+          const targetRef = expectedMidi + 12 * Math.round((sungMidi - expectedMidi) / 12);
+          const targetHz = midiNoteToFrequency(targetRef);
+          const cents = centsOff(frequencyHz, targetHz);
+          setLiveCents(cents);
+          setLiveRating(liveRatingFromCents(cents));
+        } else {
+          setLiveCents(null);
+          setLiveRating(null);
+        }
       }
     }
 
@@ -163,8 +186,13 @@ export function useSongPerformance(chart: SongChart): UseSongPerformanceResult {
   const beginSinging = useCallback(async () => {
     performanceStartRef.current = performance.now();
     samplesRef.current = [];
+    lastUiUpdateRef.current = 0;
+    lastTimeUpdateRef.current = 0;
+    lastScoreUpdateRef.current = 0;
+    analyticsFiredRef.current = false;
     setSamples([]);
     setCurrentTimeMs(0);
+    setLiveScore(null);
     setScore(null);
     setStatus('singing');
     statusRef.current = 'singing';
@@ -253,12 +281,14 @@ export function useSongPerformance(chart: SongChart): UseSongPerformanceResult {
   const reset = useCallback(() => {
     cleanup();
     samplesRef.current = [];
+    analyticsFiredRef.current = false;
     setSamples([]);
     setCurrentTimeMs(0);
     setLiveHz(null);
     setLiveConfidence(0);
     setLiveCents(null);
     setLiveRating(null);
+    setLiveScore(null);
     setScore(null);
     setError(null);
     setCountdown(3);
@@ -267,6 +297,17 @@ export function useSongPerformance(chart: SongChart): UseSongPerformanceResult {
   }, [cleanup]);
 
   useEffect(() => () => cleanup(), [cleanup]);
+
+  useEffect(() => {
+    if (status !== 'finished' || !score || analyticsFiredRef.current) return;
+    analyticsFiredRef.current = true;
+    analytics.trackEvent('song_performance_completed', {
+      chartId: chartRef.current.id,
+      overall: score.overall,
+      notesHit: score.notesHit,
+      notesTotal: score.notesTotal,
+    });
+  }, [status, score]);
 
   return {
     status,
@@ -277,6 +318,7 @@ export function useSongPerformance(chart: SongChart): UseSongPerformanceResult {
     liveConfidence,
     liveCents,
     liveRating,
+    liveScore,
     score,
     error,
     start,
@@ -284,5 +326,3 @@ export function useSongPerformance(chart: SongChart): UseSongPerformanceResult {
     reset,
   };
 }
-
-export { midiNoteToName };

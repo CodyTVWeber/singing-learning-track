@@ -25,7 +25,30 @@ describe('parseMidiToChart', () => {
     expect(chart.durationMs).toBeGreaterThan(1400);
   });
 
-  it('ignores drum channel notes', () => {
+  it('extracts top voice from overlapping notes (skyline)', () => {
+    const bytes = buildMinimalMidi({
+      ticksPerQuarter: 480,
+      tempoUsec: 500_000,
+      notes: [
+        { midi: 60, startTick: 0, durationTicks: 1000 },
+        { midi: 64, startTick: 0, durationTicks: 480 },
+      ],
+    });
+
+    const chart = parseMidiToChart(bytes);
+    expect(chart.notes).toHaveLength(2);
+    expect(chart.notes[0].midi).toBe(64);
+    expect(chart.notes[1].midi).toBe(60);
+    expect(chart.notes[0].startMs).toBe(0);
+    expect(chart.notes[0].durationMs).toBeGreaterThanOrEqual(450);
+    expect(chart.notes[0].durationMs).toBeLessThanOrEqual(550);
+    expect(chart.notes[1].startMs).toBeGreaterThanOrEqual(450);
+    expect(chart.notes[1].startMs).toBeLessThanOrEqual(550);
+    expect(chart.notes[1].durationMs).toBeGreaterThanOrEqual(450);
+    expect(chart.notes[0].startMs + chart.notes[0].durationMs).toBe(chart.notes[1].startMs);
+  });
+
+  it('ignores drum channel notes present in the file', () => {
     const bytes = buildMinimalMidi({
       notes: [
         { midi: 60, startTick: 0, durationTicks: 480 },
@@ -73,5 +96,14 @@ describe('buildMinimalMidi', () => {
     });
     expect(parseMidiToChart(f0).notes[0].midi).toBe(62);
     expect(parseMidiToChart(f1).notes[0].midi).toBe(62);
+  });
+
+  it('writes drum channel events into the byte stream', () => {
+    const bytes = buildMinimalMidi({
+      notes: [{ midi: 38, startTick: 0, durationTicks: 480, channel: 9 }],
+    });
+    expect(bytes.some((byte, index) => byte === (0x90 | 9) && bytes[index + 1] === 38)).toBe(true);
+    const chart = parseMidiToChart(bytes);
+    expect(chart.notes).toHaveLength(0);
   });
 });

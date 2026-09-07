@@ -21,16 +21,16 @@ function buildMelody(
 
 const happyBirthdayMidis: Array<{ midi: number; durationMs?: number }> = [
   { midi: 60 }, { midi: 60 }, { midi: 62 }, { midi: 60 }, { midi: 65 }, { midi: 64, durationMs: 1000 },
-  { midi: 60 }, { midi: 60 }, { midi: 62 }, { midi: 60 }, { midi: 67 }, { midi: 66, durationMs: 1000 },
+  { midi: 60 }, { midi: 60 }, { midi: 62 }, { midi: 60 }, { midi: 67 }, { midi: 65, durationMs: 1000 },
   { midi: 60 }, { midi: 60 }, { midi: 72 }, { midi: 69 }, { midi: 65 }, { midi: 64 }, { midi: 62, durationMs: 1000 },
-  { midi: 70 }, { midi: 70 }, { midi: 69 }, { midi: 65 }, { midi: 67 }, { midi: 66, durationMs: 1000 },
+  { midi: 70 }, { midi: 70 }, { midi: 69 }, { midi: 65 }, { midi: 67 }, { midi: 65, durationMs: 1000 },
 ];
 
 const happyBirthdayLyrics = [
-  'Happy', 'birth', 'day', 'to', 'you',
-  'Happy', 'birth', 'day', 'to', 'you',
-  'Happy', 'birth', 'day', 'dear', 'friend', 'sing', 'along',
-  'Happy', 'birth', 'day', 'to', 'you', 'now',
+  'Hap', 'py', 'birth', 'day', 'to', 'you',
+  'Hap', 'py', 'birth', 'day', 'to', 'you',
+  'Hap', 'py', 'birth', 'day', 'dear', 'frie', 'nd',
+  'Hap', 'py', 'birth', 'day', 'to', 'you',
 ];
 
 const happyBirthdayNotes = buildMelody(happyBirthdayMidis, happyBirthdayLyrics);

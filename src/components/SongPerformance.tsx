@@ -1,13 +1,13 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from './Button';
 import { Card } from './Card';
 import { Alert } from './Alert';
 import { NoteHighway } from './NoteHighway';
 import { SongScoreCard } from './SongScoreCard';
 import { Icon } from './Icon';
-import { useSongPerformance, midiNoteToName } from '../hooks/useSongPerformance';
+import { useSongPerformance } from '../hooks/useSongPerformance';
 import { parseMidiToChart, parseSongChartJson } from '../services/midiParser';
-import { frequencyToMidiNote } from '../services/pitch';
+import { frequencyToMidiNote, midiNoteToName } from '../services/pitch';
 import { expectedMidiAt } from '../services/songScoring';
 import { analytics } from '../services/analytics';
 import {
@@ -25,6 +25,9 @@ interface SongPerformanceProps {
   allowCustomChart?: boolean;
 }
 
+const CHART_LOAD_ERROR =
+  "Couldn't read that file. Try a Standard MIDI (.mid) or a song chart JSON.";
+
 function formatDuration(ms: number): string {
   const totalSeconds = Math.ceil(ms / 1000);
   const minutes = Math.floor(totalSeconds / 60);
@@ -40,21 +43,54 @@ function liveRatingLabel(rating: string | null): string {
   return 'Try again';
 }
 
+function isSupportedChartFile(name: string): boolean {
+  const lower = name.toLowerCase();
+  return lower.endsWith('.json') || lower.endsWith('.mid') || lower.endsWith('.midi');
+}
+
 export const SongPerformance: React.FC<SongPerformanceProps> = ({
   chart: initialChart,
   onComplete,
   allowCustomChart = true,
 }) => {
   const [chart, setChart] = useState(initialChart);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const performance = useSongPerformance(chart);
+
+  const chartMidiRange = useMemo(() => {
+    const midis = chart.notes.map((note) => note.midi);
+    return {
+      min: Math.min(...midis) - 2,
+      max: Math.max(...midis) + 2,
+    };
+  }, [chart.notes]);
 
   const liveMidi = useMemo(() => {
     if (performance.liveHz == null || performance.liveConfidence < 0.25) return null;
     const expected = expectedMidiAt(chart, performance.currentTimeMs);
-    if (expected == null) return null;
     const raw = frequencyToMidiNote(performance.liveHz);
-    return expected + 12 * Math.round((raw - expected) / 12);
-  }, [chart, performance.currentTimeMs, performance.liveConfidence, performance.liveHz]);
+    if (expected != null) {
+      return expected + 12 * Math.round((raw - expected) / 12);
+    }
+    const rounded = Math.round(raw);
+    return Math.max(chartMidiRange.min, Math.min(chartMidiRange.max, rounded));
+  }, [
+    chart,
+    chartMidiRange.max,
+    chartMidiRange.min,
+    performance.currentTimeMs,
+    performance.liveConfidence,
+    performance.liveHz,
+  ]);
+
+  const noteScoresForHighway =
+    performance.status === 'singing'
+      ? performance.liveScore?.noteScores
+      : performance.score?.noteScores;
+
+  useEffect(() => {
+    setChart(initialChart);
+  }, [initialChart]);
 
   const handleStart = useCallback(async () => {
     analytics.trackEvent('song_performance_started', { chartId: chart.id });
@@ -62,34 +98,33 @@ export const SongPerformance: React.FC<SongPerformanceProps> = ({
   }, [chart.id, performance]);
 
   const handleTryAgain = useCallback(() => {
+    setLoadError(null);
     performance.reset();
   }, [performance]);
 
   const handleComplete = useCallback(
     (overall: number) => {
-      if (performance.score) {
-        analytics.trackEvent('song_performance_completed', {
-          chartId: chart.id,
-          overall,
-          notesHit: performance.score.notesHit,
-          notesTotal: performance.score.notesTotal,
-        });
-      }
       onComplete?.(overall);
     },
-    [chart.id, onComplete, performance.score],
+    [onComplete],
   );
 
   const handleFileChange = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    if (!isSupportedChartFile(file.name)) {
+      setLoadError(CHART_LOAD_ERROR);
+      event.target.value = '';
+      return;
+    }
+
     try {
-      if (file.name.endsWith('.json')) {
+      if (file.name.toLowerCase().endsWith('.json')) {
         const text = await file.text();
         const parsed = parseSongChartJson(JSON.parse(text));
         setChart(parsed);
-      } else if (file.name.endsWith('.mid') || file.name.endsWith('.midi')) {
+      } else {
         const buffer = await file.arrayBuffer();
         const parsed = parseMidiToChart(new Uint8Array(buffer), {
           id: file.name.replace(/\.(mid|midi)$/i, ''),
@@ -97,9 +132,10 @@ export const SongPerformance: React.FC<SongPerformanceProps> = ({
         });
         setChart(parsed);
       }
+      setLoadError(null);
       performance.reset();
-    } catch (err) {
-      console.error(err);
+    } catch {
+      setLoadError(CHART_LOAD_ERROR);
     } finally {
       event.target.value = '';
     }
@@ -123,6 +159,10 @@ export const SongPerformance: React.FC<SongPerformanceProps> = ({
           {formatDuration(chart.durationMs)} · Sing the notes as they reach the line
         </p>
       </Card>
+
+      {loadError && (
+        <Alert type="error" title="Could not load file" message={loadError} />
+      )}
 
       {performance.status === 'idle' && (
         <Card variant="elevated" style={{ padding: spacing.lg, textAlign: 'center' }}>
@@ -200,6 +240,7 @@ export const SongPerformance: React.FC<SongPerformanceProps> = ({
             chart={chart}
             currentTimeMs={performance.currentTimeMs}
             liveMidi={liveMidi}
+            noteScores={noteScoresForHighway}
           />
           <Card variant="glass" style={{ padding: spacing.md }}>
             <div
